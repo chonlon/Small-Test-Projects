@@ -10,8 +10,8 @@ class DefectSortFilterProxyModel : public QSortFilterProxyModel
 public:
     DefectSortFilterProxyModel(QObject *parent = nullptr);
 
-    inline void setFilter(int num) {
-        m_filter = num;
+    inline void setFilter(const QVector<int>& nums) {
+        m_filters = nums;
         invalidateFilter();
     }
 
@@ -22,7 +22,7 @@ protected:
     bool lessThan(const QModelIndex &left, const QModelIndex &right) const override;
 
 private:
-    int m_filter;
+    QVector<int> m_filters;
 };
 
 #endif // DEFECTSORTFILTERPROXYMODEL_H

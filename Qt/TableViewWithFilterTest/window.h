@@ -6,6 +6,7 @@
 #include <QLineEdit>
 #include <QPushButton>
 #include "defectsortfilterproxymodel.h"
+#include "FilterWidget.h"
 
 class Window : public QWidget
 {
@@ -24,6 +25,8 @@ private:
 
     QTableView *m_p_orgin_table_view;
     QTableView *m_p_filtered_table_view;
+
+    FilterWidget *filter_widget;
 
     DefectSortFilterProxyModel *m_filter_model;
 };

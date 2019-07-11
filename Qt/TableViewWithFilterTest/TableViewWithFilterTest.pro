@@ -25,11 +25,13 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += \
+        FilterWidget.cpp \
         defectsortfilterproxymodel.cpp \
         main.cpp \
         window.cpp
 
 HEADERS += \
+        FilterWidget.h \
         defectsortfilterproxymodel.h \
         window.h
 
