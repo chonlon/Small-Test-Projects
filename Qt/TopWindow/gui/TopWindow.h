@@ -146,6 +146,7 @@ private:
 	void handleEvents(); // 信号槽事件处理
 
 	Ui::TopWindow *ui;
+	// 这里使用了编译防火墙, 就算以后需要修改private成员, 需要重新编译的只有TopWindows类, 而其他包含TopWindows的类不许要修改.
 	TopWindowPrivate *d;
 };
 
