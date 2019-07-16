@@ -484,6 +484,3 @@ doPasteCom()
 ::;cmd::
 	run, F:\programs\cmder\Cmder.exe
 	return
-	
-
-

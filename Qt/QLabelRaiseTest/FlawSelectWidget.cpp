@@ -115,6 +115,8 @@ void FlawSelectWidget::initConnect()
 			m_data->bottom_widget->ui->area_groupbox->setChecked(true);
 		}
 	});
+
+	// 由于valueChanged有重载, 所以得这么写.
 	void (QDoubleSpinBox::*valueChanged)(double val) = &QDoubleSpinBox::valueChanged;
 	connect(m_data->bottom_widget->ui->area_double_spinbox_min, valueChanged, [this](double val)->void {
 		m_data->bottom_widget->ui->area_double_spinbox_max->setMinimum(val);
