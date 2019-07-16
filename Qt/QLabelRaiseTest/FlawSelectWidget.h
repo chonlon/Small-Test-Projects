@@ -14,6 +14,15 @@ public:
 
 private:
 	Q_INVOKABLE void onButtonClicked();
+
+	/// <summary>
+	/// 初始化界面上部按钮组.
+	/// </summary>
+	void initButtonGroup();
+
+	void initLayout();
+	void initConnect();
+
 	FlawSelectWidgetPrivate* m_data;
 };
 

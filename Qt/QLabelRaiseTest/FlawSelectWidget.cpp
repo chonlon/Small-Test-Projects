@@ -56,7 +56,7 @@ FlawSelectWidget::~FlawSelectWidget()
 Q_INVOKABLE void FlawSelectWidget::onButtonClicked()
 {
 	auto sender_button = static_cast<QPushButton*>(sender());
-	if (sender_button == m_data->bottom_widget->ui->pushButton) {
+	if (sender_button == m_data->bottom_widget->ui->filter_button) {
 		// #fix here
 		// emit filter();
 	}
@@ -100,19 +100,32 @@ void FlawSelectWidget::initLayout()
 
 void FlawSelectWidget::initConnect()
 {
-	connect(m_data->bottom_widget->ui->pushButton, &QPushButton::clicked, this, &FlawSelectWidget::onButtonClicked);
+	connect(m_data->bottom_widget->ui->filter_button, &QPushButton::clicked, this, &FlawSelectWidget::onButtonClicked);
 
-	connect(m_data->bottom_widget->ui->groupBox, &QGroupBox::clicked, [this]() {
-		m_data->bottom_widget->ui->groupBox_2->setChecked(false);
+	connect(m_data->bottom_widget->ui->contrast_ratio_groupbox, &QGroupBox::clicked, [this]() {
+		m_data->bottom_widget->ui->area_groupbox->setChecked(false);
 
-		if (!m_data->bottom_widget->ui->groupBox->isChecked()) {
-			m_data->bottom_widget->ui->groupBox->setChecked(true);
+		if (!m_data->bottom_widget->ui->contrast_ratio_groupbox->isChecked()) {
+			m_data->bottom_widget->ui->contrast_ratio_groupbox->setChecked(true);
 		}
 	});
-	connect(m_data->bottom_widget->ui->groupBox_2, &QGroupBox::clicked, [this]() {
-		m_data->bottom_widget->ui->groupBox->setChecked(false);
-		if (!m_data->bottom_widget->ui->groupBox_2->isChecked()) {
-			m_data->bottom_widget->ui->groupBox_2->setChecked(true);
+	connect(m_data->bottom_widget->ui->area_groupbox, &QGroupBox::clicked, [this]() {
+		m_data->bottom_widget->ui->contrast_ratio_groupbox->setChecked(false);
+		if (!m_data->bottom_widget->ui->area_groupbox->isChecked()) {
+			m_data->bottom_widget->ui->area_groupbox->setChecked(true);
 		}
+	});
+	void (QDoubleSpinBox::*valueChanged)(double val) = &QDoubleSpinBox::valueChanged;
+	connect(m_data->bottom_widget->ui->area_double_spinbox_min, valueChanged, [this](double val)->void {
+		m_data->bottom_widget->ui->area_double_spinbox_max->setMinimum(val);
+	});
+	connect(m_data->bottom_widget->ui->area_double_spinbox_max, valueChanged, [this](double val)->void {
+		m_data->bottom_widget->ui->area_double_spinbox_min->setMaximum(val);
+	});
+	connect(m_data->bottom_widget->ui->contrast_ratio_groupbox_spinbox_min, valueChanged, [this](double val)->void {
+		m_data->bottom_widget->ui->contrast_ratio_groupbox_spinbox_max->setMinimum(val);
+	});
+	connect(m_data->bottom_widget->ui->contrast_ratio_groupbox_spinbox_max, valueChanged, [this](double val)->void {
+		m_data->bottom_widget->ui->contrast_ratio_groupbox_spinbox_min->setMaximum(val);
 	});
 }

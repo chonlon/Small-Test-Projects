@@ -30,17 +30,17 @@ public:
     QVBoxLayout *verticalLayout_6;
     QVBoxLayout *verticalLayout_5;
     QHBoxLayout *horizontalLayout;
-    QGroupBox *groupBox;
+    QGroupBox *contrast_ratio_groupbox;
     QVBoxLayout *verticalLayout_3;
     QVBoxLayout *verticalLayout;
-    QDoubleSpinBox *doubleSpinBox_3;
-    QDoubleSpinBox *doubleSpinBox_4;
-    QGroupBox *groupBox_2;
+    QDoubleSpinBox *contrast_ratio_groupbox_spinbox_min;
+    QDoubleSpinBox *contrast_ratio_groupbox_spinbox_max;
+    QGroupBox *area_groupbox;
     QVBoxLayout *verticalLayout_4;
     QVBoxLayout *verticalLayout_2;
-    QDoubleSpinBox *doubleSpinBox_5;
-    QDoubleSpinBox *doubleSpinBox_6;
-    QPushButton *pushButton;
+    QDoubleSpinBox *area_double_spinbox_min;
+    QDoubleSpinBox *area_double_spinbox_max;
+    QPushButton *filter_button;
     QTableView *tableView;
 
     void setupUi(QWidget *FlawSelectWidgetBottom)
@@ -54,57 +54,57 @@ public:
         verticalLayout_5->setObjectName(QStringLiteral("verticalLayout_5"));
         horizontalLayout = new QHBoxLayout();
         horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
-        groupBox = new QGroupBox(FlawSelectWidgetBottom);
-        groupBox->setObjectName(QStringLiteral("groupBox"));
-        groupBox->setCheckable(true);
-        verticalLayout_3 = new QVBoxLayout(groupBox);
+        contrast_ratio_groupbox = new QGroupBox(FlawSelectWidgetBottom);
+        contrast_ratio_groupbox->setObjectName(QStringLiteral("contrast_ratio_groupbox"));
+        contrast_ratio_groupbox->setCheckable(true);
+        verticalLayout_3 = new QVBoxLayout(contrast_ratio_groupbox);
         verticalLayout_3->setObjectName(QStringLiteral("verticalLayout_3"));
         verticalLayout = new QVBoxLayout();
         verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
-        doubleSpinBox_3 = new QDoubleSpinBox(groupBox);
-        doubleSpinBox_3->setObjectName(QStringLiteral("doubleSpinBox_3"));
+        contrast_ratio_groupbox_spinbox_min = new QDoubleSpinBox(contrast_ratio_groupbox);
+        contrast_ratio_groupbox_spinbox_min->setObjectName(QStringLiteral("contrast_ratio_groupbox_spinbox_min"));
 
-        verticalLayout->addWidget(doubleSpinBox_3);
+        verticalLayout->addWidget(contrast_ratio_groupbox_spinbox_min);
 
-        doubleSpinBox_4 = new QDoubleSpinBox(groupBox);
-        doubleSpinBox_4->setObjectName(QStringLiteral("doubleSpinBox_4"));
+        contrast_ratio_groupbox_spinbox_max = new QDoubleSpinBox(contrast_ratio_groupbox);
+        contrast_ratio_groupbox_spinbox_max->setObjectName(QStringLiteral("contrast_ratio_groupbox_spinbox_max"));
 
-        verticalLayout->addWidget(doubleSpinBox_4);
+        verticalLayout->addWidget(contrast_ratio_groupbox_spinbox_max);
 
 
         verticalLayout_3->addLayout(verticalLayout);
 
 
-        horizontalLayout->addWidget(groupBox);
+        horizontalLayout->addWidget(contrast_ratio_groupbox);
 
-        groupBox_2 = new QGroupBox(FlawSelectWidgetBottom);
-        groupBox_2->setObjectName(QStringLiteral("groupBox_2"));
-        groupBox_2->setCheckable(true);
-        groupBox_2->setChecked(false);
-        verticalLayout_4 = new QVBoxLayout(groupBox_2);
+        area_groupbox = new QGroupBox(FlawSelectWidgetBottom);
+        area_groupbox->setObjectName(QStringLiteral("area_groupbox"));
+        area_groupbox->setCheckable(true);
+        area_groupbox->setChecked(false);
+        verticalLayout_4 = new QVBoxLayout(area_groupbox);
         verticalLayout_4->setObjectName(QStringLiteral("verticalLayout_4"));
         verticalLayout_2 = new QVBoxLayout();
         verticalLayout_2->setObjectName(QStringLiteral("verticalLayout_2"));
-        doubleSpinBox_5 = new QDoubleSpinBox(groupBox_2);
-        doubleSpinBox_5->setObjectName(QStringLiteral("doubleSpinBox_5"));
+        area_double_spinbox_min = new QDoubleSpinBox(area_groupbox);
+        area_double_spinbox_min->setObjectName(QStringLiteral("area_double_spinbox_min"));
 
-        verticalLayout_2->addWidget(doubleSpinBox_5);
+        verticalLayout_2->addWidget(area_double_spinbox_min);
 
-        doubleSpinBox_6 = new QDoubleSpinBox(groupBox_2);
-        doubleSpinBox_6->setObjectName(QStringLiteral("doubleSpinBox_6"));
+        area_double_spinbox_max = new QDoubleSpinBox(area_groupbox);
+        area_double_spinbox_max->setObjectName(QStringLiteral("area_double_spinbox_max"));
 
-        verticalLayout_2->addWidget(doubleSpinBox_6);
+        verticalLayout_2->addWidget(area_double_spinbox_max);
 
 
         verticalLayout_4->addLayout(verticalLayout_2);
 
 
-        horizontalLayout->addWidget(groupBox_2);
+        horizontalLayout->addWidget(area_groupbox);
 
-        pushButton = new QPushButton(FlawSelectWidgetBottom);
-        pushButton->setObjectName(QStringLiteral("pushButton"));
+        filter_button = new QPushButton(FlawSelectWidgetBottom);
+        filter_button->setObjectName(QStringLiteral("filter_button"));
 
-        horizontalLayout->addWidget(pushButton);
+        horizontalLayout->addWidget(filter_button);
 
 
         verticalLayout_5->addLayout(horizontalLayout);
@@ -126,9 +126,9 @@ public:
     void retranslateUi(QWidget *FlawSelectWidgetBottom)
     {
         FlawSelectWidgetBottom->setWindowTitle(QApplication::translate("FlawSelectWidgetBottom", "Form", Q_NULLPTR));
-        groupBox->setTitle(QApplication::translate("FlawSelectWidgetBottom", "\345\257\271\346\257\224\345\272\246", Q_NULLPTR));
-        groupBox_2->setTitle(QApplication::translate("FlawSelectWidgetBottom", "\351\235\242\347\247\257", Q_NULLPTR));
-        pushButton->setText(QApplication::translate("FlawSelectWidgetBottom", "\347\255\233\351\200\211", Q_NULLPTR));
+        contrast_ratio_groupbox->setTitle(QApplication::translate("FlawSelectWidgetBottom", "\345\257\271\346\257\224\345\272\246", Q_NULLPTR));
+        area_groupbox->setTitle(QApplication::translate("FlawSelectWidgetBottom", "\351\235\242\347\247\257", Q_NULLPTR));
+        filter_button->setText(QApplication::translate("FlawSelectWidgetBottom", "\347\255\233\351\200\211", Q_NULLPTR));
     } // retranslateUi
 
 };

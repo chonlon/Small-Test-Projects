@@ -19,7 +19,7 @@
      <item>
       <layout class="QHBoxLayout" name="horizontalLayout">
        <item>
-        <widget class="QGroupBox" name="groupBox">
+        <widget class="QGroupBox" name="contrast_ratio_groupbox">
          <property name="title">
           <string>对比度</string>
          </property>
@@ -30,10 +30,10 @@
           <item>
            <layout class="QVBoxLayout" name="verticalLayout">
             <item>
-             <widget class="QDoubleSpinBox" name="doubleSpinBox_3"/>
+             <widget class="QDoubleSpinBox" name="contrast_ratio_groupbox_spinbox_min"/>
             </item>
             <item>
-             <widget class="QDoubleSpinBox" name="doubleSpinBox_4"/>
+             <widget class="QDoubleSpinBox" name="contrast_ratio_groupbox_spinbox_max"/>
             </item>
            </layout>
           </item>
@@ -41,7 +41,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QGroupBox" name="groupBox_2">
+        <widget class="QGroupBox" name="area_groupbox">
          <property name="title">
           <string>面积</string>
          </property>
@@ -55,10 +55,10 @@
           <item>
            <layout class="QVBoxLayout" name="verticalLayout_2">
             <item>
-             <widget class="QDoubleSpinBox" name="doubleSpinBox_5"/>
+             <widget class="QDoubleSpinBox" name="area_double_spinbox_min"/>
             </item>
             <item>
-             <widget class="QDoubleSpinBox" name="doubleSpinBox_6"/>
+             <widget class="QDoubleSpinBox" name="area_double_spinbox_max"/>
             </item>
            </layout>
           </item>
@@ -66,7 +66,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="pushButton">
+        <widget class="QPushButton" name="filter_button">
          <property name="text">
           <string>筛选</string>
          </property>
