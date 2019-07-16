@@ -63,8 +63,9 @@ Capslock & ,::return
 Capslock & \::return
 Capslock & -::return
 Capslock & =::return
+Capslock & /::return
 
-Capslock & 3::return
+
 Capslock & 4::return
 Capslock & 5::return
 Capslock & 6::return
@@ -286,6 +287,24 @@ Capslock & .::
 	SendInput, ->
 	return
 
+;-------------快速跳转-----------------------------;|
+;------o                                           ;|
+Capslock & 1::                                     ;|
+	loop, 2                                        ;|
+		SendInput, {Up}                            ;|
+	return                                         ;|
+                                                   ;|
+Capslock & 2::                                     ;|
+	loop, 4                                        ;|
+		SendInput, {Up}                            ;|
+	return                                         ;|
+                                                   ;|
+Capslock & 3::                                     ;|
+	loop, 6                                        ;|
+		SendInput, {Up}                            ;|
+	return                                         ;|
+;--------------------------------------------------;|
+	
 ;alt快捷键
 !q::!+Tab
 +!p::!F4	

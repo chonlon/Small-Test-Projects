@@ -11,8 +11,10 @@ class FlawSelectWidget :
 public:
     FlawSelectWidget(QWidget *parent = nullptr);
     ~FlawSelectWidget();
+
 private:
-   FlawSelectWidgetPrivate* m_data;
+	Q_INVOKABLE void onButtonClicked();
+	FlawSelectWidgetPrivate* m_data;
 };
 
 //#endif // !_FlawSelectWidget_H__
