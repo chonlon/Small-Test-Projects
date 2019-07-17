@@ -2,13 +2,14 @@
 #define _DEFECTSORTFILTERPROXYMODEL_H__
 #include <QSortFilterProxyModel>
 
-class DefectSortFilterProxyModel :
+
+class QFlawSortFilterProxyModel :
 	public QSortFilterProxyModel
 {
 	Q_OBJECT
 public:
-	DefectSortFilterProxyModel();
-	~DefectSortFilterProxyModel();
+	QFlawSortFilterProxyModel();
+	~QFlawSortFilterProxyModel();
 
 	inline void setFilter(double _filter_min, double _filter_max) {
 		filter_min = _filter_min;

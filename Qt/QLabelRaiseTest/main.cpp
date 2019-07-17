@@ -1,5 +1,5 @@
-#include "MainWindow.h"
-#include "FlawSelectWidget.h"
+﻿#include "MainWindow.h"
+#include "QFlawFilterWidget.h"
 #include <QApplication>
 
 int main(int argc, char *argv[])
@@ -8,7 +8,7 @@ int main(int argc, char *argv[])
     MainWindow w;
     w.show();
 
-    FlawSelectWidget win;
+    QFlawFilterWidget win;
     win.show();
 
     return a.exec();

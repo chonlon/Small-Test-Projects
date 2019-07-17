@@ -37,47 +37,52 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="FlawSelectWidget.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="MainWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="DefectSortFilterProxyModel.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="QFlawSortFilterProxyModel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="QFlawFilterWidget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <QtMoc Include="FlawSelectWidget.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
     <QtMoc Include="MainWindow.h">
       <Filter>Header Files</Filter>
     </QtMoc>
+    <QtMoc Include="DefectSortFilterProxyModel.h">
+      <Filter>Generated Files</Filter>
+    </QtMoc>
+    <QtMoc Include="QFlawSortFilterProxyModel.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="QFlawFilterWidget.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
-    
-    
-    
-    
     <CustomBuild Include="debug\moc_predefs.h.cbt">
       <Filter>Generated Files</Filter>
     </CustomBuild>
     <CustomBuild Include="release\moc_predefs.h.cbt">
       <Filter>Generated Files</Filter>
     </CustomBuild>
-    <ClInclude Include="ui_FlawSelectWidget.h">
-      <Filter>Generated Files</Filter>
-    </ClInclude>
     <ClInclude Include="ui_MainWindow.h">
       <Filter>Generated Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <QtUic Include="FlawSelectWidget.ui">
+    <QtUic Include="MainWindow.ui">
       <Filter>Form Files</Filter>
     </QtUic>
-    <QtUic Include="MainWindow.ui">
+    <QtUic Include="QFlawFilterWidget.ui">
       <Filter>Form Files</Filter>
     </QtUic>
   </ItemGroup>
