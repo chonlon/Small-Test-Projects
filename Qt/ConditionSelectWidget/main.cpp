@@ -8,7 +8,7 @@ int main(int argc, char *argv[])
     ConditionSelectWidget w;
     w.show();
 
-    QApplication::setStyle(QStyleFactory::create("Fusion"));
+    //QApplication::setStyle(QStyleFactory::create("Fusion"));
 
     return a.exec();
 }

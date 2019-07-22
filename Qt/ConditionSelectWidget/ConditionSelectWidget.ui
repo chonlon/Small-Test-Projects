@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>488</width>
-    <height>122</height>
+    <width>734</width>
+    <height>139</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -18,7 +18,7 @@
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout">
    <item>
-    <widget class="QGroupBox" name="groupBox">
+    <widget class="QGroupBox" name="group_box_1">
      <property name="title">
       <string>GroupBox</string>
      </property>
@@ -27,103 +27,157 @@
      </property>
      <layout class="QGridLayout" name="gridLayout">
       <item row="3" column="1">
-       <widget class="QDoubleSpinBox" name="doubleSpinBox_2"/>
+       <widget class="QDoubleSpinBox" name="spinbox_area_1_min"/>
       </item>
-      <item row="3" column="0">
-       <widget class="QLabel" name="label_2">
-        <property name="text">
-         <string>TextLabel</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="0">
-       <widget class="QLabel" name="label">
-        <property name="text">
-         <string>TextLabel</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="1">
-       <widget class="QDoubleSpinBox" name="doubleSpinBox"/>
-      </item>
-      <item row="1" column="0" colspan="2">
+      <item row="1" column="0" colspan="3">
        <widget class="QComboBox" name="comboBox"/>
       </item>
+      <item row="4" column="0">
+       <widget class="QLabel" name="label_2">
+        <property name="text">
+         <string>最大值:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="1">
+       <widget class="QDoubleSpinBox" name="spinbox_area_1_max"/>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>最小值:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="2">
+       <widget class="QDoubleSpinBox" name="spinbox_contrast_1_min"/>
+      </item>
+      <item row="4" column="2">
+       <widget class="QDoubleSpinBox" name="spinbox_contrast_1_max"/>
+      </item>
+      <item row="2" column="1">
+       <widget class="QLabel" name="label_7">
+        <property name="text">
+         <string>面积</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="2">
+       <widget class="QLabel" name="label_8">
+        <property name="text">
+         <string>对比度</string>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
    <item>
-    <widget class="QGroupBox" name="groupBox_2">
+    <widget class="QGroupBox" name="group_box_2">
      <property name="title">
       <string>GroupBox</string>
      </property>
      <property name="checkable">
       <bool>true</bool>
      </property>
-     <property name="checked">
-      <bool>false</bool>
-     </property>
-     <layout class="QGridLayout" name="gridLayout_2">
-      <item row="1" column="0">
-       <widget class="QLabel" name="label_3">
+     <layout class="QGridLayout" name="gridLayout_4">
+      <item row="3" column="1">
+       <widget class="QDoubleSpinBox" name="spinbox_area_2_min"/>
+      </item>
+      <item row="1" column="0" colspan="3">
+       <widget class="QComboBox" name="combo_box_2"/>
+      </item>
+      <item row="4" column="0">
+       <widget class="QLabel" name="label_9">
         <property name="text">
-         <string>TextLabel</string>
+         <string>最大值:</string>
         </property>
        </widget>
       </item>
-      <item row="1" column="1">
-       <widget class="QDoubleSpinBox" name="doubleSpinBox_3"/>
+      <item row="4" column="1">
+       <widget class="QDoubleSpinBox" name="spinbox_area_2_max"/>
       </item>
-      <item row="2" column="0">
-       <widget class="QLabel" name="label_4">
+      <item row="3" column="0">
+       <widget class="QLabel" name="label_10">
         <property name="text">
-         <string>TextLabel</string>
+         <string>最小值:</string>
         </property>
        </widget>
+      </item>
+      <item row="3" column="2">
+       <widget class="QDoubleSpinBox" name="spinbox_contrast_2_min"/>
+      </item>
+      <item row="4" column="2">
+       <widget class="QDoubleSpinBox" name="spinbox_contrast_2_max"/>
       </item>
       <item row="2" column="1">
-       <widget class="QDoubleSpinBox" name="doubleSpinBox_4"/>
+       <widget class="QLabel" name="label_11">
+        <property name="text">
+         <string>面积</string>
+        </property>
+       </widget>
       </item>
-      <item row="0" column="0" colspan="2">
-       <widget class="QComboBox" name="comboBox_2"/>
+      <item row="2" column="2">
+       <widget class="QLabel" name="label_12">
+        <property name="text">
+         <string>对比度</string>
+        </property>
+       </widget>
       </item>
      </layout>
     </widget>
    </item>
    <item>
-    <widget class="QGroupBox" name="groupBox_3">
+    <widget class="QGroupBox" name="group_box_3">
      <property name="title">
       <string>GroupBox</string>
      </property>
      <property name="checkable">
       <bool>true</bool>
      </property>
-     <property name="checked">
-      <bool>false</bool>
-     </property>
-     <layout class="QGridLayout" name="gridLayout_3">
-      <item row="1" column="1">
-       <widget class="QDoubleSpinBox" name="doubleSpinBox_5"/>
+     <layout class="QGridLayout" name="gridLayout_5">
+      <item row="3" column="1">
+       <widget class="QDoubleSpinBox" name="spinbox_area_3_min"/>
+      </item>
+      <item row="1" column="0" colspan="3">
+       <widget class="QComboBox" name="combo_box_3"/>
+      </item>
+      <item row="4" column="0">
+       <widget class="QLabel" name="label_13">
+        <property name="text">
+         <string>最大值:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="1">
+       <widget class="QDoubleSpinBox" name="spinbox_area_3_max"/>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="label_14">
+        <property name="text">
+         <string>最小值:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="2">
+       <widget class="QDoubleSpinBox" name="spinbox_contrast_3_min"/>
+      </item>
+      <item row="4" column="2">
+       <widget class="QDoubleSpinBox" name="spinbox_contrast_3_max"/>
       </item>
       <item row="2" column="1">
-       <widget class="QDoubleSpinBox" name="doubleSpinBox_6"/>
-      </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="label_5">
+       <widget class="QLabel" name="label_15">
         <property name="text">
-         <string>TextLabel</string>
+         <string>面积</string>
         </property>
        </widget>
       </item>
-      <item row="2" column="0">
-       <widget class="QLabel" name="label_6">
+      <item row="2" column="2">
+       <widget class="QLabel" name="label_16">
         <property name="text">
-         <string>TextLabel</string>
+         <string>对比度</string>
         </property>
        </widget>
-      </item>
-      <item row="0" column="0" colspan="2">
-       <widget class="QComboBox" name="comboBox_3"/>
       </item>
      </layout>
     </widget>
