@@ -55,6 +55,7 @@ ConditionSelectWidget::ConditionSelectWidget(QWidget* parent)
     setupDefectTypesModel(QStringList{ "1", "2" });
     data_->middle_widget = new QWidget{ this };
     auto condition_widget = new ConditionWidget{ data_->defect_types_model, data_->middle_widget };
+	initSpinBoxBignessLogic(condition_widget);
 
     data_->layout = new QVBoxLayout{ this };
     data_->add_condition_button = new QPushButton{ this };
@@ -89,6 +90,7 @@ void ConditionSelectWidget::setupDefectTypesModel(const QStringList& list)
     data_->defect_types_model->appendColumn(item_list);
 }
 
+// generate sql sequence by condition.
 QString ConditionSelectWidget::generateSqlQuery()
 {
     auto temp_func = [=](const ConditionWidget* widget) -> QString {
@@ -104,7 +106,7 @@ QString ConditionSelectWidget::generateSqlQuery()
                         .arg(widget->ui->spinbox_area_1_max->value())
                         .arg(widget->ui->spinbox_contrast_1_min->value())
                         .arg(widget->ui->spinbox_contrast_1_max->value()))
-				.append(")");
+                .append(")");
         }
         if (widget->ui->group_box_2->isChecked()) {
             condition2
@@ -116,7 +118,7 @@ QString ConditionSelectWidget::generateSqlQuery()
                         .arg(widget->ui->spinbox_area_2_max->value())
                         .arg(widget->ui->spinbox_contrast_2_min->value())
                         .arg(widget->ui->spinbox_contrast_2_max->value()))
-				.append(")");
+                .append(")");
         }
         if (widget->ui->group_box_3->isChecked()) {
             condition3
@@ -150,4 +152,26 @@ QString ConditionSelectWidget::generateSqlQuery()
     return query;
 }
 
-// TODO generate sql sequence by condition.
+void ConditionSelectWidget::initSpinBoxBignessLogic(ConditionWidget const* widget)
+{
+    void (QDoubleSpinBox::*valueChanged)(double val) = &QDoubleSpinBox::valueChanged;
+	// 两个对应的spinbox的逻辑关系绑定.
+    auto singal_logic = [=](QDoubleSpinBox* min_spinbox, QDoubleSpinBox* max_spinbox) -> void {
+        connect(min_spinbox,
+            valueChanged,
+            [=](double val) -> void {
+                max_spinbox->setMinimum(val);
+            });
+        connect(max_spinbox,
+            valueChanged,
+            [=](double val) -> void {
+                min_spinbox->setMaximum(val);
+            });
+    };
+    singal_logic(widget->ui->spinbox_area_1_min, widget->ui->spinbox_area_1_max);
+    singal_logic(widget->ui->spinbox_area_2_min, widget->ui->spinbox_area_2_max);
+    singal_logic(widget->ui->spinbox_area_3_min, widget->ui->spinbox_area_3_max);
+    singal_logic(widget->ui->spinbox_contrast_1_min, widget->ui->spinbox_contrast_1_max);
+    singal_logic(widget->ui->spinbox_contrast_2_min, widget->ui->spinbox_contrast_2_max);
+    singal_logic(widget->ui->spinbox_contrast_3_min, widget->ui->spinbox_contrast_3_max);
+}

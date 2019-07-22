@@ -1,9 +1,10 @@
-#ifndef CONDITIONSELECTWIDGET_H
+﻿#ifndef CONDITIONSELECTWIDGET_H
 #define CONDITIONSELECTWIDGET_H
 
 #include <QWidget>
 
 struct ConditionSelectWidgetPrivate;
+class ConditionWidget;
 
 class ConditionSelectWidget : public QWidget
 {
@@ -19,6 +20,8 @@ private:
     ConditionSelectWidgetPrivate* data_;
 
     QString generateSqlQuery();
+
+	void initSpinBoxBignessLogic(ConditionWidget const* widget);
 };
 
 #endif // CONDITIONSELECTWIDGET_H
