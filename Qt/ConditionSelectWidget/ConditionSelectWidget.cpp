@@ -8,6 +8,9 @@
 #include <QDebug>
 using Ui::Form;
 
+/// <summary>
+/// 单个条件的条件框.
+/// </summary>
 class ConditionWidget : public QWidget {
 public:
     ConditionWidget(QStandardItemModel* defect_types_model,
