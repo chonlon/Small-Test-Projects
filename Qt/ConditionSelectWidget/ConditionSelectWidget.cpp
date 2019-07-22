@@ -58,7 +58,8 @@ ConditionSelectWidget::ConditionSelectWidget(QWidget* parent)
     setupDefectTypesModel(QStringList{ "1", "2" });
     data_->middle_widget = new QWidget{ this };
     auto condition_widget = new ConditionWidget{ data_->defect_types_model, data_->middle_widget };
-	initSpinBoxBignessLogic(condition_widget);
+    initSpinBoxBignessLogic(condition_widget);
+	initGroupBoxLogic(condition_widget);
 
     data_->layout = new QVBoxLayout{ this };
     data_->add_condition_button = new QPushButton{ this };
@@ -74,6 +75,9 @@ ConditionSelectWidget::ConditionSelectWidget(QWidget* parent)
     data_->layout->addWidget(data_->picname_result_view);
 
     connect(data_->add_condition_button, &QPushButton::clicked, [this]() {
+        // 最多只有四个条件框.
+        if (data_->middle_widget_layout->count() > 3)
+            return;
         auto condition_widget = new ConditionWidget{ data_->defect_types_model, data_->middle_widget };
         data_->middle_widget_layout->addWidget(condition_widget);
     });
@@ -94,7 +98,7 @@ void ConditionSelectWidget::setupDefectTypesModel(const QStringList& list)
 }
 
 // generate sql sequence by condition.
-QString ConditionSelectWidget::generateSqlQuery()
+QString ConditionSelectWidget::generateSqlQuery() const
 {
     auto temp_func = [=](const ConditionWidget* widget) -> QString {
         auto chararr = "DefectName = %1 AND Area >= %2 AND Area <= %3 AND Contrast >= %4 AND Contrast <= %5 ";
@@ -157,8 +161,9 @@ QString ConditionSelectWidget::generateSqlQuery()
 
 void ConditionSelectWidget::initSpinBoxBignessLogic(ConditionWidget const* widget)
 {
+	if (!widget) return;
     void (QDoubleSpinBox::*valueChanged)(double val) = &QDoubleSpinBox::valueChanged;
-	// 两个对应的spinbox的逻辑关系绑定.
+    // 两个对应的spinbox的逻辑关系绑定.
     auto singal_logic = [=](QDoubleSpinBox* min_spinbox, QDoubleSpinBox* max_spinbox) -> void {
         connect(min_spinbox,
             valueChanged,
@@ -177,4 +182,37 @@ void ConditionSelectWidget::initSpinBoxBignessLogic(ConditionWidget const* widge
     singal_logic(widget->ui->spinbox_contrast_1_min, widget->ui->spinbox_contrast_1_max);
     singal_logic(widget->ui->spinbox_contrast_2_min, widget->ui->spinbox_contrast_2_max);
     singal_logic(widget->ui->spinbox_contrast_3_min, widget->ui->spinbox_contrast_3_max);
+}
+
+void ConditionSelectWidget::initGroupBoxLogic(ConditionWidget const* widget)
+{
+	// 由于groupbox的自己的点击会改变checked状态, 所以这里的逻辑会显得有点奇怪.
+	if (!widget) return;
+    auto box1 = widget->ui->group_box_1;
+    auto box2 = widget->ui->group_box_2;
+    auto box3 = widget->ui->group_box_3;
+    auto allUnchecked = [=](const QGroupBox* _box1, const QGroupBox* _box2) -> bool {
+        return !(_box1->isChecked() || _box2->isChecked());
+    };
+    connect(box1, &QGroupBox::clicked, [=]() {
+        if (box1->isChecked()|| allUnchecked(box2, box3)) {
+            box1->setChecked(true);
+			return;
+        }
+        box1->setChecked(false);
+    });
+    connect(box2, &QGroupBox::clicked, [=]() {
+        if (box2->isChecked()||allUnchecked(box1, box3)) {
+            box2->setChecked(true);
+			return;
+        }
+        box2->setChecked(false);
+    });
+    connect(box3, &QGroupBox::clicked, [=]() {
+        if (box3->isChecked()||allUnchecked(box1, box2)) {
+            box3->setChecked(true);
+			return;
+        }
+        box3->setChecked(false);
+    });
 }
