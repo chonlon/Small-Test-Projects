@@ -91,60 +91,60 @@ void ConditionSelectWidget::setupDefectTypesModel(const QStringList& list)
 
 QString ConditionSelectWidget::generateSqlQuery()
 {
-	auto temp_func = [=](const ConditionWidget* widget)->QString {
-		auto chararr = "DefectName = %1 AND Area >= %2 AND Area <= %3 AND Contrast >= %4 AND Contrast <= %5 ";
-		QString condition1{}, condition2{}, condition3{};
+    auto temp_func = [=](const ConditionWidget* widget) -> QString {
+        auto chararr = "DefectName = %1 AND Area >= %2 AND Area <= %3 AND Contrast >= %4 AND Contrast <= %5 ";
+        QString condition1{}, condition2{}, condition3{};
         if (widget->ui->group_box_1->isChecked()) {
             condition1
-				.append(" (")
-                .append(QString{ chararr }
-                            .arg(widget->ui->comboBox->currentText())
-                            .arg(widget->ui->spinbox_area_1_min->value())
-                            .arg(widget->ui->spinbox_area_1_max->value())
-                            .arg(widget->ui->spinbox_contrast_1_min->value())
-                            .arg(widget->ui->spinbox_contrast_1_max->value()));
+                .append("((")
+                .append(
+                    QString{ chararr }
+                        .arg(widget->ui->comboBox->currentText())
+                        .arg(widget->ui->spinbox_area_1_min->value())
+                        .arg(widget->ui->spinbox_area_1_max->value())
+                        .arg(widget->ui->spinbox_contrast_1_min->value())
+                        .arg(widget->ui->spinbox_contrast_1_max->value()))
+				.append(")");
         }
         if (widget->ui->group_box_2->isChecked()) {
             condition2
-				.append(" AND ")
+                .append(" AND (")
                 .append(
                     QString{ chararr }
                         .arg(widget->ui->combo_box_2->currentText())
                         .arg(widget->ui->spinbox_area_2_min->value())
                         .arg(widget->ui->spinbox_area_2_max->value())
                         .arg(widget->ui->spinbox_contrast_2_min->value())
-                        .arg(widget->ui->spinbox_contrast_2_max->value()));
-        }
-        if (widget->ui->group_box_3->isChecked()) {
-			condition3
-				.append(" AND ")
-				.append(
-					QString{ chararr }
-					.arg(widget->ui->combo_box_3->currentText())
-					.arg(widget->ui->spinbox_area_3_min->value())
-					.arg(widget->ui->spinbox_area_3_max->value())
-					.arg(widget->ui->spinbox_contrast_3_min->value())
-					.arg(widget->ui->spinbox_contrast_3_max->value()))
+                        .arg(widget->ui->spinbox_contrast_2_max->value()))
 				.append(")");
         }
-		QString result = QString{}.append(condition1).append(condition2).append(condition3);
-		return result;
-	};
+        if (widget->ui->group_box_3->isChecked()) {
+            condition3
+                .append(" AND (")
+                .append(
+                    QString{ chararr }
+                        .arg(widget->ui->combo_box_3->currentText())
+                        .arg(widget->ui->spinbox_area_3_min->value())
+                        .arg(widget->ui->spinbox_area_3_max->value())
+                        .arg(widget->ui->spinbox_contrast_3_min->value())
+                        .arg(widget->ui->spinbox_contrast_3_max->value()))
+                .append("))");
+        }
+        QString result = QString{}.append(condition1).append(condition2).append(condition3);
+        return result;
+    };
     auto count = data_->middle_widget_layout->count();
 
     QString query{ "SELECT PicName FROM ListPicDefects " };
     for (auto i = 0; i < count; ++i) {
         auto widget = reinterpret_cast<ConditionWidget*>(
             data_->middle_widget_layout->itemAt(i)->widget());
-		if (i == 0) {
-			query.append("WHERE ").append(temp_func(widget));
-		}
-		else {
-			query.append(" OR ").append(temp_func(widget));
-		}
+        if (i == 0) {
+            query.append("WHERE ").append(temp_func(widget));
+        } else {
+            query.append(" OR ").append(temp_func(widget));
+        }
     }
-
-	
 
     qDebug() << query;
     return query;
