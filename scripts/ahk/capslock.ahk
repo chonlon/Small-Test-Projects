@@ -211,11 +211,11 @@ Capslock & r::
  SendInput,{bs}
     Return
 
-;打开f盘
-Capslock & w::
- Run, explore F:
- ;Run, C:\Program Files (x86)\FreeCommander XE\FreeCommander.exe F:
- Return
+;;打开f盘
+;Capslock & w::
+; Run, explore F:
+; ;Run, C:\Program Files (x86)\FreeCommander XE\FreeCommander.exe F:
+; Return
  
  ;选取一整行
  Capslock & Space::
@@ -276,7 +276,7 @@ Capslock & ]::
 	return
 ;实现chrome的标签页切换
 Capslock & n::
-	SendInput, ^+{Tab}
+	SendInput, ^+{F}
 	return
 Capslock & m::
 	SendInput, ^{Tab}
