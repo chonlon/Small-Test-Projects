@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>734</width>
-    <height>139</height>
+    <height>176</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,8 +16,8 @@
   <property name="styleSheet">
    <string notr="true">background-color: rgba(150, 150, 150, 20);</string>
   </property>
-  <layout class="QHBoxLayout" name="horizontalLayout">
-   <item>
+  <layout class="QGridLayout" name="gridLayout_2">
+   <item row="1" column="0">
     <widget class="QGroupBox" name="group_box_1">
      <property name="title">
       <string>GroupBox</string>
@@ -72,7 +72,7 @@
      </layout>
     </widget>
    </item>
-   <item>
+   <item row="1" column="1">
     <widget class="QGroupBox" name="group_box_2">
      <property name="title">
       <string>GroupBox</string>
@@ -127,7 +127,7 @@
      </layout>
     </widget>
    </item>
-   <item>
+   <item row="1" column="2">
     <widget class="QGroupBox" name="group_box_3">
      <property name="title">
       <string>GroupBox</string>
@@ -180,6 +180,19 @@
        </widget>
       </item>
      </layout>
+    </widget>
+   </item>
+   <item row="0" column="2" alignment="Qt::AlignRight">
+    <widget class="QPushButton" name="close_button">
+     <property name="maximumSize">
+      <size>
+       <width>35</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <property name="text">
+      <string>关闭</string>
+     </property>
     </widget>
    </item>
   </layout>

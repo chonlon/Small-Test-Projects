@@ -17,9 +17,9 @@
 #include <QtWidgets/QDoubleSpinBox>
 #include <QtWidgets/QGridLayout>
 #include <QtWidgets/QGroupBox>
-#include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
+#include <QtWidgets/QPushButton>
 #include <QtWidgets/QWidget>
 
 QT_BEGIN_NAMESPACE
@@ -27,7 +27,7 @@ QT_BEGIN_NAMESPACE
 class Ui_Form
 {
 public:
-    QHBoxLayout *horizontalLayout;
+    QGridLayout *gridLayout_2;
     QGroupBox *group_box_1;
     QGridLayout *gridLayout;
     QDoubleSpinBox *spinbox_area_1_min;
@@ -61,15 +61,16 @@ public:
     QDoubleSpinBox *spinbox_contrast_3_max;
     QLabel *label_15;
     QLabel *label_16;
+    QPushButton *close_button;
 
     void setupUi(QWidget *Form)
     {
         if (Form->objectName().isEmpty())
             Form->setObjectName(QStringLiteral("Form"));
-        Form->resize(734, 139);
+        Form->resize(734, 176);
         Form->setStyleSheet(QStringLiteral("background-color: rgba(150, 150, 150, 20);"));
-        horizontalLayout = new QHBoxLayout(Form);
-        horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
+        gridLayout_2 = new QGridLayout(Form);
+        gridLayout_2->setObjectName(QStringLiteral("gridLayout_2"));
         group_box_1 = new QGroupBox(Form);
         group_box_1->setObjectName(QStringLiteral("group_box_1"));
         group_box_1->setCheckable(true);
@@ -121,7 +122,7 @@ public:
         gridLayout->addWidget(label_8, 2, 2, 1, 1);
 
 
-        horizontalLayout->addWidget(group_box_1);
+        gridLayout_2->addWidget(group_box_1, 1, 0, 1, 1);
 
         group_box_2 = new QGroupBox(Form);
         group_box_2->setObjectName(QStringLiteral("group_box_2"));
@@ -174,7 +175,7 @@ public:
         gridLayout_4->addWidget(label_12, 2, 2, 1, 1);
 
 
-        horizontalLayout->addWidget(group_box_2);
+        gridLayout_2->addWidget(group_box_2, 1, 1, 1, 1);
 
         group_box_3 = new QGroupBox(Form);
         group_box_3->setObjectName(QStringLiteral("group_box_3"));
@@ -227,7 +228,13 @@ public:
         gridLayout_5->addWidget(label_16, 2, 2, 1, 1);
 
 
-        horizontalLayout->addWidget(group_box_3);
+        gridLayout_2->addWidget(group_box_3, 1, 2, 1, 1);
+
+        close_button = new QPushButton(Form);
+        close_button->setObjectName(QStringLiteral("close_button"));
+        close_button->setMaximumSize(QSize(35, 16777215));
+
+        gridLayout_2->addWidget(close_button, 0, 2, 1, 1, Qt::AlignRight);
 
 
         retranslateUi(Form);
@@ -253,6 +260,7 @@ public:
         label_14->setText(QApplication::translate("Form", "\346\234\200\345\260\217\345\200\274:", Q_NULLPTR));
         label_15->setText(QApplication::translate("Form", "\351\235\242\347\247\257", Q_NULLPTR));
         label_16->setText(QApplication::translate("Form", "\345\257\271\346\257\224\345\272\246", Q_NULLPTR));
+        close_button->setText(QApplication::translate("Form", "\345\205\263\351\227\255", Q_NULLPTR));
     } // retranslateUi
 
 };

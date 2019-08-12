@@ -36,6 +36,8 @@ private:
 	/// </summary>
 	/// <param name="widget">当前正在被设置的ConditionWidget的指针.</param>
 	void initGroupBoxLogic(ConditionWidget const* widget);
+
+	void initConditionWidget(ConditionWidget const* widget);
 };
 
 #endif // CONDITIONSELECTWIDGET_H

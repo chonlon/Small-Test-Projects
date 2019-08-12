@@ -1,7 +1,9 @@
-﻿#include "ConditionSelectWidget.h"
-#include "ui_ConditionSelectWidget.h"
+﻿#include "ui_ConditionSelectWidget.h"
+#include "ConditionSelectWidget.h"
+#include <QHBoxLayout>
 #include <QListView>
 #include <QPushButton>
+#include <QSpinBox>
 #include <QStandardItemModel>
 #include <QVBoxLayout>
 
@@ -13,8 +15,7 @@ using Ui::Form;
 /// </summary>
 class ConditionWidget : public QWidget {
 public:
-    ConditionWidget(QStandardItemModel* defect_types_model,
-        QWidget* parent = nullptr)
+    ConditionWidget(QStandardItemModel* defect_types_model, QWidget* parent = nullptr)
         : QWidget(parent)
         , ui(new Form{})
     {
@@ -36,6 +37,9 @@ struct ConditionSelectWidgetPrivate {
         , add_condition_button(nullptr)
     {
     }
+    QLabel* label1;
+    QSpinBox* spin_box;
+    QPushButton* read_button;
 
     QPushButton* filter_button;
 
@@ -49,6 +53,7 @@ struct ConditionSelectWidgetPrivate {
     QStandardItemModel* defect_types_model;
 
     QVBoxLayout* layout;
+    QHBoxLayout* top_layout;
 };
 
 ConditionSelectWidget::ConditionSelectWidget(QWidget* parent)
@@ -56,20 +61,35 @@ ConditionSelectWidget::ConditionSelectWidget(QWidget* parent)
 {
     data_ = new ConditionSelectWidgetPrivate{};
     setupDefectTypesModel(QStringList{ "1", "2" });
+    data_->label1 = new QLabel{ this };
+    data_->spin_box = new QSpinBox{ this };
+    data_->read_button = new QPushButton{ this };
+    data_->top_layout = new QHBoxLayout{};
     data_->middle_widget = new QWidget{ this };
-    auto condition_widget = new ConditionWidget{ data_->defect_types_model, data_->middle_widget };
-    initSpinBoxBignessLogic(condition_widget);
-	initGroupBoxLogic(condition_widget);
-
     data_->layout = new QVBoxLayout{ this };
     data_->add_condition_button = new QPushButton{ this };
     data_->filter_button = new QPushButton{ this };
     data_->picname_result_view = new QListView{ this };
     data_->middle_widget_layout = new QVBoxLayout{ data_->middle_widget };
 
+    data_->label1->setText(u8"读取图片数量: ");
+	data_->label1->setFixedWidth(100);
+    data_->spin_box->setMaximum(500);
+    data_->spin_box->setMinimum(0);
+	data_->spin_box->setFixedWidth(150);
+    data_->read_button->setText(u8"开始读取");
+    data_->top_layout->addWidget(data_->label1);
+    data_->top_layout->addWidget(data_->spin_box);
+    data_->top_layout->addWidget(data_->read_button);
+	data_->top_layout->addWidget(data_->filter_button);
+	data_->layout->addLayout(data_->top_layout);
+
+    auto condition_widget = new ConditionWidget{ data_->defect_types_model, data_->middle_widget };
+	initConditionWidget(condition_widget);
+
+
     data_->middle_widget_layout->addWidget(condition_widget);
     data_->add_condition_button->setText(u8"添加条件");
-    data_->layout->addWidget(data_->filter_button);
     data_->layout->addWidget(data_->middle_widget);
     data_->layout->addWidget(data_->add_condition_button);
     data_->layout->addWidget(data_->picname_result_view);
@@ -79,10 +99,10 @@ ConditionSelectWidget::ConditionSelectWidget(QWidget* parent)
         if (data_->middle_widget_layout->count() > 3)
             return;
         auto condition_widget = new ConditionWidget{ data_->defect_types_model, data_->middle_widget };
+		initConditionWidget(condition_widget);
         data_->middle_widget_layout->addWidget(condition_widget);
     });
-    connect(data_->filter_button, &QPushButton::clicked,
-        [this]() { this->generateSqlQuery(); });
+    connect(data_->filter_button, &QPushButton::clicked, [this]() { this->generateSqlQuery(); });
 }
 
 ConditionSelectWidget::~ConditionSelectWidget() {}
@@ -104,39 +124,33 @@ QString ConditionSelectWidget::generateSqlQuery() const
         auto chararr = "DefectName = %1 AND Area >= %2 AND Area <= %3 AND Contrast >= %4 AND Contrast <= %5 ";
         QString condition1{}, condition2{}, condition3{};
         if (widget->ui->group_box_1->isChecked()) {
-            condition1
-                .append("((")
-                .append(
-                    QString{ chararr }
-                        .arg(widget->ui->comboBox->currentText())
-                        .arg(widget->ui->spinbox_area_1_min->value())
-                        .arg(widget->ui->spinbox_area_1_max->value())
-                        .arg(widget->ui->spinbox_contrast_1_min->value())
-                        .arg(widget->ui->spinbox_contrast_1_max->value()))
+            condition1.append("((")
+                .append(QString{ chararr }
+                            .arg(widget->ui->comboBox->currentText())
+                            .arg(widget->ui->spinbox_area_1_min->value())
+                            .arg(widget->ui->spinbox_area_1_max->value())
+                            .arg(widget->ui->spinbox_contrast_1_min->value())
+                            .arg(widget->ui->spinbox_contrast_1_max->value()))
                 .append(")");
         }
         if (widget->ui->group_box_2->isChecked()) {
-            condition2
-                .append(" AND (")
-                .append(
-                    QString{ chararr }
-                        .arg(widget->ui->combo_box_2->currentText())
-                        .arg(widget->ui->spinbox_area_2_min->value())
-                        .arg(widget->ui->spinbox_area_2_max->value())
-                        .arg(widget->ui->spinbox_contrast_2_min->value())
-                        .arg(widget->ui->spinbox_contrast_2_max->value()))
+            condition2.append(" AND (")
+                .append(QString{ chararr }
+                            .arg(widget->ui->combo_box_2->currentText())
+                            .arg(widget->ui->spinbox_area_2_min->value())
+                            .arg(widget->ui->spinbox_area_2_max->value())
+                            .arg(widget->ui->spinbox_contrast_2_min->value())
+                            .arg(widget->ui->spinbox_contrast_2_max->value()))
                 .append(")");
         }
         if (widget->ui->group_box_3->isChecked()) {
-            condition3
-                .append(" AND (")
-                .append(
-                    QString{ chararr }
-                        .arg(widget->ui->combo_box_3->currentText())
-                        .arg(widget->ui->spinbox_area_3_min->value())
-                        .arg(widget->ui->spinbox_area_3_max->value())
-                        .arg(widget->ui->spinbox_contrast_3_min->value())
-                        .arg(widget->ui->spinbox_contrast_3_max->value()))
+            condition3.append(" AND (")
+                .append(QString{ chararr }
+                            .arg(widget->ui->combo_box_3->currentText())
+                            .arg(widget->ui->spinbox_area_3_min->value())
+                            .arg(widget->ui->spinbox_area_3_max->value())
+                            .arg(widget->ui->spinbox_contrast_3_min->value())
+                            .arg(widget->ui->spinbox_contrast_3_max->value()))
                 .append("))");
         }
         QString result = QString{}.append(condition1).append(condition2).append(condition3);
@@ -146,8 +160,7 @@ QString ConditionSelectWidget::generateSqlQuery() const
 
     QString query{ "SELECT PicName FROM ListPicDefects " };
     for (auto i = 0; i < count; ++i) {
-        auto widget = reinterpret_cast<ConditionWidget*>(
-            data_->middle_widget_layout->itemAt(i)->widget());
+        auto widget = reinterpret_cast<ConditionWidget*>(data_->middle_widget_layout->itemAt(i)->widget());
         if (i == 0) {
             query.append("WHERE ").append(temp_func(widget));
         } else {
@@ -161,20 +174,15 @@ QString ConditionSelectWidget::generateSqlQuery() const
 
 void ConditionSelectWidget::initSpinBoxBignessLogic(ConditionWidget const* widget)
 {
-	if (!widget) return;
+    if (!widget)
+        return;
     void (QDoubleSpinBox::*valueChanged)(double val) = &QDoubleSpinBox::valueChanged;
     // 两个对应的spinbox的逻辑关系绑定.
     auto singal_logic = [=](QDoubleSpinBox* min_spinbox, QDoubleSpinBox* max_spinbox) -> void {
-        connect(min_spinbox,
-            valueChanged,
-            [=](double val) -> void {
-                max_spinbox->setMinimum(val);
-            });
-        connect(max_spinbox,
-            valueChanged,
-            [=](double val) -> void {
-                min_spinbox->setMaximum(val);
-            });
+        connect(
+            min_spinbox, valueChanged, [=](double val) -> void { max_spinbox->setMinimum(val); });
+        connect(
+            max_spinbox, valueChanged, [=](double val) -> void { min_spinbox->setMaximum(val); });
     };
     singal_logic(widget->ui->spinbox_area_1_min, widget->ui->spinbox_area_1_max);
     singal_logic(widget->ui->spinbox_area_2_min, widget->ui->spinbox_area_2_max);
@@ -186,8 +194,9 @@ void ConditionSelectWidget::initSpinBoxBignessLogic(ConditionWidget const* widge
 
 void ConditionSelectWidget::initGroupBoxLogic(ConditionWidget const* widget)
 {
-	// 由于groupbox的自己的点击会改变checked状态, 所以这里的逻辑会显得有点奇怪.
-	if (!widget) return;
+    // 由于groupbox的自己的点击会改变checked状态, 所以这里的逻辑会显得有点奇怪.
+    if (!widget)
+        return;
     auto box1 = widget->ui->group_box_1;
     auto box2 = widget->ui->group_box_2;
     auto box3 = widget->ui->group_box_3;
@@ -195,24 +204,35 @@ void ConditionSelectWidget::initGroupBoxLogic(ConditionWidget const* widget)
         return !(_box1->isChecked() || _box2->isChecked());
     };
     connect(box1, &QGroupBox::clicked, [=]() {
-        if (box1->isChecked()|| allUnchecked(box2, box3)) {
+        if (box1->isChecked() || allUnchecked(box2, box3)) {
             box1->setChecked(true);
-			return;
+            return;
         }
         box1->setChecked(false);
     });
     connect(box2, &QGroupBox::clicked, [=]() {
-        if (box2->isChecked()||allUnchecked(box1, box3)) {
+        if (box2->isChecked() || allUnchecked(box1, box3)) {
             box2->setChecked(true);
-			return;
+            return;
         }
         box2->setChecked(false);
     });
     connect(box3, &QGroupBox::clicked, [=]() {
-        if (box3->isChecked()||allUnchecked(box1, box2)) {
+        if (box3->isChecked() || allUnchecked(box1, box2)) {
             box3->setChecked(true);
-			return;
+            return;
         }
         box3->setChecked(false);
+    });
+}
+
+void ConditionSelectWidget::initConditionWidget(ConditionWidget const * widget)
+{
+    initSpinBoxBignessLogic(widget);
+    initGroupBoxLogic(widget);
+    //按值捕获了this和condition_widget指针.
+    connect(widget->ui->close_button, &QPushButton::clicked, [=]() {
+        if (data_->middle_widget_layout->count() > 1)
+            delete widget;
     });
 }
