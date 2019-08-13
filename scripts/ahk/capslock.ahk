@@ -169,20 +169,24 @@ Capslock & f::        ;||                                                       
     Return            ;||                                                                 ;|||
 ;=====================;||	                                                              ;|||
 																						  ;|||
-;===shfit+上下左右====;||                                                                 ;|||
-Capslock & i::        ;||                                                                 ;|||
- SendInput,+{up}      ;||                                                                 ;|||
-    Return            ;||                                                                 ;|||
-Capslock & j::        ;||                                                                 ;|||
- SendInput,+{left}    ;||                                                                 ;|||
-    Return            ;||                                                                 ;|||
-Capslock & k::        ;||                                                                 ;|||
- SendInput,+{down}    ;||                                                                 ;|||
-    Return            ;||                                                                 ;|||
-Capslock & l::        ;||                                                                 ;|||
-	SendInput,+{right};||                                                                 ;|||
-    Return            ;||                                                                 ;|||
-;=====================;||                                                                 ;|||
+;===shfit+上下左右======;||                                                               ;|||
+Capslock & i::          ;||                                                               ;|||
+ SendInput,+{up}        ;||                                                               ;|||
+ SendInput,+{home}      ;||                                                               ;|||
+    Return              ;||                                                               ;|||
+Capslock & j::          ;||                                                               ;|||
+ SendInput,+{left}      ;||                                                               ;|||
+    Return              ;||                                                               ;|||
+Capslock & k::          ;||                                                               ;|||
+ SendInput,{home}       ;||                                                               ;|||
+ SendInput,+{end}       ;||                                                               ;|||
+ SendInput,+{down}      ;||                                                               ;|||
+ SendInput,+{end}       ;||                                                               ;|||
+    Return              ;||                                                               ;|||
+Capslock & l::          ;||                                                               ;|||
+	SendInput,+{right}  ;||                                                               ;|||
+    Return              ;||                                                               ;|||
+;=======================;||                                                               ;|||
 																						  ;|||
 ;====左右选一个词======;||                                                                ;|||
 Capslock & h::         ;||                                                                ;|||
@@ -322,10 +326,12 @@ Capslock & 3::                                     ;|                           
 ;--------------------------------------------------;|                                     ;|||
 ;=========================================================================================;|||
 	
-;alt快捷键
-!q::!+Tab
-+!p::!F4	
-!a::!+a
+;------------alt快捷键---------------------------+++++++++++++++++++++++++++++++++++++++++
+
+
+;==调试快捷键==
+!q::F5
+!w::+
 
 	
 ;numspad快捷键
@@ -439,65 +445,65 @@ doPasteCom()
 	return
 
 
-;---------------快捷打开应用------------
-::;vbox::
-	run, F:\programs\虚拟机\virtual box\VirtualBox.exe
-	return
-::;qmusic::
-	run, C:\Program Files (x86)\Tencent\QQMusic\QQMusic.exe
-	return
-::;note::
-	run, C:\Program Files (x86)\Notepad++\notepad++.exe
-	return
-;打开vscode
-::;vscode::
-	run, F:\programs\编辑器\Microsoft VS Code\Code.exe
-	return
-;打开vs
-::;vs::
-	run, C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\devenv.exe
-	return
-;打开idea
-::;idea::
-	run, F:\programs\IDE\IntelliJ IDEA 2017.2.5\bin\idea64.exe
-	return
-;打开网易云
-!m::
-	run, E:\CloudMusic\CloudMusic\cloudmusic.exe
-	return
-;打开androidStudio
-::;android::
-	run, F:\programs\IDE\Android\AndroidStudio\bin\studio64.exe
-	return
-
-;打开code文件夹
-::;co::
-	run, F:\Code
-	return
-
-;打开codeOfself文件夹
-::;cos::
-	run, F:\Code\CodeOfself
-	return
-	
-;打开下载文件夹
-::;dl::
-	run, F:\下载
-	return
-;打开桌面文件夹
-::;desk::
-	run, C:\Users\10170\Desktop
-	return
-;打开虎牙
-::;huya::
-	run, F:\programs\视频\huya\HuyaClient\Net45\HuyaClient.exe
-	return
-::;py::
-	run, C:\Users\10170\AppData\Local\Programs\Python\Python36\python.exe
-	return
-::;fy::
-	run, https://translate.google.cn
-	return
-::;cmd::
-	run, F:\programs\cmder\Cmder.exe
-	return
+;---------------快捷打开应用------------+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++;|||
+::;vbox::                                                                                                          ;|||
+	run, F:\programs\虚拟机\virtual box\VirtualBox.exe                                                             ;|||
+	return                                                                                                         ;|||
+::;qmusic::                                                                                                        ;|||
+	run, C:\Program Files (x86)\Tencent\QQMusic\QQMusic.exe                                                        ;|||
+	return                                                                                                         ;|||
+::;note::                                                                                                          ;|||
+	run, C:\Program Files (x86)\Notepad++\notepad++.exe                                                            ;|||
+	return                                                                                                         ;|||
+;打开vscode                                                                                                        ;|||
+::;vscode::                                                                                                        ;|||
+	run, F:\programs\编辑器\Microsoft VS Code\Code.exe                                                             ;|||
+	return                                                                                                         ;|||
+;打开vs                                                                                                            ;|||
+::;vs::                                                                                                            ;|||
+	run, C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\devenv.exe                      ;|||
+	return                                                                                                         ;|||
+;打开idea                                                                                                          ;|||
+::;idea::                                                                                                          ;|||
+	run, F:\programs\IDE\IntelliJ IDEA 2017.2.5\bin\idea64.exe                                                     ;|||
+	return                                                                                                         ;|||
+;打开网易云                                                                                                        ;|||
+!m::                                                                                                               ;|||
+	run, E:\CloudMusic\CloudMusic\cloudmusic.exe                                                                   ;|||
+	return                                                                                                         ;|||
+;打开androidStudio                                                                                                 ;|||
+::;android::                                                                                                       ;|||
+	run, F:\programs\IDE\Android\AndroidStudio\bin\studio64.exe                                                    ;|||
+	return                                                                                                         ;|||
+																												   ;|||
+;打开code文件夹                                                                                                    ;|||
+::;co::                                                                                                            ;|||
+	run, F:\Code                                                                                                   ;|||
+	return                                                                                                         ;|||
+																												   ;|||
+;打开codeOfself文件夹                                                                                              ;|||
+::;cos::                                                                                                           ;|||
+	run, F:\Code\CodeOfself                                                                                        ;|||
+	return                                                                                                         ;|||
+																												   ;|||
+;打开下载文件夹                                                                                                    ;|||
+::;dl::                                                                                                            ;|||
+	run, F:\下载                                                                                                   ;|||
+	return                                                                                                         ;|||
+;打开桌面文件夹                                                                                                    ;|||
+::;desk::                                                                                                          ;|||
+	run, C:\Users\10170\Desktop                                                                                    ;|||
+	return                                                                                                         ;|||
+;打开虎牙                                                                                                          ;|||
+::;huya::                                                                                                          ;|||
+	run, F:\programs\视频\huya\HuyaClient\Net45\HuyaClient.exe                                                     ;|||
+	return                                                                                                         ;|||
+::;py::                                                                                                            ;|||
+	run, C:\Users\10170\AppData\Local\Programs\Python\Python36\python.exe                                          ;|||
+	return                                                                                                         ;|||
+::;fy::                                                                                                            ;|||
+	run, https://translate.google.cn                                                                               ;|||
+	return                                                                                                         ;|||
+::;cmd::                                                                                                           ;|||
+	run, F:\programs\cmder\Cmder.exe                                                                               ;|||
+	return                                                                                                         ;|||
