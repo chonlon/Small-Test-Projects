@@ -1,4 +1,4 @@
-Numpad0::
+﻿Numpad0::
 	SendInput, {F5}
 	return
 Numpad1::
@@ -10,6 +10,14 @@ Numpad2::
 ;step out
 Numpad3::
 	SendInput, +{F11}
+	return
+^1::
+	SendInput, ^k
+	Sleep, 10
+	SendInput, ^o
+	return
+Numpad6::
+	SendInput, !g
 	return
 ;断点
 Numpad9::
@@ -28,4 +36,7 @@ Numpad8::
 
 ;暂停脚本
 !^p::Suspend
+^r::
+	SendInput,^+!{Backspace}
+	return
 	

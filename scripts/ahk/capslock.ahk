@@ -47,268 +47,288 @@ SendInput, % "{ASC " asc "}"
 }
 }
 
-;-------------------------按键功能-----------------------
-Capslock::return
-Capslock & Enter::return
-;Capslock & t::return
-+Capslock::return
-!Capslock::return
-Capslock & z::return
-;Capslock & a::return
-Capslock & x::return
-Capslock & b::return
-;Capslock & t::return
-Capslock & ,::return
-;Capslock & .::return
-Capslock & \::return
-Capslock & -::return
-Capslock & =::return
-Capslock & /::return
+;--------------------------------------------------------;|||
+;取消CapsLock与某些键按下时会改变大写锁定状态------------;|||
+;-------------------------按键功能-----------------------;|||
+Capslock::return                                         ;|||
+Capslock & Enter::return                                 ;|||
+;Capslock & t::return                                    ;|||
++Capslock::return                                        ;|||
+!Capslock::return                                        ;|||
+Capslock & z::return                                     ;|||
+;Capslock & a::return                                    ;|||
+Capslock & x::return                                     ;|||
+Capslock & b::return                                     ;|||
+;Capslock & t::return                                    ;|||
+Capslock & ,::return                                     ;|||
+;Capslock & .::return                                    ;|||
+Capslock & \::return                                     ;|||
+Capslock & -::return                                     ;|||
+Capslock & =::return                                     ;|||
+Capslock & /::return                                     ;|||
+														 ;|||
+														 ;|||
+Capslock & 4::return                                     ;|||
+Capslock & 5::return                                     ;|||
+Capslock & 6::return                                     ;|||
+Capslock & 7::return                                     ;|||
+Capslock & 8::return                                     ;|||
+;Capslock & 9::return                                    ;|||
+Capslock & 0::return                                     ;|||
+;--------------------------------------------------------;|||
 
 
-Capslock & 4::return
-Capslock & 5::return
-Capslock & 6::return
-Capslock & 7::return
-Capslock & 8::return
-;Capslock & 9::return
-Capslock & 0::return
+;----------------------- 改变大写锁定状态 ------------------------------------------------;|||
+LAlt & Capslock::                                                                         ;|||
+	SetCapsLockState, % GetKeyState("CapsLock", "T") ? "Off" : "On"                       ;|||
+return                                                                                    ;|||
+Shift & Capslock::                                                                        ;|||
+	SetCapsLockState, % GetKeyState("CapsLock", "T") ? "Off" : "On"                       ;|||
+return                                                                                    ;|||
+;-----------------------------------------------------------------------------------------;|||
+
+;----------------------- 调用wox的有道翻译插件实现翻译功能--------------------------------;|||
+!t::                                                                                      ;|||
+  ;获取选中的文字                                                                         ;|||
+  ClipSaved := ClipboardAll                                                               ;|||
+  selText:=getSelText()                                                                   ;|||
+																						  ;|||
+ ; 发送 Listary的呼出快捷键），呼出Listary                                                ;|||
+  SendInput, !^+f                                                                         ;|||
+																						  ;|||
+  ; 等待 Listary 输入框打开                                                               ;|||
+  sleep, 50                                                                               ;|||
+																						  ;|||
+  ; 如果有选中文字的话                                                                    ;|||
+  if(selText){                                                                            ;|||
+	selText:="fy " . selText                                                              ;|||
+    ;ClipSaved := ClipboardAll       ; save clipboard                                     ;|||
+    clipboard := selText                                                                  ;|||
+     ClipWait, 0.1                                                                        ;|||
+     Send, ^v                                                                             ;|||
+     clipboard := ClipSaved                                                               ;|||
+	}                                                                                     ;|||
+	else                                                                                  ;|||
+	{                                                                                     ;|||
+		ascinput("fy ")                                                                   ;|||
+	}                                                                                     ;|||
+	SendInput, {Alt}                                                                      ;|||
+return                                                                                    ;|||
+;-----------------------------------------------------------------------------------------;|||
 
 
-;----------------------- 改变大写锁定状态 -----------------------------------------------
-LAlt & Capslock::
-	SetCapsLockState, % GetKeyState("CapsLock", "T") ? "Off" : "On" 
-return
-Shift & Capslock::
-	SetCapsLockState, % GetKeyState("CapsLock", "T") ? "Off" : "On" 
-return
-;----------------------- 调用wox的有道翻译插件实现翻译功能--------------------------------
-!t::
-  ;获取选中的文字
-  ClipSaved := ClipboardAll
-  selText:=getSelText()
 
- ; 发送 Listary的呼出快捷键），呼出Listary
-  SendInput, !^+f
-
-  ; 等待 Listary 输入框打开
-  sleep, 50
-
-  ; 如果有选中文字的话
-  if(selText){
-	selText:="fy " . selText
-    ;ClipSaved := ClipboardAll       ; save clipboard
-    clipboard := selText
-     ClipWait, 0.1
-     Send, ^v
-     clipboard := ClipSaved
-	}
-	else
-	{
-		ascinput("fy ")
-	}
-	SendInput, {Alt}
-return
+;-------------------------------------------调用listary-----------------------------------;|||
+Capslock & q::                                                                            ;|||
+ ; 获取选中的文字                                                                           ;|||
+  ClipSaved := ClipboardAll                                                                ;|||
+  selText:=getSelText()                                                                   ;|||
+																						  ;|||
+  ; 发送 Listary的呼出快捷键），呼出Listary                                                   ;|||
+  SendInput, !^+f                                                                         ;|||
+																						  ;|||
+  ; 等待 Listary 输入框打开                                                                 ;|||
+  sleep, 50                                                                               ;|||
+																						  ;|||
+  ; 如果有选中文字的话                                                                    	 ;|||
+  if(selText){                                                                            ;|||
+    ;ClipSaved := ClipboardAll       ; save clipboard                                     ;|||
+    clipboard := selText                                                                  ;|||
+     ClipWait, 0.1                                                                        ;|||
+     Send, ^v                                                                             ;|||
+     clipboard := ClipSaved                                                               ;|||
+	sendInput, {home}                                                                     ;|||
+	}                                                                                     ;|||
+																						  ;|||
+return                                                                                    ;|||
+;=========================================================================================;|||
 
 
-;-----------------------调用listary-------------------------------
-Capslock & q::
- ; 获取选中的文字
- ClipSaved := ClipboardAll
-  selText:=getSelText()
 
-  ; 发送 Listary的呼出快捷键），呼出Listary
-  SendInput, !^+f
 
-  ; 等待 Listary 输入框打开
-  sleep, 50
+;-------------------------Capslock快捷键--------------------------------------------------;|||
+Capslock & Backspace::                                                                    ;|||
+	SendInput, {Backspace}                                                                ;|||
+	return                                                                                ;|||
+																						  ;|||
+;=======上下左右======;||                                                                 ;|||
+Capslock & e::        ;||                                                                 ;|||
+SendInput,{up}        ;||                                                                 ;|||
+return                ;||                                                                 ;|||
+					  ;||                                                                 ;|||
+Capslock & s::        ;||                                                                 ;|||
+ SendInput,{left}     ;||                                                                 ;|||
+    return            ;||                                                                 ;|||
+					  ;||                                                                 ;|||
+Capslock & d::        ;||                                                                 ;|||
+ SendInput,{down}     ;||                                                                 ;|||
+    Return            ;||                                                                 ;|||
+					  ;||                                                                 ;|||
+Capslock & f::        ;||                                                                 ;|||
+ SendInput,{right}    ;||                                                                 ;|||
+    Return            ;||                                                                 ;|||
+;=====================;||	                                                              ;|||
+																						  ;|||
+;===shfit+上下左右======;||                                                               ;|||
+Capslock & i::          ;||                                                               ;|||
+ SendInput,+{up}        ;||                                                               ;|||
+ SendInput,+{home}      ;||                                                               ;|||
+    Return              ;||                                                               ;|||
+Capslock & j::          ;||                                                               ;|||
+ SendInput,+{left}      ;||                                                               ;|||
+    Return              ;||                                                               ;|||
+Capslock & k::          ;||                                                               ;|||
+ SendInput,{home}       ;||                                                               ;|||
+ SendInput,+{end}       ;||                                                               ;|||
+ SendInput,+{down}      ;||                                                               ;|||
+ SendInput,+{end}       ;||                                                               ;|||
+    Return              ;||                                                               ;|||
+Capslock & l::          ;||                                                               ;|||
+	SendInput,+{right}  ;||                                                               ;|||
+    Return              ;||                                                               ;|||
+;=======================;||                                                               ;|||
+																						  ;|||
+;====左右选一个词=======;||                                                               ;|||
+Capslock & h::          ;||                                                               ;|||
+	SendInput,^+{left}  ;||                                                               ;|||
+	Return              ;||                                                               ;|||
+Capslock & `;::         ;||                                                               ;|||
+	SendInput,^+{right} ;||                                                               ;|||
+    Return              ;||                                                               ;|||
+;=======================;||                                                               ;|||
+																						  ;|||
+;======其它=============================;||	                                              ;|||
+Capslock & u::                          ;||                                               ;|||
+	SendInput,+{home}                   ;||                                               ;|||
+    Return                              ;||                                               ;|||
+Capslock & o::                          ;||                                               ;|||
+	SendInput,+{end}                    ;||                                               ;|||
+    Return                              ;||                                               ;|||
+										;||                                               ;|||
+;Backspace                              ;||                                               ;|||
+Capslock & y::                          ;||                                               ;|||
+ SendInput,{Backspace}                  ;||                                               ;|||
+    Return                              ;||                                               ;|||
+										;||                                               ;|||
+;home                                   ;||                                               ;|||
+Capslock & a::                          ;||                                               ;|||
+ SendInput,{Home}                       ;||                                               ;|||
+    Return                              ;||                                               ;|||
+										;||                                               ;|||
+;end                                    ;||                                               ;|||
+Capslock & g::                          ;||                                               ;|||
+  SendInput,{End}                       ;||                                               ;|||
+    Return                              ;||                                               ;|||
+										;||                                               ;|||
+;删除一整行                             ;||                                               ;|||
+Capslock & r::                          ;||                                               ;|||
+										;||                                               ;|||
+ SendInput,{End}                        ;||                                               ;|||
+ SendInput,+{home}                      ;||                                               ;|||
+ SendInput,+{home}                      ;||                                               ;|||
+ SendInput,{bs}                         ;||                                               ;|||
+    Return                              ;||                                               ;|||
+========================================;||                                               ;|||
+;;打开f盘                                                                                 ;|||
+;Capslock & w::                                                                           ;|||
+; Run, explore F:                                                                         ;|||
+; ;Run, C:\Program Files (x86)\FreeCommander XE\FreeCommander.exe F:                      ;|||
+; Return                                                                                  ;|||
+																						  ;|||
+ ;选取一整行                                                                              ;|||
+ Capslock & Space::                                                                       ;|||
+   SendInput,{End}+{home}                                                                 ;|||
+    Return                                                                                ;|||
+																						  ;|||
+;复制粘贴                                                                                 ;|||
+Capslock & c::                                                                            ;|||
+   SendInput,^c                                                                           ;|||
+    Return                                                                                ;|||
+Capslock & v::                                                                            ;|||
+   SendInput,^v                                                                           ;|||
+    Return                                                                                ;|||
+																						  ;|||
+																						  ;|||
+Capslock & t::                                                                            ;|||
+     SendInput,{End}{Enter}                                                               ;|||
+    Return                                                                                ;|||
+																						  ;|||
+																						  ;|||
+Capslock & 9::                                                                            ;|||
+	ClipSaved := ClipboardAll                                                             ;|||
+	selText:=getSelText()                                                                 ;|||
+	selText:="(" selText ")"                                                              ;|||
+    clipboard := selText                                                                  ;|||
+     ClipWait, 0.1                                                                        ;|||
+     Send, ^v                                                                             ;|||
+     clipboard := ClipSaved                                                               ;|||
+	return                                                                                ;|||
+Capslock & [::                                                                            ;|||
+	ClipSaved := ClipboardAll                                                             ;|||
+	selText:=getSelText()                                                                 ;|||
+	selText:="{" selText "}"                                                              ;|||
+    clipboard := selText                                                                  ;|||
+     ClipWait, 0.1                                                                        ;|||
+     Send, ^v                                                                             ;|||
+     clipboard := ClipSaved                                                               ;|||
+	return                                                                                ;|||
+Capslock & ]::                                                                            ;|||
+	ClipSaved := ClipboardAll                                                             ;|||
+	selText:=getSelText()                                                                 ;|||
+	selText:="[" selText "]"                                                              ;|||
+    clipboard := selText                                                                  ;|||
+     ClipWait, 0.1                                                                        ;|||
+     Send, ^v                                                                             ;|||
+     clipboard := ClipSaved                                                               ;|||
+	return                                                                                ;|||
+ Capslock & '::                                                                           ;|||
+	ClipSaved := ClipboardAll                                                             ;|||
+	selText:=getSelText()                                                                 ;|||
+	var="                                                                                 ;|||
+	selText:=var . selText                                                                ;|||
+	selText:=selText . var                                                                ;|||
+    clipboard := selText                                                                  ;|||
+     ClipWait, 0.1                                                                        ;|||
+     Send, ^v                                                                             ;|||
+     clipboard := ClipSaved                                                               ;|||
+	return                                                                                ;|||
+;实现chrome的标签页切换                                                                   ;|||
+Capslock & n::                                                                            ;|||
+	SendInput, ^k                                                                         ;|||
+	sleep, 500                                                                            ;|||
+	SendInput, ^o                                                                         ;|||
+	return                                                                                ;|||
+Capslock & m::                                                                            ;|||
+	SendInput, ^{Tab}                                                                     ;|||
+	return                                                                                ;|||
+;;;;;;编辑器操作                                                                          ;|||
 
-  ; 如果有选中文字的话
-  if(selText){
-    ;ClipSaved := ClipboardAll       ; save clipboard
-    clipboard := selText
-     ClipWait, 0.1
-     Send, ^v
-     clipboard := ClipSaved
-	sendInput, {home}
-	}
+																						  ;|||
+;-------------快速跳转-----------------------------;|                                     ;|||
+;------o                                           ;|                                     ;|||
+Capslock & 1::                                     ;|                                     ;|||
+	loop, 2                                        ;|                                     ;|||
+		SendInput, {Up}                            ;|                                     ;|||
+	return                                         ;|                                     ;|||
+                                                   ;|                                     ;|||
+Capslock & 2::                                     ;|                                     ;|||
+	loop, 4                                        ;|                                     ;|||
+		SendInput, {Up}                            ;|                                     ;|||
+	return                                         ;|                                     ;|||
+                                                   ;|                                     ;|||
+Capslock & 3::                                     ;|                                     ;|||
+	loop, 6                                        ;|                                     ;|||
+		SendInput, {Up}                            ;|                                     ;|||
+	return                                         ;|                                     ;|||
+;--------------------------------------------------;|                                     ;|||
+;=========================================================================================;|||
 	
-return
+;------------alt快捷键---------------------------+++++++++++++++++++++++++++++++++++++++++
 
-;-------------------------快捷键操作-------------------------
-Capslock & Backspace::
-	SendInput, {Backspace}
-	return
-;上下左右
-Capslock & e:: 
-SendInput,{up}
-return
 
-Capslock & s::
- SendInput,{left}
-    return
-
-Capslock & d::
- SendInput,{down}
-    Return
-
-Capslock & f::
- SendInput,{right}
-    Return
-	
-	
-;shfit+上下左右
-Capslock & i::
- SendInput,+{up}
-    Return
-Capslock & j::
- SendInput,+{left}
-    Return
-Capslock & k::
- SendInput,+{down}
-    Return
-Capslock & l:: 
-	SendInput,+{right}
-    Return
-
-	
-	
-Capslock & h:: 
-	SendInput,^+{left}
-	Return
-Capslock & `;:: 
-	SendInput,^+{right}
-    Return
-	
-Capslock & u:: 
-	SendInput,+{home}
-    Return
-Capslock & o:: 
-	SendInput,+{end}
-    Return
-	
-;Backspace
-Capslock & y::
- SendInput,{Backspace}
-    Return
-	
-;home
-Capslock & a::
- SendInput,{Home}
-    Return
-	
-;end
-Capslock & g::
-  SendInput,{End}
-    Return
-	
-;删除一整行
-Capslock & r:: 
-
- SendInput,{End}
- SendInput,+{home}
- SendInput,+{home}
- SendInput,{bs}
-    Return
-
-;打开f盘
-Capslock & w::
- Run, explore F:
- ;Run, C:\Program Files (x86)\FreeCommander XE\FreeCommander.exe F:
- Return
- 
- ;选取一整行
- Capslock & Space::
-   SendInput,{End}+{home}
-    Return
-
-;复制粘贴
-Capslock & c::
-   SendInput,^c
-    Return
-Capslock & v::
-   SendInput,^v
-    Return
-	
-
-Capslock & t::
-     SendInput,{End}{Enter}
-    Return
-	
-
-Capslock & 9::
-	ClipSaved := ClipboardAll
-	selText:=getSelText()
-	selText:="(" selText ")"
-    clipboard := selText
-     ClipWait, 0.1
-     Send, ^v
-     clipboard := ClipSaved
-	return
-Capslock & [::
-	ClipSaved := ClipboardAll
-	selText:=getSelText()
-	selText:="{" selText "}"
-    clipboard := selText
-     ClipWait, 0.1
-     Send, ^v
-     clipboard := ClipSaved
-	return
-Capslock & ]::
-	ClipSaved := ClipboardAll
-	selText:=getSelText()
-	selText:="[" selText "]"
-    clipboard := selText
-     ClipWait, 0.1
-     Send, ^v
-     clipboard := ClipSaved
-	return
- Capslock & '::
-	ClipSaved := ClipboardAll
-	selText:=getSelText()
-	var="
-	selText:=var . selText
-	selText:=selText . var
-    clipboard := selText
-     ClipWait, 0.1
-     Send, ^v
-     clipboard := ClipSaved
-	return
-;实现chrome的标签页切换
-Capslock & n::
-	SendInput, ^+{Tab}
-	return
-Capslock & m::
-	SendInput, ^{Tab}
-	return
-;;;;;;编辑器操作
-;实现->的操作
-Capslock & .::
-	SendInput, ->
-	return
-
-;-------------快速跳转-----------------------------;|
-;------o                                           ;|
-Capslock & 1::                                     ;|
-	loop, 2                                        ;|
-		SendInput, {Up}                            ;|
-	return                                         ;|
-                                                   ;|
-Capslock & 2::                                     ;|
-	loop, 4                                        ;|
-		SendInput, {Up}                            ;|
-	return                                         ;|
-                                                   ;|
-Capslock & 3::                                     ;|
-	loop, 6                                        ;|
-		SendInput, {Up}                            ;|
-	return                                         ;|
-;--------------------------------------------------;|
-	
-;alt快捷键
-!q::!+Tab
-+!p::!F4	
-!a::!+a
+;==调试快捷键==
+!q::F5
+!w::+
 
 	
 ;numspad快捷键
@@ -364,6 +384,14 @@ doPastePar()
 	return
 }
 
+doPastePointer()
+{
+	Send, -
+	Sleep, 15
+	Send, >
+	return
+}
+
 doPasteSum()
 {
 	Sleep, 100
@@ -408,6 +436,11 @@ doPasteCom()
 	return
 }
 
+;实现->的操作                                                                             
+Capslock & .::                                                                            
+	doPastePointer()                                                                         
+	return                                                                                
+
 :R:;par::
     doPastePar()
 	return
@@ -422,65 +455,65 @@ doPasteCom()
 	return
 
 
-;---------------快捷打开应用------------
-::;vbox::
-	run, F:\programs\虚拟机\virtual box\VirtualBox.exe
-	return
-::;qmusic::
-	run, C:\Program Files (x86)\Tencent\QQMusic\QQMusic.exe
-	return
-::;note::
-	run, C:\Program Files (x86)\Notepad++\notepad++.exe
-	return
-;打开vscode
-::;vscode::
-	run, F:\programs\编辑器\Microsoft VS Code\Code.exe
-	return
-;打开vs
-::;vs::
-	run, C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\devenv.exe
-	return
-;打开idea
-::;idea::
-	run, F:\programs\IDE\IntelliJ IDEA 2017.2.5\bin\idea64.exe
-	return
-;打开网易云
-!m::
-	run, E:\CloudMusic\CloudMusic\cloudmusic.exe
-	return
-;打开androidStudio
-::;android::
-	run, F:\programs\IDE\Android\AndroidStudio\bin\studio64.exe
-	return
-
-;打开code文件夹
-::;co::
-	run, F:\Code
-	return
-
-;打开codeOfself文件夹
-::;cos::
-	run, F:\Code\CodeOfself
-	return
-	
-;打开下载文件夹
-::;dl::
-	run, F:\下载
-	return
-;打开桌面文件夹
-::;desk::
-	run, C:\Users\10170\Desktop
-	return
-;打开虎牙
-::;huya::
-	run, F:\programs\视频\huya\HuyaClient\Net45\HuyaClient.exe
-	return
-::;py::
-	run, C:\Users\10170\AppData\Local\Programs\Python\Python36\python.exe
-	return
-::;fy::
-	run, https://translate.google.cn
-	return
-::;cmd::
-	run, F:\programs\cmder\Cmder.exe
-	return
+;---------------快捷打开应用------------+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++;|||
+::;vbox::                                                                                                          ;|||
+	run, F:\programs\虚拟机\virtual box\VirtualBox.exe                                                             ;|||
+	return                                                                                                         ;|||
+::;qmusic::                                                                                                        ;|||
+	run, C:\Program Files (x86)\Tencent\QQMusic\QQMusic.exe                                                        ;|||
+	return                                                                                                         ;|||
+::;note::                                                                                                          ;|||
+	run, C:\Program Files (x86)\Notepad++\notepad++.exe                                                            ;|||
+	return                                                                                                         ;|||
+;打开vscode                                                                                                        ;|||
+::;vscode::                                                                                                        ;|||
+	run, F:\programs\编辑器\Microsoft VS Code\Code.exe                                                             ;|||
+	return                                                                                                         ;|||
+;打开vs                                                                                                            ;|||
+::;vs::                                                                                                            ;|||
+	run, C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\devenv.exe                      ;|||
+	return                                                                                                         ;|||
+;打开idea                                                                                                          ;|||
+::;idea::                                                                                                          ;|||
+	run, F:\programs\IDE\IntelliJ IDEA 2017.2.5\bin\idea64.exe                                                     ;|||
+	return                                                                                                         ;|||
+;打开网易云                                                                                                        ;|||
+!m::                                                                                                               ;|||
+	run, E:\CloudMusic\CloudMusic\cloudmusic.exe                                                                   ;|||
+	return                                                                                                         ;|||
+;打开androidStudio                                                                                                 ;|||
+::;android::                                                                                                       ;|||
+	run, F:\programs\IDE\Android\AndroidStudio\bin\studio64.exe                                                    ;|||
+	return                                                                                                         ;|||
+																												   ;|||
+;打开code文件夹                                                                                                    ;|||
+::;co::                                                                                                            ;|||
+	run, F:\Code                                                                                                   ;|||
+	return                                                                                                         ;|||
+																												   ;|||
+;打开codeOfself文件夹                                                                                              ;|||
+::;cos::                                                                                                           ;|||
+	run, F:\Code\CodeOfself                                                                                        ;|||
+	return                                                                                                         ;|||
+																												   ;|||
+;打开下载文件夹                                                                                                    ;|||
+::;dl::                                                                                                            ;|||
+	run, F:\下载                                                                                                   ;|||
+	return                                                                                                         ;|||
+;打开桌面文件夹                                                                                                    ;|||
+::;desk::                                                                                                          ;|||
+	run, C:\Users\10170\Desktop                                                                                    ;|||
+	return                                                                                                         ;|||
+;打开虎牙                                                                                                          ;|||
+::;huya::                                                                                                          ;|||
+	run, F:\programs\视频\huya\HuyaClient\Net45\HuyaClient.exe                                                     ;|||
+	return                                                                                                         ;|||
+::;py::                                                                                                            ;|||
+	run, C:\Users\10170\AppData\Local\Programs\Python\Python36\python.exe                                          ;|||
+	return                                                                                                         ;|||
+::;fy::                                                                                                            ;|||
+	run, https://translate.google.cn                                                                               ;|||
+	return                                                                                                         ;|||
+::;cmd::                                                                                                           ;|||
+	run, F:\programs\cmder\Cmder.exe                                                                               ;|||
+	return                                                                                                         ;|||
