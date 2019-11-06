@@ -120,17 +120,17 @@ return                                                                          
 
 ;-------------------------------------------调用listary-----------------------------------;|||
 Capslock & q::                                                                            ;|||
- ; 获取选中的文字                                                                         ;|||
- ClipSaved := ClipboardAll                                                                ;|||
+ ; 获取选中的文字                                                                           ;|||
+  ClipSaved := ClipboardAll                                                                ;|||
   selText:=getSelText()                                                                   ;|||
 																						  ;|||
-  ; 发送 Listary的呼出快捷键），呼出Listary                                               ;|||
+  ; 发送 Listary的呼出快捷键），呼出Listary                                                   ;|||
   SendInput, !^+f                                                                         ;|||
 																						  ;|||
-  ; 等待 Listary 输入框打开                                                               ;|||
+  ; 等待 Listary 输入框打开                                                                 ;|||
   sleep, 50                                                                               ;|||
 																						  ;|||
-  ; 如果有选中文字的话                                                                    ;|||
+  ; 如果有选中文字的话                                                                    	 ;|||
   if(selText){                                                                            ;|||
     ;ClipSaved := ClipboardAll       ; save clipboard                                     ;|||
     clipboard := selText                                                                  ;|||
@@ -302,10 +302,7 @@ Capslock & m::                                                                  
 	SendInput, ^{Tab}                                                                     ;|||
 	return                                                                                ;|||
 ;;;;;;编辑器操作                                                                          ;|||
-;实现->的操作                                                                             ;|||
-Capslock & .::                                                                            ;|||
-	SendInput, ->                                                                         ;|||
-	return                                                                                ;|||
+
 																						  ;|||
 ;-------------快速跳转-----------------------------;|                                     ;|||
 ;------o                                           ;|                                     ;|||
@@ -387,6 +384,14 @@ doPastePar()
 	return
 }
 
+doPastePointer()
+{
+	Send, -
+	Sleep, 15
+	Send, >
+	return
+}
+
 doPasteSum()
 {
 	Sleep, 100
@@ -430,6 +435,11 @@ doPasteCom()
      clipboard := ClipSaved
 	return
 }
+
+;实现->的操作                                                                             
+Capslock & .::                                                                            
+	doPastePointer()                                                                         
+	return                                                                                
 
 :R:;par::
     doPastePar()

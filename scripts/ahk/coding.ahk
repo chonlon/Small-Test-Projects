@@ -11,8 +11,9 @@ Numpad2::
 Numpad3::
 	SendInput, +{F11}
 	return
-Numpad5::
+^1::
 	SendInput, ^k
+	Sleep, 10
 	SendInput, ^o
 	return
 Numpad6::

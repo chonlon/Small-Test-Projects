@@ -7,7 +7,7 @@ int main(int argc, char *argv[])
 {    QApplication app(argc, argv);
 
      // set stylesheet
-     QFile file(":/light.qss");
+     QFile file("./blue.qss");
      file.open(QFile::ReadOnly | QFile::Text);
      QTextStream stream(&file);
      app.setStyleSheet(stream.readAll());

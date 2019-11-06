@@ -1,0 +1,12 @@
+<RCC>
+    <qresource prefix="/">
+        <file>icons/accept_export.png</file>
+        <file>icons/clear_screen.png</file>
+        <file>icons/filter.png</file>
+        <file>icons/highlight.png</file>
+        <file>icons/open.png</file>
+        <file>icons/reject_export.png</file>
+        <file>icons/search.png</file>
+        <file>icons/to_bottom.png</file>
+    </qresource>
+</RCC>

@@ -28,51 +28,27 @@
       <Extensions>moc;h;cpp</Extensions>
       <SourceControlFiles>False</SourceControlFiles>
     </Filter>
-    <Filter Include="Source Files\SoclarCellEx">
-      <UniqueIdentifier>{1a53aba8-4424-40eb-abf5-c21732a648eb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\SolarCellEx">
-      <UniqueIdentifier>{32045ae9-cf18-42e4-bba5-33d85ef83a16}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="z_UnionTest.cpp">
+    <ClCompile Include="qwidget_keep_alive.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="D:\1_code\SolarCellEx_FinsUdp\src\main\QTcpServerFinal.cpp">
-      <Filter>Source Files\SoclarCellEx</Filter>
-    </ClCompile>
-    <ClCompile Include="D:\2_frogs-master\U-tu-edit\src\tpMain\lpImgViewer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\Users\Leaper\source\repos\test\mthread.cpp">
-      <Filter>Header Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <QtMoc Include="z_UnionTest.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
-    <QtMoc Include="D:\1_code\SolarCellEx_FinsUdp\src\main\QTcpServerFinal.h">
-      <Filter>Header Files\SolarCellEx</Filter>
-    </QtMoc>
-    <QtMoc Include="D:\2_frogs-master\U-tu-edit\src\tpMain\lpImgViewer.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
-    <QtMoc Include="C:\Users\Leaper\source\repos\test\mthread.h">
+    <QtMoc Include="widget_keep_alive.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>
-    <QtUic Include="z_UnionTest.ui">
+    <QtUic Include="qwidget_keep_alive.ui">
       <Filter>Form Files</Filter>
     </QtUic>
   </ItemGroup>
   <ItemGroup>
-    <QtRcc Include="z_UnionTest.qrc">
+    <QtRcc Include="qwidget_keep_alive.qrc">
       <Filter>Resource Files</Filter>
     </QtRcc>
   </ItemGroup>

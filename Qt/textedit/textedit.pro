@@ -1,6 +1,6 @@
 #-------------------------------------------------
 #
-# Project created by QtCreator 2019-07-23T15:42:36
+# Project created by QtCreator 2019-09-16T14:54:58
 #
 #-------------------------------------------------
 
@@ -8,7 +8,7 @@ QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-TARGET = breezstyletest
+TARGET = textedit
 TEMPLATE = app
 
 # The following define makes your compiler emit warnings if you use
@@ -33,9 +33,6 @@ HEADERS += \
 
 FORMS += \
         MainWindow.ui
-
-RESOURCES = breeze.qrc \
-    imgs.qrc
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
