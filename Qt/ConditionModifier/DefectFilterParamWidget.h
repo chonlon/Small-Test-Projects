@@ -30,6 +30,8 @@ public:
     /// invoke this function will reset defect button group and set checked button to position 0.
     /// </summary>
     void setDefects(const QVector<QString>& defect_names);
+
+    void emitDefectDeleted(int index) { emit defectDeleted(index); }
 signals:
     /// <summary>
     /// this signal only emit when add button was clicked.
@@ -43,7 +45,7 @@ signals:
 
 
     void defectAdded();
-    void defectDeleted();
+    void defectDeleted(int index);
 public slots:
 
 private slots:

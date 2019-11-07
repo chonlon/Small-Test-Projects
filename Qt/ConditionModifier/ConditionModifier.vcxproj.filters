@@ -36,6 +36,9 @@
     <QtUic Include="ConditionModifier.ui">
       <Filter>Form Files</Filter>
     </QtUic>
+    <QtUic Include="ConditionSelectWidget.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="ConditionModifier.qrc">
