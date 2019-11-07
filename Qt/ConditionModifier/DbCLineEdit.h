@@ -5,7 +5,7 @@ class DbCLineEdit :public QLineEdit
 {
     Q_OBJECT
 public:
-    DbCLineEdit(QWidget *parent = Q_NULLPTR);
+    DbCLineEdit(const QString& name,QWidget *parent = Q_NULLPTR);
 
     void setChecked();
     void setUnchecked();
@@ -17,6 +17,7 @@ private slots:
     void editFinished();
 
 protected:
+    bool event(QEvent* event) override;
     void mousePressEvent(QMouseEvent* event) override;
     void mouseDoubleClickEvent(QMouseEvent *e) override;
     void focusInEvent(QFocusEvent *e) override;

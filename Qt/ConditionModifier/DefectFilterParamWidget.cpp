@@ -155,13 +155,13 @@ struct DefectFilterParamWidget::Impl
     void deleteCurrentDefect();
     void setDefects(const QVector<QString>& defect_names);
 
-    QScopedPointer<QButtonGroup> button_group{new QButtonGroup{}};
+    //QScopedPointer<QButtonGroup> button_group{new QButtonGroup{}};
     QGridLayout* buttons_layout{nullptr};
 
     // button's id map to container.
     uint32_t current_button_id{0};
     QMap<int, Container*> id_to_container;
-    QVector<QPushButton*> buttons;
+    QVector<DbCLineEdit*> defect_edits;
     Ui::ConditionModifierClass* ui{new Ui::ConditionModifierClass};
     // --!defect groups--
 
@@ -219,32 +219,36 @@ bool DefectFilterParamWidget::Impl::deleteConditionRow(int row)
 
 void DefectFilterParamWidget::Impl::addDefect(const QString& name)
 {
-    auto button = new QPushButton{name};
+    auto button = new DbCLineEdit{ name };
     auto container = newContainer();
     connect(container->add_button, &QPushButton::clicked, [container, this]() {
         //addSingleCondition(container->condition_container->condition_widgets.size(), 0);
         addConditionWidget();
         // fixme 添加单行条件按钮被按下.
     });
-    
+
     stacked_widget->addWidget(container);
 
-    connect(button, &QPushButton::clicked, [button, this]() {
+    connect(button, &DbCLineEdit::clicked, [button, this]() {
         auto id_num = button->property(id).toInt();
         stacked_widget->setCurrentIndex(id_num);
+        current_button_id = id_num;
+
         // fixme defect_button clicked.
         //bottom_layout->replaceWidget(id_to_container[current_button_id], id_to_container[id_num]);
         //current_button_id = id_num;
     });
 
-    button->setCheckable(true);
-    button_group->addButton(button);
+    button->setChecked();
+    //button_group->addButton(button);
 
-    auto button_count = button_group->buttons().size() - 1;
+    //auto button_count = buttons.size() - 1;
+    static auto button_count = 0;
     button->setProperty(id, button_count);
     id_to_container[button_count] = container;
     buttons_layout->addWidget(button, button_count / 10, button_count % 10);
-    buttons.push_back(button);
+    defect_edits.push_back(button);
+    ++button_count;
 }
 
 void DefectFilterParamWidget::Impl::addEmptyDefect()
@@ -255,7 +259,8 @@ void DefectFilterParamWidget::Impl::addEmptyDefect()
 
 void DefectFilterParamWidget::Impl::deleteCurrentDefect()
 {
-    auto button = button_group->checkedButton();
+    if (defect_edits.empty()) return;
+    auto button = defect_edits[current_button_id];
     if (!button) return;
     
 
@@ -265,35 +270,41 @@ void DefectFilterParamWidget::Impl::deleteCurrentDefect()
 
     auto button_count = 0;
 
-    auto size = buttons.size();
+    auto size = defect_edits.size();
     for (int i = size - 1; i > index; --i) {
-        buttons_layout->replaceWidget(buttons.at(i - 1), buttons.at(i));
+        buttons_layout->replaceWidget(defect_edits.at(i - 1), defect_edits.at(i));
     }
-    button_group->removeButton(button);
+    //button_group->removeButton(button);
     stacked_widget->removeWidget(id_to_container[index]);
     delete id_to_container[index];
-    buttons.remove(index);
+    defect_edits.remove(index);
 
     parent_->emitDefectDeleted(index);
     // 重排button的id属性.
-    for (auto _button : buttons) {
+    for (auto _button : defect_edits) {
         id_to_container[button_count] = id_to_container[_button->property(id).toInt()];
         _button->setProperty(id, button_count);
         ++button_count;
     }
     delete button;
+
+
+    if(current_button_id >= defect_edits.size()) {
+        current_button_id -= 1;
+        current_button_id >=0 ? stacked_widget->setCurrentIndex(current_button_id) : current_button_id = 0;
+    }
 }
 
 void DefectFilterParamWidget::Impl::setDefects(const QVector<QString>& defect_names)
 {
-    button_group.reset(new QButtonGroup{});
+    //button_group.reset(new QButtonGroup{});
 
     for (auto name : defect_names) {
         addDefect(name);
     }
-    if (!button_group->buttons().empty()) {
-        button_group->buttons().at(0)->setChecked(true);
-    }
+    //if (!button_group->buttons().empty()) {
+        //button_group->buttons().at(0)->setChecked(true);
+    //}
 }
 
 Container* DefectFilterParamWidget::Impl::newContainer()

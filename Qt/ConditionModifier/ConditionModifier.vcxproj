@@ -88,6 +88,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="DbCLineEdit.cpp" />
     <ClCompile Include="DefectFilterParamWidget.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
@@ -100,6 +101,9 @@
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="ConditionModifier.qrc" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="DbCLineEdit.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

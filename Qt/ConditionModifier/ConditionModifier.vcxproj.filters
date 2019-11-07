@@ -31,6 +31,9 @@
     <ClCompile Include="DefectFilterParamWidget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="DbCLineEdit.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="ConditionModifier.ui">
@@ -47,6 +50,9 @@
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="DefectFilterParamWidget.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="DbCLineEdit.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>
