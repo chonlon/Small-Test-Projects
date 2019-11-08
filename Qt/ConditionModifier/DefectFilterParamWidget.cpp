@@ -10,7 +10,7 @@
 #include <QCheckBox>
 #include <QStackedWidget>
 constexpr auto default_defect_name = u8"新缺陷";
-constexpr auto condition_height    = 130;
+constexpr auto condition_height    = 140;
 constexpr auto condition_spacing   = 5;
 // todo list:
 // 1. 按钮单击事件
@@ -131,15 +131,20 @@ struct DefectFilterParamWidget::Impl
         buttons_layout = new QGridLayout{ui->button_group_container};
 
         bottom_layout.reset(new QHBoxLayout{});
-        algo_selector = new AlgoSelector{parent};
+        
         //condition_container = new ConditionContainer{parent};
         //scroll_area         = new QScrollArea{condition_container};
         stacked_widget = new QStackedWidget{parent};
 
-        bottom_layout->addWidget(algo_selector);
-        bottom_layout->addWidget(stacked_widget);
+        
 
         ui->main_layout->addLayout(bottom_layout.data());
+
+        algo_scroll = new QScrollArea{ parent_ };
+        algo_selector = new AlgoSelector{algo_scroll};
+        algo_scroll->setWidget(algo_selector);
+        bottom_layout->addWidget(algo_scroll, 1);
+        bottom_layout->addWidget(stacked_widget, 5);
     };
 
     ~Impl()
@@ -186,6 +191,8 @@ struct DefectFilterParamWidget::Impl
     AlgoSelector* algo_selector;
 
     QStackedWidget* stacked_widget;
+
+    QScrollArea* algo_scroll;
     // --!bottom ui--
 private:
     const char* id = "Id";
@@ -318,6 +325,7 @@ Container* DefectFilterParamWidget::Impl::newContainer()
 SingleCondition* DefectFilterParamWidget::Impl::newSingleCondition(ConditionWidget* parent, int max, int min, QVector<QString>& strings)
 {
     auto widget = new SingleCondition{parent};
+    //widget->layout->setContentsMargins(0, 0, 0, 0);
 
     //widget->installEventFilter(this);
 

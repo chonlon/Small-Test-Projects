@@ -10,6 +10,7 @@ DbCLineEdit::DbCLineEdit(const QString& name, QWidget* parent /*= Q_NULLPTR*/)
     this->setText(name);
 
     connect(this, SIGNAL(editingFinished()), this, SLOT(editFinished()));
+    
 
     signal_click_timer = new QTimer{this};
     signal_click_timer->setSingleShot(true);
