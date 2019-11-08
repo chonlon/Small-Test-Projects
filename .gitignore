@@ -21,4 +21,5 @@ image
 *.user
 *.exe
 *.autosave
+*.7z
 *vs
