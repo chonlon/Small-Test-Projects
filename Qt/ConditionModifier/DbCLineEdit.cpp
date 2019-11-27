@@ -27,7 +27,7 @@ void DbCLineEdit::setChecked()
     const char* checked_style = "\
     QLineEdit\
     {\
-        border:1px solid rgb(180, 180, 180);\
+        border:1px solid rgba(233, 84, 32);\
         background: rgba(35, 168, 242, 100);\
         border - radius: 4px;\
     }";
@@ -37,13 +37,10 @@ void DbCLineEdit::setChecked()
 void DbCLineEdit::setUnchecked()
 {
     const char* unchecked_style = "\
-        QLineEdit\
+    QLineEdit\
     {\
-        //边界1像素 实线 颜色rgb  或者border:none 没有边界\
         border:1px solid rgb(180, 180, 180);\
-        //背景的颜色\
         background: rgba(230, 230, 230, 100);\
-        //边角4像素圆滑\
         border - radius: 4px;\
     }";
     this->setStyleSheet(unchecked_style);
