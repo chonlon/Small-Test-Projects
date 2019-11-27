@@ -4,11 +4,14 @@
 #include "DbCLineEdit.h"
 #include <QGridLayout>
 #include <QDebug>
+
+
 #include <QComboBox>
 #include <QLabel>
 #include <QDoubleSpinBox>
 #include <QCheckBox>
 #include <QStackedWidget>
+
 constexpr auto default_defect_name = u8"新缺陷";
 constexpr auto condition_height    = 140;
 constexpr auto condition_spacing   = 5;
@@ -216,12 +219,12 @@ void DefectFilterParamWidget::Impl::addSingleCondition(uint8_t row, uint8_t colu
 
 bool DefectFilterParamWidget::Impl::deleteSingleCondition(uint8_t row, uint8_t column)
 {
-    return false;
+	return false;
 }
 
 bool DefectFilterParamWidget::Impl::deleteConditionRow(int row)
 {
-    return false;
+	return false;
 }
 
 void DefectFilterParamWidget::Impl::addDefect(const QString& name)
@@ -453,12 +456,12 @@ void DefectFilterParamWidget::Impl::deleteAlgo(const QString& name)
 // ConditionModifier                                       //
 /***********************************************************/
 DefectFilterParamWidget::DefectFilterParamWidget(QWidget* parent)
-    : QWidget(parent)
+	: QWidget(parent)
 {
-    impl_ = new Impl{this};
-    setDefects(QVector<QString>{"123", "hhh"});
-    connect(impl_->ui->add_button, &QPushButton::clicked, this, &DefectFilterParamWidget::addEmptyDefect);
-    connect(impl_->ui->delete_button, &QPushButton::clicked, this, &DefectFilterParamWidget::deleteCurrentDefect);
+	impl_ = new Impl{this};
+	setDefects(QVector<QString>{"123", "hhh"});
+	connect(impl_->ui->add_button, &QPushButton::clicked, this, &DefectFilterParamWidget::addEmptyDefect);
+	connect(impl_->ui->delete_button, &QPushButton::clicked, this, &DefectFilterParamWidget::deleteCurrentDefect);
 }
 
 void DefectFilterParamWidget::addCondition(uint8_t row, uint8_t column)
@@ -473,28 +476,28 @@ bool DefectFilterParamWidget::deleteCondition(uint8_t row, uint8_t column)
 
 bool DefectFilterParamWidget::deleteConditionRow(int row)
 {
-    return impl_->deleteConditionRow(row);
+	return impl_->deleteConditionRow(row);
 }
 
 void DefectFilterParamWidget::addDefect(const QString& name)
 {
-    impl_->addDefect(name);
+	impl_->addDefect(name);
 }
 
 
 void DefectFilterParamWidget::setDefects(const QVector<QString>& defect_names)
 {
-    impl_->setDefects(defect_names);
+	impl_->setDefects(defect_names);
 }
 
 void DefectFilterParamWidget::addEmptyDefect()
 {
-    impl_->addEmptyDefect();
+	impl_->addEmptyDefect();
 }
 
 void DefectFilterParamWidget::deleteCurrentDefect()
 {
-    impl_->deleteCurrentDefect();
+	impl_->deleteCurrentDefect();
 }
 
 // void ConditionModifier::conditionAdded()

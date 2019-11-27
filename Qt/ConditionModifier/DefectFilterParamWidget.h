@@ -12,8 +12,8 @@ public:
     /// <summary>
     /// add single condition to ui at current defect.
     /// </summary>
-    /// <param name: "row"> the row condition will be added to, if row didn't exit yet, new row will be added</param>
-    /// <param name: "column">the column you want add to </param>
+    /// <param name= "row"> the row condition will be added to, if row didn't exit yet, new row will be added</param>
+    /// <param name= "column">the column you want add to </param>
     void addCondition(uint8_t row, uint8_t column);
 
     /// <summary>
