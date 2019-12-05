@@ -19,7 +19,9 @@ image
 *.bmp
 *.db
 *.user
-*.exe
 *.autosave
 *.7z
 *vs
+*exe
+*.pch
+*.gch
