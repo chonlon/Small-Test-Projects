@@ -1,27 +1,48 @@
-*Debug
-*Release
-ipch
-doc_mine
-GeneratedFiles
-image
-*.ilk
-*.pdb
-*.exp
-*.obj
-*.log
-*.pdb
-*.tlog
-*.suo
-*.sdf
-*.cd
-*.opensdf
-*.jpg
-*.bmp
-*.db
-*.user
-*.autosave
-*.7z
-*vs
-*exe
-*.pch
-*.gch
+#ignore all file expect which meet the rule below
+*
+
+!/*
+!.gitignore
+#enable cpp files
+!*.cc
+!*.hpp
+!*.cpp
+!*.h
+
+#enable go files
+!*.go
+
+#enable python files
+!*.py
+
+#enable ahk files
+!*.ahk
+
+#enable res files
+!*.jpg
+!*.png
+
+#enable qt files
+!*.ui
+!*.qrc
+
+#enable doc files
+!*.md
+
+#enable project files
+!*Makefile
+!*makefile
+!*.pro
+!*.pri
+!*.sln
+!*.cmake
+!*CMakeLists.txt
+
+#enable vscode config files
+!*c_cpp_properties.json
+!*launch.json
+!*task.json
+
+#igore qt generate files
+ui*.h
+*moc*.cpp
