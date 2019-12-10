@@ -1,8 +1,8 @@
 #ignore all file expect which meet the rule below
 *
 
-!/*
-!.gitignore
+!*/
+!/.gitignore
 #enable cpp files
 !*.cc
 !*.hpp
@@ -45,4 +45,9 @@
 
 #igore qt generate files
 ui*.h
-*moc*.cpp
+*moc*.h
+*qrc*.cpp
+
+*Debug
+*Release
+*build
