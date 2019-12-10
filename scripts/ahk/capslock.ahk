@@ -120,17 +120,17 @@ return                                                                          
 
 ;-------------------------------------------调用listary-----------------------------------;|||
 Capslock & q::                                                                            ;|||
- ; 获取选中的文字                                                                           ;|||
-  ClipSaved := ClipboardAll                                                                ;|||
+ ; 获取选中的文字                                                                         ;|||
+  ClipSaved := ClipboardAll                                                               ;|||
   selText:=getSelText()                                                                   ;|||
 																						  ;|||
-  ; 发送 Listary的呼出快捷键），呼出Listary                                                   ;|||
+  ; 发送 Listary的呼出快捷键），呼出Listary                                               ;|||
   SendInput, !^+f                                                                         ;|||
 																						  ;|||
-  ; 等待 Listary 输入框打开                                                                 ;|||
+  ; 等待 Listary 输入框打开                                                               ;|||
   sleep, 50                                                                               ;|||
 																						  ;|||
-  ; 如果有选中文字的话                                                                    	 ;|||
+  ; 如果有选中文字的话                                                                    ;|||
   if(selText){                                                                            ;|||
     ;ClipSaved := ClipboardAll       ; save clipboard                                     ;|||
     clipboard := selText                                                                  ;|||
@@ -360,11 +360,9 @@ Ctrl & Numpad6::
 	
 ;----------------热字串----------------
 :R:;qm::1017027609@qq.com
-:*:;xh::5623373769
 :R:;gm::lonelycooler.xcl@gmail.com
 :*:;nm::18838957569
 :R:;fnm::15179368691
-:R:;zzu::20152430237
 
 ;代码相关
 ;functions:
@@ -517,3 +515,45 @@ Capslock & .::
 ::;cmd::                                                                                                           ;|||
 	run, F:\programs\cmder\Cmder.exe                                                                               ;|||
 	return                                                                                                         ;|||
+;++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++;|||
+
+;+++窗口置顶+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++;|||
+!Up::                                                                                                              ;|||
+																												   ;|||
+    WinGet ow, id, A                                                                                               ;|||
+																												   ;|||
+    WinTopToggle(ow)                                                                                               ;|||
+																												   ;|||
+    return                                                                                                         ;|||
+																												   ;|||
+WinTopToggle(w) {                                                                                                  ;|||
+																												   ;|||
+    WinGetTitle, oTitle, ahk_id %w%                                                                                ;|||
+																												   ;|||
+    Winset, AlwaysOnTop, Toggle, ahk_id %w%                                                                        ;|||
+																												   ;|||
+    WinGet, ExStyle, ExStyle, ahk_id %w%                                                                           ;|||
+																												   ;|||
+    if (ExStyle & 0x8)                                                                                             ;|||
+																												   ;|||
+    oTop = 置顶                                                                                                    ;|||
+																												   ;|||
+    else                                                                                                           ;|||
+																												   ;|||
+    oTop = 取消置顶                                                                                                ;|||
+																												   ;|||
+    tooltip %oTitle% %oTop%                                                                                        ;|||
+																												   ;|||
+    SetTimer, RemoveToolTip, 1000                                                                                  ;|||
+																												   ;|||
+    return                                                                                                         ;|||
+																												   ;|||
+    RemoveToolTip:                                                                                                 ;|||
+																												   ;|||
+    SetTimer, RemoveToolTip, Off                                                                                   ;|||
+																												   ;|||
+    ToolTip                                                                                                        ;|||
+																												   ;|||
+    return                                                                                                         ;|||
+																												   ;|||
+}                                                                                                                  ;|||
