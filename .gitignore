@@ -1,4 +1,4 @@
-#ignore all file expect which meet the rule below
+#ignore all files expect which meet the rule below
 *
 
 !*/
@@ -35,6 +35,8 @@
 !*.pro
 !*.pri
 !*.sln
+!*.vcxproj
+!*.vcxproj.filter
 !*.cmake
 !*CMakeLists.txt
 
@@ -48,6 +50,7 @@ ui*.h
 *moc*.h
 *qrc*.cpp
 
+#ignore build dirs
 *Debug
 *Release
 *build

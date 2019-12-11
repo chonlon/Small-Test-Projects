@@ -66,8 +66,8 @@ Capslock & \::return                                     ;|||
 Capslock & -::return                                     ;|||
 Capslock & =::return                                     ;|||
 Capslock & /::return                                     ;|||
-														 ;|||
-														 ;|||
+                                                         ;|||
+                                                         ;|||
 Capslock & 4::return                                     ;|||
 Capslock & 5::return                                     ;|||
 Capslock & 6::return                                     ;|||
@@ -80,10 +80,10 @@ Capslock & 0::return                                     ;|||
 
 ;----------------------- 改变大写锁定状态 ------------------------------------------------;|||
 LAlt & Capslock::                                                                         ;|||
-	SetCapsLockState, % GetKeyState("CapsLock", "T") ? "Off" : "On"                       ;|||
+    SetCapsLockState, % GetKeyState("CapsLock", "T") ? "Off" : "On"                       ;|||
 return                                                                                    ;|||
 Shift & Capslock::                                                                        ;|||
-	SetCapsLockState, % GetKeyState("CapsLock", "T") ? "Off" : "On"                       ;|||
+    SetCapsLockState, % GetKeyState("CapsLock", "T") ? "Off" : "On"                       ;|||
 return                                                                                    ;|||
 ;-----------------------------------------------------------------------------------------;|||
 
@@ -92,27 +92,27 @@ return                                                                          
   ;获取选中的文字                                                                         ;|||
   ClipSaved := ClipboardAll                                                               ;|||
   selText:=getSelText()                                                                   ;|||
-																						  ;|||
+                                                                                          ;|||
  ; 发送 Listary的呼出快捷键），呼出Listary                                                ;|||
   SendInput, !^+f                                                                         ;|||
-																						  ;|||
+                                                                                          ;|||
   ; 等待 Listary 输入框打开                                                               ;|||
   sleep, 50                                                                               ;|||
-																						  ;|||
+                                                                                          ;|||
   ; 如果有选中文字的话                                                                    ;|||
   if(selText){                                                                            ;|||
-	selText:="fy " . selText                                                              ;|||
+    selText:="fy " . selText                                                              ;|||
     ;ClipSaved := ClipboardAll       ; save clipboard                                     ;|||
     clipboard := selText                                                                  ;|||
      ClipWait, 0.1                                                                        ;|||
      Send, ^v                                                                             ;|||
      clipboard := ClipSaved                                                               ;|||
-	}                                                                                     ;|||
-	else                                                                                  ;|||
-	{                                                                                     ;|||
-		ascinput("fy ")                                                                   ;|||
-	}                                                                                     ;|||
-	SendInput, {Alt}                                                                      ;|||
+    }                                                                                     ;|||
+    else                                                                                  ;|||
+    {                                                                                     ;|||
+        ascinput("fy ")                                                                   ;|||
+    }                                                                                     ;|||
+    SendInput, {Alt}                                                                      ;|||
 return                                                                                    ;|||
 ;-----------------------------------------------------------------------------------------;|||
 
@@ -123,13 +123,13 @@ Capslock & q::                                                                  
  ; 获取选中的文字                                                                         ;|||
   ClipSaved := ClipboardAll                                                               ;|||
   selText:=getSelText()                                                                   ;|||
-																						  ;|||
+                                                                                          ;|||
   ; 发送 Listary的呼出快捷键），呼出Listary                                               ;|||
   SendInput, !^+f                                                                         ;|||
-																						  ;|||
+                                                                                          ;|||
   ; 等待 Listary 输入框打开                                                               ;|||
   sleep, 50                                                                               ;|||
-																						  ;|||
+                                                                                          ;|||
   ; 如果有选中文字的话                                                                    ;|||
   if(selText){                                                                            ;|||
     ;ClipSaved := ClipboardAll       ; save clipboard                                     ;|||
@@ -137,9 +137,9 @@ Capslock & q::                                                                  
      ClipWait, 0.1                                                                        ;|||
      Send, ^v                                                                             ;|||
      clipboard := ClipSaved                                                               ;|||
-	sendInput, {home}                                                                     ;|||
-	}                                                                                     ;|||
-																						  ;|||
+    sendInput, {home}                                                                     ;|||
+    }                                                                                     ;|||
+                                                                                          ;|||
 return                                                                                    ;|||
 ;=========================================================================================;|||
 
@@ -148,27 +148,27 @@ return                                                                          
 
 ;-------------------------Capslock快捷键--------------------------------------------------;|||
 Capslock & Backspace::                                                                    ;|||
-	SendInput, {Backspace}                                                                ;|||
-	return                                                                                ;|||
-																						  ;|||
+    SendInput, {Backspace}                                                                ;|||
+    return                                                                                ;|||
+                                                                                          ;|||
 ;=======上下左右======;||                                                                 ;|||
 Capslock & e::        ;||                                                                 ;|||
 SendInput,{up}        ;||                                                                 ;|||
 return                ;||                                                                 ;|||
-					  ;||                                                                 ;|||
+                      ;||                                                                 ;|||
 Capslock & s::        ;||                                                                 ;|||
  SendInput,{left}     ;||                                                                 ;|||
     return            ;||                                                                 ;|||
-					  ;||                                                                 ;|||
+                      ;||                                                                 ;|||
 Capslock & d::        ;||                                                                 ;|||
  SendInput,{down}     ;||                                                                 ;|||
     Return            ;||                                                                 ;|||
-					  ;||                                                                 ;|||
+                      ;||                                                                 ;|||
 Capslock & f::        ;||                                                                 ;|||
  SendInput,{right}    ;||                                                                 ;|||
     Return            ;||                                                                 ;|||
-;=====================;||	                                                              ;|||
-																						  ;|||
+;=====================;||                                                                 ;|||
+                                                                                          ;|||
 ;===shfit+上下左右======;||                                                               ;|||
 Capslock & i::          ;||                                                               ;|||
  SendInput,+{up}        ;||                                                               ;|||
@@ -184,45 +184,45 @@ Capslock & k::          ;||                                                     
  SendInput,+{end}       ;||                                                               ;|||
     Return              ;||                                                               ;|||
 Capslock & l::          ;||                                                               ;|||
-	SendInput,+{right}  ;||                                                               ;|||
+    SendInput,+{right}  ;||                                                               ;|||
     Return              ;||                                                               ;|||
 ;=======================;||                                                               ;|||
-																						  ;|||
+                                                                                          ;|||
 ;====左右选一个词=======;||                                                               ;|||
 Capslock & h::          ;||                                                               ;|||
-	SendInput,^+{left}  ;||                                                               ;|||
-	Return              ;||                                                               ;|||
+    SendInput,^+{left}  ;||                                                               ;|||
+    Return              ;||                                                               ;|||
 Capslock & `;::         ;||                                                               ;|||
-	SendInput,^+{right} ;||                                                               ;|||
+    SendInput,^+{right} ;||                                                               ;|||
     Return              ;||                                                               ;|||
 ;=======================;||                                                               ;|||
-																						  ;|||
-;======其它=============================;||	                                              ;|||
+                                                                                          ;|||
+;======其它=============================;||                                               ;|||
 Capslock & u::                          ;||                                               ;|||
-	SendInput,+{home}                   ;||                                               ;|||
+    SendInput,+{home}                   ;||                                               ;|||
     Return                              ;||                                               ;|||
 Capslock & o::                          ;||                                               ;|||
-	SendInput,+{end}                    ;||                                               ;|||
+    SendInput,+{end}                    ;||                                               ;|||
     Return                              ;||                                               ;|||
-										;||                                               ;|||
+                                        ;||                                               ;|||
 ;Backspace                              ;||                                               ;|||
 Capslock & y::                          ;||                                               ;|||
  SendInput,{Backspace}                  ;||                                               ;|||
     Return                              ;||                                               ;|||
-										;||                                               ;|||
+                                        ;||                                               ;|||
 ;home                                   ;||                                               ;|||
 Capslock & a::                          ;||                                               ;|||
  SendInput,{Home}                       ;||                                               ;|||
     Return                              ;||                                               ;|||
-										;||                                               ;|||
+                                        ;||                                               ;|||
 ;end                                    ;||                                               ;|||
 Capslock & g::                          ;||                                               ;|||
   SendInput,{End}                       ;||                                               ;|||
     Return                              ;||                                               ;|||
-										;||                                               ;|||
+                                        ;||                                               ;|||
 ;删除一整行                             ;||                                               ;|||
 Capslock & r::                          ;||                                               ;|||
-										;||                                               ;|||
+                                        ;||                                               ;|||
  SendInput,{End}                        ;||                                               ;|||
  SendInput,+{home}                      ;||                                               ;|||
  SendInput,+{home}                      ;||                                               ;|||
@@ -234,12 +234,12 @@ Capslock & r::                          ;||                                     
 ; Run, explore F:                                                                         ;|||
 ; ;Run, C:\Program Files (x86)\FreeCommander XE\FreeCommander.exe F:                      ;|||
 ; Return                                                                                  ;|||
-																						  ;|||
+                                                                                          ;|||
  ;选取一整行                                                                              ;|||
  Capslock & Space::                                                                       ;|||
    SendInput,{End}+{home}                                                                 ;|||
     Return                                                                                ;|||
-																						  ;|||
+                                                                                          ;|||
 ;复制粘贴                                                                                 ;|||
 Capslock & c::                                                                            ;|||
    SendInput,^c                                                                           ;|||
@@ -247,313 +247,313 @@ Capslock & c::                                                                  
 Capslock & v::                                                                            ;|||
    SendInput,^v                                                                           ;|||
     Return                                                                                ;|||
-																						  ;|||
-																						  ;|||
+                                                                                          ;|||
+                                                                                          ;|||
 Capslock & t::                                                                            ;|||
      SendInput,{End}{Enter}                                                               ;|||
     Return                                                                                ;|||
-																						  ;|||
-																						  ;|||
+                                                                                          ;|||
+                                                                                          ;|||
 Capslock & 9::                                                                            ;|||
-	ClipSaved := ClipboardAll                                                             ;|||
-	selText:=getSelText()                                                                 ;|||
-	selText:="(" selText ")"                                                              ;|||
+    ClipSaved := ClipboardAll                                                             ;|||
+    selText:=getSelText()                                                                 ;|||
+    selText:="(" selText ")"                                                              ;|||
     clipboard := selText                                                                  ;|||
      ClipWait, 0.1                                                                        ;|||
      Send, ^v                                                                             ;|||
      clipboard := ClipSaved                                                               ;|||
-	return                                                                                ;|||
+    return                                                                                ;|||
 Capslock & [::                                                                            ;|||
-	ClipSaved := ClipboardAll                                                             ;|||
-	selText:=getSelText()                                                                 ;|||
-	selText:="{" selText "}"                                                              ;|||
+    ClipSaved := ClipboardAll                                                             ;|||
+    selText:=getSelText()                                                                 ;|||
+    selText:="{" selText "}"                                                              ;|||
     clipboard := selText                                                                  ;|||
      ClipWait, 0.1                                                                        ;|||
      Send, ^v                                                                             ;|||
      clipboard := ClipSaved                                                               ;|||
-	return                                                                                ;|||
+    return                                                                                ;|||
 Capslock & ]::                                                                            ;|||
-	ClipSaved := ClipboardAll                                                             ;|||
-	selText:=getSelText()                                                                 ;|||
-	selText:="[" selText "]"                                                              ;|||
+    ClipSaved := ClipboardAll                                                             ;|||
+    selText:=getSelText()                                                                 ;|||
+    selText:="[" selText "]"                                                              ;|||
     clipboard := selText                                                                  ;|||
      ClipWait, 0.1                                                                        ;|||
      Send, ^v                                                                             ;|||
      clipboard := ClipSaved                                                               ;|||
-	return                                                                                ;|||
+    return                                                                                ;|||
  Capslock & '::                                                                           ;|||
-	ClipSaved := ClipboardAll                                                             ;|||
-	selText:=getSelText()                                                                 ;|||
-	var="                                                                                 ;|||
-	selText:=var . selText                                                                ;|||
-	selText:=selText . var                                                                ;|||
+    ClipSaved := ClipboardAll                                                             ;|||
+    selText:=getSelText()                                                                 ;|||
+    var="                                                                                 ;|||
+    selText:=var . selText                                                                ;|||
+    selText:=selText . var                                                                ;|||
     clipboard := selText                                                                  ;|||
      ClipWait, 0.1                                                                        ;|||
      Send, ^v                                                                             ;|||
      clipboard := ClipSaved                                                               ;|||
-	return                                                                                ;|||
+    return                                                                                ;|||
 ;实现chrome的标签页切换                                                                   ;|||
 Capslock & n::                                                                            ;|||
-	SendInput, ^k                                                                         ;|||
-	sleep, 500                                                                            ;|||
-	SendInput, ^o                                                                         ;|||
-	return                                                                                ;|||
+    SendInput, ^k                                                                         ;|||
+    sleep, 500                                                                            ;|||
+    SendInput, ^o                                                                         ;|||
+    return                                                                                ;|||
 Capslock & m::                                                                            ;|||
-	SendInput, ^{Tab}                                                                     ;|||
-	return                                                                                ;|||
-;;;;;;编辑器操作                                                                          ;|||
-
-																						  ;|||
+    SendInput, ^{Tab}                                                                     ;|||
+    return                                                                                ;|||
+;;;;;;编辑器操作--------------------------------------------------------------------------;|||
+                                                                                          ;|||
 ;-------------快速跳转-----------------------------;|                                     ;|||
 ;------o                                           ;|                                     ;|||
 Capslock & 1::                                     ;|                                     ;|||
-	loop, 2                                        ;|                                     ;|||
-		SendInput, {Up}                            ;|                                     ;|||
-	return                                         ;|                                     ;|||
+    loop, 2                                        ;|                                     ;|||
+        SendInput, {Up}                            ;|                                     ;|||
+    return                                         ;|                                     ;|||
                                                    ;|                                     ;|||
 Capslock & 2::                                     ;|                                     ;|||
-	loop, 4                                        ;|                                     ;|||
-		SendInput, {Up}                            ;|                                     ;|||
-	return                                         ;|                                     ;|||
+    loop, 4                                        ;|                                     ;|||
+        SendInput, {Up}                            ;|                                     ;|||
+    return                                         ;|                                     ;|||
                                                    ;|                                     ;|||
 Capslock & 3::                                     ;|                                     ;|||
-	loop, 6                                        ;|                                     ;|||
-		SendInput, {Up}                            ;|                                     ;|||
-	return                                         ;|                                     ;|||
+    loop, 6                                        ;|                                     ;|||
+        SendInput, {Up}                            ;|                                     ;|||
+    return                                         ;|                                     ;|||
 ;--------------------------------------------------;|                                     ;|||
 ;=========================================================================================;|||
-	
-;------------alt快捷键---------------------------+++++++++++++++++++++++++++++++++++++++++
+    
+;------------alt快捷键---------------------------+++++++++++++++++++++++++++++++++++++++++;|||
+                                                                                          ;|||
+                                                                                          ;|||
+;==调试快捷键==                                                                           ;|||
+!q::F5                                                                                    ;|||
+!w::+                                                                                     ;|||
+                                                                                          ;|||
+                                                                                          ;|||
+;numspad快捷键                                                                            ;|||
+;Numpad0::Numpad0                                                                         ;|||
+Ctrl & Numpad1::                                                                          ;|||
+    SoundSet +3 ; 将主音量增加 10%                                                        ;|||
+    return                                                                                ;|||
+Ctrl & Numpad2::                                                                          ;|||
+    Send {Volume_Mute} ;静音                                                              ;|||
+    return                                                                                ;|||
+Ctrl & Numpad3::                                                                          ;|||
+    SoundSet -3 ; 将主音量减小 10%                                                        ;|||
+    return                                                                                ;|||
+Ctrl & Numpad8::                                                                          ;|||
+    SoundSet, 1, Microphone, mute  ; 对麦克风进行静音                                     ;|||
+    return                                                                                ;|||
+                                                                                          ;|||
+;媒体播放                                                                                 ;|||
+Ctrl & Numpad4::                                                                          ;|||
+    SendInput, {Media_Prev}                                                               ;|||
+    return                                                                                ;|||
+Ctrl & Numpad5::                                                                          ;|||
+    SendInput, {Media_Play_Pause}                                                         ;|||
+    return                                                                                ;|||
+Ctrl & Numpad6::                                                                          ;|||
+    SendInput, {Media_Next}                                                               ;|||
+    return                                                                                ;|||
+;=========================================================================================;|||
 
 
-;==调试快捷键==
-!q::F5
-!w::+
-
-	
-;numspad快捷键
-;Numpad0::Numpad0
-Ctrl & Numpad1::
-	SoundSet +3 ; 将主音量增加 10%
-	return
-Ctrl & Numpad2::
-	Send {Volume_Mute} ;静音
-	return
-Ctrl & Numpad3::
-	SoundSet -3 ; 将主音量减小 10%
-	return
-Ctrl & Numpad8::
-	SoundSet, 1, Microphone, mute  ; 对麦克风进行静音
-	return
-
-;媒体播放
-Ctrl & Numpad4::
-	SendInput, {Media_Prev}
-	return
-Ctrl & Numpad5::
-	SendInput, {Media_Play_Pause}
-	return
-Ctrl & Numpad6::
-	SendInput, {Media_Next}
-	return
-
-	
-;----------------热字串----------------
-:R:;qm::1017027609@qq.com
-:R:;gm::lonelycooler.xcl@gmail.com
-:*:;nm::18838957569
-:R:;fnm::15179368691
-
-;代码相关
-;functions:
-doPastePar()
-{
-	Sleep, 100
-	ClipSaved := ClipboardAll
-	selText:="/// <param name: > </param>"
-    clipboard := selText
-     ClipWait, 0.1
-     Send, ^v
-     clipboard := ClipSaved
-	Loop, 10
-	{
-		Send, {Left}
-	}
-	return
-}
-
-doPastePointer()
-{
-	Send, -
-	Sleep, 15
-	Send, >
-	return
-}
-
-doPasteSum()
-{
-	Sleep, 100
-	ClipSaved := ClipboardAll
-	selText:="/// <summary> </summary>"
-    clipboard := selText
-     ClipWait, 0.1
-     Send, ^v
-     clipboard := ClipSaved
-	Loop, 10
-	{
-		Send, {Left}
-	}
-	return
-}
-
-doPasteRet()
-{
-	Sleep, 100
-	ClipSaved := ClipboardAll
-	selText:="/// <returns> </returns>"
-    clipboard := selText
-     ClipWait, 0.1
-     Send, ^v
-     clipboard := ClipSaved
-	Loop, 10
-	{
-		Send, {Left}
-	}
-	return
-}
-
-doPasteCom() 
-{
-		Sleep, 100
-	ClipSaved := ClipboardAll
-	selText:="/////////////////////////////`r`n//`r`n/////////////////////////////"
-    clipboard := selText
-     ClipWait, 0.1
-     Send, ^v
-     clipboard := ClipSaved
-	return
-}
-
-;实现->的操作                                                                             
-Capslock & .::                                                                            
-	doPastePointer()                                                                         
-	return                                                                                
-
-:R:;par::
-    doPastePar()
-	return
-:R:;sum::
-    doPasteSum()
-	return
-:R:;ret::
-	doPasteRet()
-	return
-:R:;com::
-	doPasteCom()
-	return
-
+;----------------热字串-------------------------------------------------------------------;|||
+:R:;qm::1017027609@qq.com                                                                 ;|||
+:R:;gm::lonelycooler.xcl@gmail.com                                                        ;|||
+:*:;nm::18838957569                                                                       ;|||
+:R:;fnm::15179368691                                                                      ;|||
+                                                                                          ;|||
+;代码相关                                                                                 ;|||
+;functions:                                                                               ;|||
+doPastePar()                                                                              ;|||
+{                                                                                         ;|||
+    Sleep, 100                                                                            ;|||
+    ClipSaved := ClipboardAll                                                             ;|||
+    selText:="/// <param name: > </param>"                                                ;|||
+    clipboard := selText                                                                  ;|||
+     ClipWait, 2                                                                          ;|||
+     Send, ^v                                                                             ;|||
+     clipboard := ClipSaved                                                               ;|||
+    Loop, 10                                                                              ;|||
+    {                                                                                     ;|||
+        Send, {Left}                                                                      ;|||
+    }                                                                                     ;|||
+    return                                                                                ;|||
+}                                                                                         ;|||
+                                                                                          ;|||
+doPastePointer()                                                                          ;|||
+{                                                                                         ;|||
+    Send, -                                                                               ;|||
+    Sleep, 100                                                                            ;|||
+    Send, >                                                                               ;|||
+    return                                                                                ;|||
+}                                                                                         ;|||
+                                                                                          ;|||
+doPasteSum()                                                                              ;|||
+{                                                                                         ;|||
+    Sleep, 100                                                                            ;|||
+    ClipSaved := ClipboardAll                                                             ;|||
+    selText:="/// <summary> </summary>"                                                   ;|||
+    clipboard := selText                                                                  ;|||
+     ClipWait, 2                                                                          ;|||
+     Send, ^v                                                                             ;|||
+     clipboard := ClipSaved                                                               ;|||
+    Loop, 10                                                                              ;|||
+    {                                                                                     ;|||
+        Send, {Left}                                                                      ;|||
+    }                                                                                     ;|||
+    return                                                                                ;|||
+}                                                                                         ;|||
+                                                                                          ;|||
+doPasteRet()                                                                              ;|||
+{                                                                                         ;|||
+    Sleep, 100                                                                            ;|||
+    ClipSaved := ClipboardAll                                                             ;|||
+    selText:="/// <returns> </returns>"                                                   ;|||
+    clipboard := selText                                                                  ;|||
+     ClipWait, 2                                                                          ;|||
+     Send, ^v                                                                             ;|||
+     clipboard := ClipSaved                                                               ;|||
+    Loop, 10                                                                              ;|||
+    {                                                                                     ;|||
+        Send, {Left}                                                                      ;|||
+    }                                                                                     ;|||
+    return                                                                                ;|||
+}                                                                                         ;|||
+                                                                                          ;|||
+doPasteCom()                                                                              ;|||
+{                                                                                         ;|||
+    Sleep, 100                                                                            ;|||
+    ClipSaved := ClipboardAll                                                             ;|||
+    selText:="/////////////////////////////`r`n//`r`n/////////////////////////////"       ;|||
+    clipboard := selText                                                                  ;|||
+     ClipWait, 2                                                                          ;|||
+     Send, ^v                                                                             ;|||
+     clipboard := ClipSaved                                                               ;|||
+    return                                                                                ;|||
+}                                                                                         ;|||
+                                                                                          ;|||
+;实现->的操作                                                                             ;|||
+Capslock & .::                                                                            ;|||
+    doPastePointer()                                                                      ;|||   
+    return                                                                                ;|||
+                                                                                          ;|||
+:R:;par::                                                                                 ;|||
+    doPastePar()                                                                          ;|||
+    return                                                                                ;|||
+:R:;sum::                                                                                 ;|||
+    doPasteSum()                                                                          ;|||
+    return                                                                                ;|||
+:R:;ret::                                                                                 ;|||
+    doPasteRet()                                                                          ;|||
+    return                                                                                ;|||
+:R:;com::                                                                                 ;|||
+    doPasteCom()                                                                          ;|||
+    return                                                                                ;|||
+;=========================================================================================;|||
 
 ;---------------快捷打开应用------------+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++;|||
 ::;vbox::                                                                                                          ;|||
-	run, F:\programs\虚拟机\virtual box\VirtualBox.exe                                                             ;|||
-	return                                                                                                         ;|||
+    run, F:\programs\虚拟机\virtual box\VirtualBox.exe                                                             ;|||
+    return                                                                                                         ;|||
 ::;qmusic::                                                                                                        ;|||
-	run, C:\Program Files (x86)\Tencent\QQMusic\QQMusic.exe                                                        ;|||
-	return                                                                                                         ;|||
+    run, C:\Program Files (x86)\Tencent\QQMusic\QQMusic.exe                                                        ;|||
+    return                                                                                                         ;|||
 ::;note::                                                                                                          ;|||
-	run, C:\Program Files (x86)\Notepad++\notepad++.exe                                                            ;|||
-	return                                                                                                         ;|||
+    run, C:\Program Files (x86)\Notepad++\notepad++.exe                                                            ;|||
+    return                                                                                                         ;|||
 ;打开vscode                                                                                                        ;|||
 ::;vscode::                                                                                                        ;|||
-	run, F:\programs\编辑器\Microsoft VS Code\Code.exe                                                             ;|||
-	return                                                                                                         ;|||
+    run, F:\programs\编辑器\Microsoft VS Code\Code.exe                                                             ;|||
+    return                                                                                                         ;|||
 ;打开vs                                                                                                            ;|||
 ::;vs::                                                                                                            ;|||
-	run, C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\devenv.exe                      ;|||
-	return                                                                                                         ;|||
+    run, C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\devenv.exe                      ;|||
+    return                                                                                                         ;|||
 ;打开idea                                                                                                          ;|||
 ::;idea::                                                                                                          ;|||
-	run, F:\programs\IDE\IntelliJ IDEA 2017.2.5\bin\idea64.exe                                                     ;|||
-	return                                                                                                         ;|||
+    run, F:\programs\IDE\IntelliJ IDEA 2017.2.5\bin\idea64.exe                                                     ;|||
+    return                                                                                                         ;|||
 ;打开网易云                                                                                                        ;|||
 !m::                                                                                                               ;|||
-	run, E:\CloudMusic\CloudMusic\cloudmusic.exe                                                                   ;|||
-	return                                                                                                         ;|||
+    run, E:\CloudMusic\CloudMusic\cloudmusic.exe                                                                   ;|||
+    return                                                                                                         ;|||
 ;打开androidStudio                                                                                                 ;|||
 ::;android::                                                                                                       ;|||
-	run, F:\programs\IDE\Android\AndroidStudio\bin\studio64.exe                                                    ;|||
-	return                                                                                                         ;|||
-																												   ;|||
+    run, F:\programs\IDE\Android\AndroidStudio\bin\studio64.exe                                                    ;|||
+    return                                                                                                         ;|||
+                                                                                                                   ;|||
 ;打开code文件夹                                                                                                    ;|||
 ::;co::                                                                                                            ;|||
-	run, F:\Code                                                                                                   ;|||
-	return                                                                                                         ;|||
-																												   ;|||
+    run, F:\Code                                                                                                   ;|||
+    return                                                                                                         ;|||
+                                                                                                                   ;|||
 ;打开codeOfself文件夹                                                                                              ;|||
 ::;cos::                                                                                                           ;|||
-	run, F:\Code\CodeOfself                                                                                        ;|||
-	return                                                                                                         ;|||
-																												   ;|||
+    run, F:\Code\CodeOfself                                                                                        ;|||
+    return                                                                                                         ;|||
+                                                                                                                   ;|||
 ;打开下载文件夹                                                                                                    ;|||
 ::;dl::                                                                                                            ;|||
-	run, F:\下载                                                                                                   ;|||
-	return                                                                                                         ;|||
+    run, F:\下载                                                                                                   ;|||
+    return                                                                                                         ;|||
 ;打开桌面文件夹                                                                                                    ;|||
 ::;desk::                                                                                                          ;|||
-	run, C:\Users\10170\Desktop                                                                                    ;|||
-	return                                                                                                         ;|||
+    run, C:\Users\10170\Desktop                                                                                    ;|||
+    return                                                                                                         ;|||
 ;打开虎牙                                                                                                          ;|||
 ::;huya::                                                                                                          ;|||
-	run, F:\programs\视频\huya\HuyaClient\Net45\HuyaClient.exe                                                     ;|||
-	return                                                                                                         ;|||
+    run, F:\programs\视频\huya\HuyaClient\Net45\HuyaClient.exe                                                     ;|||
+    return                                                                                                         ;|||
 ::;py::                                                                                                            ;|||
-	run, C:\Users\10170\AppData\Local\Programs\Python\Python36\python.exe                                          ;|||
-	return                                                                                                         ;|||
+    run, C:\Users\10170\AppData\Local\Programs\Python\Python36\python.exe                                          ;|||
+    return                                                                                                         ;|||
 ::;fy::                                                                                                            ;|||
-	run, https://translate.google.cn                                                                               ;|||
-	return                                                                                                         ;|||
+    run, https://translate.google.cn                                                                               ;|||
+    return                                                                                                         ;|||
 ::;cmd::                                                                                                           ;|||
-	run, F:\programs\cmder\Cmder.exe                                                                               ;|||
-	return                                                                                                         ;|||
+    run, F:\programs\cmder\Cmder.exe                                                                               ;|||
+    return                                                                                                         ;|||
 ;++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++;|||
 
 ;+++窗口置顶+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++;|||
 !Up::                                                                                                              ;|||
-																												   ;|||
+                                                                                                                   ;|||
     WinGet ow, id, A                                                                                               ;|||
-																												   ;|||
+                                                                                                                   ;|||
     WinTopToggle(ow)                                                                                               ;|||
-																												   ;|||
+                                                                                                                   ;|||
     return                                                                                                         ;|||
-																												   ;|||
+                                                                                                                   ;|||
 WinTopToggle(w) {                                                                                                  ;|||
-																												   ;|||
+                                                                                                                   ;|||
     WinGetTitle, oTitle, ahk_id %w%                                                                                ;|||
-																												   ;|||
+                                                                                                                   ;|||
     Winset, AlwaysOnTop, Toggle, ahk_id %w%                                                                        ;|||
-																												   ;|||
+                                                                                                                   ;|||
     WinGet, ExStyle, ExStyle, ahk_id %w%                                                                           ;|||
-																												   ;|||
+                                                                                                                   ;|||
     if (ExStyle & 0x8)                                                                                             ;|||
-																												   ;|||
+                                                                                                                   ;|||
     oTop = 置顶                                                                                                    ;|||
-																												   ;|||
+                                                                                                                   ;|||
     else                                                                                                           ;|||
-																												   ;|||
+                                                                                                                   ;|||
     oTop = 取消置顶                                                                                                ;|||
-																												   ;|||
+                                                                                                                   ;|||
     tooltip %oTitle% %oTop%                                                                                        ;|||
-																												   ;|||
+                                                                                                                   ;|||
     SetTimer, RemoveToolTip, 1000                                                                                  ;|||
-																												   ;|||
+                                                                                                                   ;|||
     return                                                                                                         ;|||
-																												   ;|||
+                                                                                                                   ;|||
     RemoveToolTip:                                                                                                 ;|||
-																												   ;|||
+                                                                                                                   ;|||
     SetTimer, RemoveToolTip, Off                                                                                   ;|||
-																												   ;|||
+                                                                                                                   ;|||
     ToolTip                                                                                                        ;|||
-																												   ;|||
+                                                                                                                   ;|||
     return                                                                                                         ;|||
-																												   ;|||
+                                                                                                                   ;|||
 }                                                                                                                  ;|||
