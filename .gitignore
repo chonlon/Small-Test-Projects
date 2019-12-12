@@ -15,8 +15,9 @@
 #enable python files
 !*.py
 
-#enable ahk files
+#enable scipt files
 !*.ahk
+!*.bat
 
 #enable res files
 !*.jpg
