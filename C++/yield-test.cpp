@@ -40,7 +40,7 @@ int main()
 {
     auto start = std::chrono::high_resolution_clock::now();
  
-    little_sleep(std::chrono::microseconds(10));
+    little_sleep(std::chrono::microseconds(100));
  
     auto elapsed = std::chrono::high_resolution_clock::now() - start;
     std::cout << "waited for "
