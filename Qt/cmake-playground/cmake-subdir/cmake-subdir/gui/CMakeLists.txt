@@ -1,13 +1,3 @@
-cmake_minimum_required(VERSION 3.0.2)
-project(cmake_subdir)
-
-
-set(CMAKE_AUTOMOC ON)
-set(CMAKE_AUTORCC ON)
-set(CMAKE_AUTOUIC ON)
-set(CMAKE_INCLUDE_CURRENT_DIR ON)
-include_directories(${CMAKE_CURRENT_LIST_DIR})
-find_package(Qt5 COMPONENTS Core Gui Widgets)
 set(
 	GUISRC
 	widget.ui
