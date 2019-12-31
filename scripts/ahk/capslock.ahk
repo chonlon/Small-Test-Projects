@@ -4,52 +4,53 @@
 ;-----------------------------------------------------------------------------;|||
 ;-----------------------------------------------------------------------------;|||
 
-;------------------------依赖函数---------------------
-;获取选中的文字
-getSelText()
-{
-    ;ClipboardOld:=ClipboardAll
-    Clipboard:=""
-    SendInput, ^{insert}
-    ClipWait, 2
-    if(!ErrorLevel)
-    {
-        selText:=Clipboard
-        ;Clipboard:=ClipboardOld
-        StringRight, lastChar, selText, 1
-        return selText
-    }
-    ;Clipboard:=ClipboardOld
-    return
-}
-
-;绕过输入法
-ascinput(string){
-u :=  A_IsUnicode ? 2 : 1 ;Unicode版ahk字符长度是2
-length:=StrPut(string,"CP0")
-if(A_IsUnicode)
-    {
-    VarSetCapacity(address,length),StrPut(string,&address,"CP0")
-    }
-else
-    address:=string
-VarSetCapacity(out,2*length*u)
-index =0
-Loop
-{
-index += 1
-if (index>length-1)
-    Break
-asc := NumGet(address,index-1,"UChar")
-if asc > 126
-    {
-    index += 1
-    asc2 := NumGet(address,index-1,"UChar")
-    asc := asc*256+asc2
-    }
-SendInput, % "{ASC " asc "}"
-}
-}
+;------------------------依赖函数---------------------------------------------;|||
+;获取选中的文字                                                               ;|||
+getSelText()                                                                  ;|||
+{                                                                             ;|||
+    ;ClipboardOld:=ClipboardAll                                               ;|||
+    Clipboard:=""                                                             ;|||
+    SendInput, ^{insert}                                                      ;|||
+    ClipWait, 2                                                               ;|||
+    if(!ErrorLevel)                                                           ;|||
+    {                                                                         ;|||
+        selText:=Clipboard                                                    ;|||
+        ;Clipboard:=ClipboardOld                                              ;|||
+        StringRight, lastChar, selText, 1                                     ;|||
+        return selText                                                        ;|||
+    }                                                                         ;|||
+    ;Clipboard:=ClipboardOld                                                  ;|||
+    return                                                                    ;|||
+}                                                                             ;|||
+																	          ;|||
+;绕过输入法                                                                   ;|||
+ascinput(string){                                                             ;|||
+u :=  A_IsUnicode ? 2 : 1 ;Unicode版ahk字符长度是2                            ;|||
+length:=StrPut(string,"CP0")                                                  ;|||
+if(A_IsUnicode)                                                               ;|||
+    {                                                                         ;|||
+    VarSetCapacity(address,length),StrPut(string,&address,"CP0")              ;|||
+    }                                                                         ;|||
+else                                                                          ;|||
+    address:=string                                                           ;|||
+VarSetCapacity(out,2*length*u)                                                ;|||
+index =0                                                                      ;|||
+Loop                                                                          ;|||
+{                                                                             ;|||
+index += 1                                                                    ;|||
+if (index>length-1)                                                           ;|||
+    Break                                                                     ;|||
+asc := NumGet(address,index-1,"UChar")                                        ;|||
+if asc > 126                                                                  ;|||
+    {                                                                         ;|||
+    index += 1                                                                ;|||
+    asc2 := NumGet(address,index-1,"UChar")                                   ;|||
+    asc := asc*256+asc2                                                       ;|||
+    }                                                                         ;|||
+SendInput, % "{ASC " asc "}"                                                  ;|||
+}                                                                             ;|||
+}                                                                             ;|||
+;-----------------------------------------------------------------------------;|||
 
 ;--------------------------------------------------------;|||
 ;取消CapsLock与某些键按下时会改变大写锁定状态------------;|||
@@ -91,89 +92,6 @@ Shift & Capslock::                                                              
     SetCapsLockState, % GetKeyState("CapsLock", "T") ? "Off" : "On"                       ;|||
 return                                                                                    ;|||
 ;-----------------------------------------------------------------------------------------;|||
-
-;----------------------- 调用wox的有道翻译插件实现翻译功能--------------------------------;|||
-!t::                                                                                      ;|||
-  ;获取选中的文字                                                                         ;|||
-  ClipSaved := ClipboardAll                                                               ;|||
-  selText:=getSelText()                                                                   ;|||
-                                                                                          ;|||
- ; 发送 Listary的呼出快捷键），呼出Listary                                                ;|||
-  SendInput, !^+f                                                                         ;|||
-                                                                                          ;|||
-  ; 等待 Listary 输入框打开                                                               ;|||
-  sleep, 50                                                                               ;|||
-                                                                                          ;|||
-  ; 如果有选中文字的话                                                                    ;|||
-  if(selText){                                                                            ;|||
-    selText:="fy " . selText                                                              ;|||
-    ;ClipSaved := ClipboardAll       ; save clipboard                                     ;|||
-    clipboard := selText                                                                  ;|||
-     ClipWait, 2                                                                          ;|||
-     Send, ^v                                                                             ;|||
-     clipboard := ClipSaved                                                               ;|||
-    }                                                                                     ;|||
-    else                                                                                  ;|||
-    {                                                                                     ;|||
-        ascinput("fy ")                                                                   ;|||
-    }                                                                                     ;|||
-    SendInput, {Alt}                                                                      ;|||
-return                                                                                    ;|||
-;-----------------------------------------------------------------------------------------;|||
-
-
-
-;-------------------------------------------调用listary-----------------------------------;|||
-Capslock & q::                                                                            ;|||
- ; 获取选中的文字                                                                         ;|||
-  ClipSaved := ClipboardAll                                                               ;|||
-  selText:=getSelText()                                                                   ;|||
-                                                                                          ;|||
-  ; 发送 Listary的呼出快捷键），呼出Listary                                               ;|||
-  SendInput, !^+f                                                                         ;|||
-                                                                                          ;|||
-  ; 等待 Listary 输入框打开                                                               ;|||
-  sleep, 200                                                                              ;|||
-                                                                                          ;|||
-  ; 如果有选中文字的话                                                                    ;|||
-  if(selText){                                                                            ;|||
-    ;ClipSaved := ClipboardAll       ; save clipboard                                     ;|||
-    clipboard := selText                                                                  ;|||
-     ClipWait, 2                                                                          ;|||
-     Send, ^v                                                                             ;|||
-     clipboard := ClipSaved                                                               ;|||
-    sendInput, {home}                                                                     ;|||
-    }                                                                                     ;|||
-                                                                                          ;|||
-return                                                                                    ;|||
-;=========================================================================================;|||
-
-;-------------------------------------------打开程序并等待 -----------------------------------;|||
-^q::                                                                            ;|||
- ; 获取选中的文字                                                                         ;|||
-  ClipSaved := ClipboardAll                                                               ;|||
-  selText:=getSelText()                                                                   ;|||
-                                                                                          ;|||
-  ; 发送 Listary的呼出快捷键），呼出Listary                                               ;|||
-  SendInput, !^+j                                                                         ;|||
-                                                                                          ;|||
-  ; 等待 Listary 输入框打开                                                               ;|||
-  sleep, 1000                                                                             ;|||
-                                                                                          ;|||
-  ; 如果有选中文字的话                                                                    ;|||
-  if(selText){                                                                            ;|||
-    ;ClipSaved := ClipboardAll       ; save clipboard                                     ;|||
-    clipboard := selText                                                                  ;|||
-     ClipWait, 2                                                                          ;|||
-     Send, ^v                                                                             ;|||
-     clipboard := ClipSaved                                                               ;|||
-    sendInput, {home}                                                                     ;|||
-   }                                                                                      ;|||
-                                                                                          ;|||
-return                                                                                    ;|||
-;=========================================================================================;|||
-
-
 
 
 ;-------------------------Capslock快捷键--------------------------------------------------;|||
@@ -258,7 +176,7 @@ Capslock & r::                          ;||                                     
  SendInput,+{home}                      ;||                                               ;|||
  SendInput,{bs}                         ;||                                               ;|||
     Return                              ;||                                               ;|||
-========================================;||                                               ;|||
+;=======================================;||                                               ;|||
 ;;打开f盘                                                                                 ;|||
 ;Capslock & w::                                                                           ;|||
 ; Run, explore F:                                                                         ;|||
@@ -587,3 +505,89 @@ WinTopToggle(w) {                                                               
     return                                                                                                         ;|||
                                                                                                                    ;|||
 }                                                                                                                  ;|||
+;------------------------------------------------------------------------------------------------------------------;|||
+
+
+
+;----------------------- 调用wox的有道翻译插件实现翻译功能--------------------------------;|||
+!t::                                                                                      ;|||
+  ;获取选中的文字                                                                         ;|||
+  ClipSaved := ClipboardAll                                                               ;|||
+  selText:=getSelText()                                                                   ;|||
+                                                                                          ;|||
+ ; 发送 Listary的呼出快捷键），呼出Listary                                                ;|||
+  SendInput, !^+f                                                                         ;|||
+                                                                                          ;|||
+  ; 等待 Listary 输入框打开                                                               ;|||
+  sleep, 50                                                                               ;|||
+                                                                                          ;|||
+  ; 如果有选中文字的话                                                                    ;|||
+  if(selText){                                                                            ;|||
+    selText:="fy " . selText                                                              ;|||
+    ;ClipSaved := ClipboardAll       ; save clipboard                                     ;|||
+    clipboard := selText                                                                  ;|||
+     ClipWait, 2                                                                          ;|||
+     Send, ^v                                                                             ;|||
+     clipboard := ClipSaved                                                               ;|||
+    }                                                                                     ;|||
+    else                                                                                  ;|||
+    {                                                                                     ;|||
+        ascinput("fy ")                                                                   ;|||
+    }                                                                                     ;|||
+    SendInput, {Alt}                                                                      ;|||
+return                                                                                    ;|||
+;-----------------------------------------------------------------------------------------;|||
+
+
+
+;-------------------------------------------调用listary-----------------------------------;|||
+Capslock & q::                                                                            ;|||
+ ; 获取选中的文字                                                                         ;|||
+  ClipSaved := ClipboardAll                                                               ;|||
+  selText:=getSelText()                                                                   ;|||
+                                                                                          ;|||
+  ; 发送 Listary的呼出快捷键），呼出Listary                                               ;|||
+  SendInput, !^+f                                                                         ;|||
+                                                                                          ;|||
+  ; 等待 Listary 输入框打开                                                               ;|||
+  sleep, 200                                                                              ;|||
+                                                                                          ;|||
+  ; 如果有选中文字的话                                                                    ;|||
+  if(selText){                                                                            ;|||
+    ;ClipSaved := ClipboardAll       ; save clipboard                                     ;|||
+    clipboard := selText                                                                  ;|||
+     ClipWait, 2                                                                          ;|||
+     Send, ^v                                                                             ;|||
+     clipboard := ClipSaved                                                               ;|||
+    sendInput, {home}                                                                     ;|||
+    }                                                                                     ;|||
+                                                                                          ;|||
+return                                                                                    ;|||
+;=========================================================================================;|||
+
+
+
+;-------------------------------------------打开程序并等待 -------------------------------;|||
+^q::                                                                                      ;|||
+ ; 获取选中的文字                                                                         ;|||
+  ClipSaved := ClipboardAll                                                               ;|||
+  selText:=getSelText()                                                                   ;|||
+                                                                                          ;|||
+  ; 发送 Listary的呼出快捷键），呼出Listary                                               ;|||
+  SendInput, !^+j                                                                         ;|||
+                                                                                          ;|||
+  ; 等待 Listary 输入框打开                                                               ;|||
+  sleep, 1000                                                                             ;|||
+                                                                                          ;|||
+  ; 如果有选中文字的话                                                                    ;|||
+  if(selText){                                                                            ;|||
+    ;ClipSaved := ClipboardAll       ; save clipboard                                     ;|||
+    clipboard := selText                                                                  ;|||
+     ClipWait, 2                                                                          ;|||
+     Send, ^v                                                                             ;|||
+     clipboard := ClipSaved                                                               ;|||
+    sendInput, {home}                                                                     ;|||
+   }                                                                                      ;|||
+                                                                                          ;|||
+return                                                                                    ;|||
+;=========================================================================================;|||
