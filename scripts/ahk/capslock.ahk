@@ -1,4 +1,8 @@
-﻿
+﻿;-----------------------------------------------------------------------------;|||
+;-----------------------------------------------------------------------------;|||
+;注释在非等宽字体可能排版会有一点点问题, 如果你觉得不舒服的话换个等宽字体好啦 ;|||
+;-----------------------------------------------------------------------------;|||
+;-----------------------------------------------------------------------------;|||
 
 ;------------------------依赖函数---------------------
 ;获取选中的文字
@@ -7,7 +11,7 @@ getSelText()
     ;ClipboardOld:=ClipboardAll
     Clipboard:=""
     SendInput, ^{insert}
-    ClipWait, 0.1
+    ClipWait, 2
     if(!ErrorLevel)
     {
         selText:=Clipboard
@@ -75,6 +79,7 @@ Capslock & 7::return                                     ;|||
 Capslock & 8::return                                     ;|||
 ;Capslock & 9::return                                    ;|||
 Capslock & 0::return                                     ;|||
+Capslock & Tab::return								     ;|||
 ;--------------------------------------------------------;|||
 
 
@@ -104,7 +109,7 @@ return                                                                          
     selText:="fy " . selText                                                              ;|||
     ;ClipSaved := ClipboardAll       ; save clipboard                                     ;|||
     clipboard := selText                                                                  ;|||
-     ClipWait, 0.1                                                                        ;|||
+     ClipWait, 2                                                                          ;|||
      Send, ^v                                                                             ;|||
      clipboard := ClipSaved                                                               ;|||
     }                                                                                     ;|||
@@ -128,17 +133,42 @@ Capslock & q::                                                                  
   SendInput, !^+f                                                                         ;|||
                                                                                           ;|||
   ; 等待 Listary 输入框打开                                                               ;|||
-  sleep, 50                                                                               ;|||
+  sleep, 200                                                                              ;|||
                                                                                           ;|||
   ; 如果有选中文字的话                                                                    ;|||
   if(selText){                                                                            ;|||
     ;ClipSaved := ClipboardAll       ; save clipboard                                     ;|||
     clipboard := selText                                                                  ;|||
-     ClipWait, 0.1                                                                        ;|||
+     ClipWait, 2                                                                          ;|||
      Send, ^v                                                                             ;|||
      clipboard := ClipSaved                                                               ;|||
     sendInput, {home}                                                                     ;|||
     }                                                                                     ;|||
+                                                                                          ;|||
+return                                                                                    ;|||
+;=========================================================================================;|||
+
+;-------------------------------------------打开程序并等待 -----------------------------------;|||
+^q::                                                                            ;|||
+ ; 获取选中的文字                                                                         ;|||
+  ClipSaved := ClipboardAll                                                               ;|||
+  selText:=getSelText()                                                                   ;|||
+                                                                                          ;|||
+  ; 发送 Listary的呼出快捷键），呼出Listary                                               ;|||
+  SendInput, !^+j                                                                         ;|||
+                                                                                          ;|||
+  ; 等待 Listary 输入框打开                                                               ;|||
+  sleep, 1000                                                                             ;|||
+                                                                                          ;|||
+  ; 如果有选中文字的话                                                                    ;|||
+  if(selText){                                                                            ;|||
+    ;ClipSaved := ClipboardAll       ; save clipboard                                     ;|||
+    clipboard := selText                                                                  ;|||
+     ClipWait, 2                                                                          ;|||
+     Send, ^v                                                                             ;|||
+     clipboard := ClipSaved                                                               ;|||
+    sendInput, {home}                                                                     ;|||
+   }                                                                                      ;|||
                                                                                           ;|||
 return                                                                                    ;|||
 ;=========================================================================================;|||
@@ -189,19 +219,19 @@ Capslock & l::          ;||                                                     
 ;=======================;||                                                               ;|||
                                                                                           ;|||
 ;====左右选一个词=======;||                                                               ;|||
-Capslock & h::          ;||                                                               ;|||
+Capslock & u::          ;||                                                               ;|||
     SendInput,^+{left}  ;||                                                               ;|||
     Return              ;||                                                               ;|||
-Capslock & `;::         ;||                                                               ;|||
+Capslock & o::          ;||                                                               ;|||
     SendInput,^+{right} ;||                                                               ;|||
     Return              ;||                                                               ;|||
 ;=======================;||                                                               ;|||
                                                                                           ;|||
 ;======其它=============================;||                                               ;|||
-Capslock & u::                          ;||                                               ;|||
+Capslock & h::                          ;||                                               ;|||
     SendInput,+{home}                   ;||                                               ;|||
     Return                              ;||                                               ;|||
-Capslock & o::                          ;||                                               ;|||
+Capslock & `;::                         ;||                                               ;|||
     SendInput,+{end}                    ;||                                               ;|||
     Return                              ;||                                               ;|||
                                         ;||                                               ;|||
@@ -259,7 +289,7 @@ Capslock & 9::                                                                  
     selText:=getSelText()                                                                 ;|||
     selText:="(" selText ")"                                                              ;|||
     clipboard := selText                                                                  ;|||
-     ClipWait, 0.1                                                                        ;|||
+     ClipWait, 2                                                                          ;|||
      Send, ^v                                                                             ;|||
      clipboard := ClipSaved                                                               ;|||
     return                                                                                ;|||
@@ -268,7 +298,7 @@ Capslock & [::                                                                  
     selText:=getSelText()                                                                 ;|||
     selText:="{" selText "}"                                                              ;|||
     clipboard := selText                                                                  ;|||
-     ClipWait, 0.1                                                                        ;|||
+     ClipWait, 2                                                                          ;|||
      Send, ^v                                                                             ;|||
      clipboard := ClipSaved                                                               ;|||
     return                                                                                ;|||
@@ -277,7 +307,7 @@ Capslock & ]::                                                                  
     selText:=getSelText()                                                                 ;|||
     selText:="[" selText "]"                                                              ;|||
     clipboard := selText                                                                  ;|||
-     ClipWait, 0.1                                                                        ;|||
+     ClipWait, 2                                                                          ;|||
      Send, ^v                                                                             ;|||
      clipboard := ClipSaved                                                               ;|||
     return                                                                                ;|||
@@ -288,7 +318,7 @@ Capslock & ]::                                                                  
     selText:=var . selText                                                                ;|||
     selText:=selText . var                                                                ;|||
     clipboard := selText                                                                  ;|||
-     ClipWait, 0.1                                                                        ;|||
+     ClipWait, 2                                                                          ;|||
      Send, ^v                                                                             ;|||
      clipboard := ClipSaved                                                               ;|||
     return                                                                                ;|||
