@@ -40,7 +40,9 @@ GroupAdd,editor,ahk_exe devenv.exe  ;Visual Studio                              
 GroupAdd,editor,ahk_exe Code.exe  ;Visual Studio                                                                   ;|||
 GroupAdd,editor,ahk_exe notepad.exe ;记事本                                                                        ;|||
 GroupAdd,editor,ahk_class Notepad++                                                                                ;|||
-																												   ;|||
+
+GroupAdd,visualstudio,ahk_exe devenv.exe
+GroupAdd,visualstudiocode,ahk_exe Code.exe																												   ;|||
 																												   ;|||
 																												   ;|||
 																												   ;|||
@@ -140,42 +142,60 @@ ShellMessage( wParam,lParam ) {                                                 
 #IfWinActive,ahk_group editor                                                                                      ;|||
 :*:// ::                                                                                                           ;|||
 	;//加空格 时 切换到中文输入法                                                                                  ;|||
-	setEnglishLayout()                                                                                             ;|||
 	sendbyclip("//")                                                                                               ;|||
 	setChineseLayout()                                                                                             ;|||
 return                                                                                                             ;|||
 :Z*:///::                                                                                                          ;|||
 	;///注释时 切换到中文输入法（也可以输入///加空格）                                                             ;|||
-	setEnglishLayout()                                                                                             ;|||
 	sendbyclip("//")                                                                                               ;|||
 	SendInput /                                                                                                    ;|||
 	setChineseLayout()                                                                                             ;|||
 return                                                                                                             ;|||
 :*:" ::                                                                                                            ;|||
 	;引号加空格 时 切换到中文输入法                                                                                ;|||
-	setEnglishLayout()                                                                                             ;|||
 	SendInput "                                                                                                    ;|||
 	setChineseLayout()                                                                                             ;|||
 return                                                                                                             ;|||
 :*:`;`n::                                                                                                          ;|||
 	;分号加回车 时 切换的英文输入法                                                                                ;|||
-	setEnglishLayout()                                                                                             ;|||
 	sendbyclip(";")                                                                                                ;|||
 	SendInput `n                                                                                                   ;|||
 return                                                                                                             ;|||
-:Z?*:`;`;::                                                                                                        ;|||
+:Z?*:`;`;`;::                                                                                                      ;|||
 	;两个分号时 切换的英文输入法                                                                                   ;|||
 	setEnglishLayout()                                                                                             ;|||
 return                                                                                                             ;|||
-:Z?*:  ::                                                                                                          ;|||
+:Z?*:   ::                                                                                                         ;|||
 	;输入两个空格 切换的中文输入法                                                                                 ;|||
-	setEnglishLayout()                                                                                             ;|||
 	setChineseLayout()                                                                                             ;|||
 return                                                                                                             ;|||
-																												   ;|||
 #IfWinActive                                                                                                       ;|||
 ;------------------------------------------------------------------------------------------------------------------;|||
 
+;switch header & source between editors.
+^1::
+	IfWinActive,ahk_group visualstudio                                                                                   
+	{                                                                                                          
+		SendInput, ^k
+		Sleep, 100
+		SendInput, ^o
+		return                                                                                             
+	}
+	IfWinActive,ahk_group visualstudiocode                                                                                   
+	{                                                                                                          
+		SendInput, !o
+		return                                                                                             
+	}
+	return
+
+^Space::
+	Sleep, 500
+	SendInput, #{Space}
+	return
+
+
+
+#IfWinActive,ahk_group visualstudio 
 Numpad0::
 	SendInput, {F5}
 	return
@@ -189,11 +209,7 @@ Numpad2::
 Numpad3::
 	SendInput, +{F11}
 	return
-^1::
-	SendInput, ^k
-	Sleep, 10
-	SendInput, ^o
-	return
+
 Numpad6::
 	SendInput, !g
 	return
@@ -210,6 +226,7 @@ Numpad8::
 	SendInput, ^k
 	SendInput, ^u
 	return
+#IfWinActive 
 
 
 ;暂停脚本
