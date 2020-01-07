@@ -120,16 +120,12 @@ Capslock & f::        ;||                                                       
 ;===shfit+上下左右======;||                                                               ;|||
 Capslock & i::          ;||                                                               ;|||
  SendInput,+{up}        ;||                                                               ;|||
- SendInput,+{home}      ;||                                                               ;|||
     Return              ;||                                                               ;|||
 Capslock & j::          ;||                                                               ;|||
  SendInput,+{left}      ;||                                                               ;|||
     Return              ;||                                                               ;|||
 Capslock & k::          ;||                                                               ;|||
- SendInput,{home}       ;||                                                               ;|||
- SendInput,+{end}       ;||                                                               ;|||
  SendInput,+{down}      ;||                                                               ;|||
- SendInput,+{end}       ;||                                                               ;|||
     Return              ;||                                                               ;|||
 Capslock & l::          ;||                                                               ;|||
     SendInput,+{right}  ;||                                                               ;|||
