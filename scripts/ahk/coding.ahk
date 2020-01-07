@@ -64,13 +64,15 @@ setChineseLayout(){                                                             
 	; send {Ctrl Down}{Shift}                                                                                      ;|||
 	; send {Ctrl Down},                                                                                            ;|||
 	; send {Ctrl Down}{Shift}                                                                                      ;|||
-	; send {Ctrl Down},                                                                                            ;|||
-	; send {Ctrl Up}                                                                                               ;|||
-	send !+0                                                                                                       ;|||
+	send {Ctrl Down},                                                                                            ;|||
+	send {Ctrl Up}                                                                                               ;|||
+	;send !+0                                                                                                       ;|||
 }                                                                                                                  ;|||
 setEnglishLayout(){                                                                                                ;|||
 	;发送英文输入法切换快捷键，请根据实际情况设置。                                                                ;|||
-	send !+1                                                                                                       ;|||
+	setChineseLayout()
+	Sleep,100
+	SendInput, #{Space}                                                                                            ;|||
 }                                                                                                                  ;|||
 																												   ;|||
 ;监控消息回调ShellMessage，并自动设置输入法                                                                        ;|||

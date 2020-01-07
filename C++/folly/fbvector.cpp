@@ -15,8 +15,11 @@ int main() {
         if(_capacity != same_marker) {
             std::cout << _capacity << "\n";
             same_marker = _capacity;
-            
         }
+    }
+    folly::fbvector<folly::fbstring> strings{"1", "1", "1"};
+    for(auto i = 4; i < 10000; ++i) {
+        strings.push_back("1");
     }
     std::cout << "<===================================>\n";
     std::vector<int> sv{1, 2, 3};
