@@ -34,7 +34,7 @@ GroupAdd,cn32772,ahk_exe DingTalk.exe  ;TIM                                     
 GroupAdd,en32772,ahk_class Listary_WidgetWin_0                                                                     ;|||
 GroupAdd,en32772,ahk_exe Code.exe  ;Visual Studio                                                                  ;|||
 GroupAdd,en32772,ahk_exe devenv.exe  ;Visual Studio                                                                ;|||
-																												   ;|||
+                                                                                                                   ;|||
 ;编辑器分组                                                                                                        ;|||
 GroupAdd,editor,ahk_exe devenv.exe  ;Visual Studio                                                                 ;|||
 GroupAdd,editor,ahk_exe Code.exe  ;Visual Studio                                                                   ;|||
@@ -42,7 +42,7 @@ GroupAdd,editor,ahk_exe notepad.exe ;记事本                                  
 GroupAdd,editor,ahk_class Notepad++                                                                                ;|||
 
 GroupAdd,visualstudio,ahk_exe devenv.exe
-GroupAdd,visualstudiocode,ahk_exe Code.exe																												   ;|||
+GroupAdd,visualstudiocode,ahk_exe Code.exe																		   ;|||
 																												   ;|||
 																												   ;|||
 																												   ;|||
@@ -64,14 +64,14 @@ setChineseLayout(){                                                             
 	; send {Ctrl Down}{Shift}                                                                                      ;|||
 	; send {Ctrl Down},                                                                                            ;|||
 	; send {Ctrl Down}{Shift}                                                                                      ;|||
-	send {Ctrl Down},                                                                                            ;|||
-	send {Ctrl Up}                                                                                               ;|||
-	;send !+0                                                                                                       ;|||
+	send {Ctrl Down},                                                                                              ;|||
+	send {Ctrl Up}                                                                                                 ;|||
+	;send !+0                                                                                                      ;|||
 }                                                                                                                  ;|||
 setEnglishLayout(){                                                                                                ;|||
 	;发送英文输入法切换快捷键，请根据实际情况设置。                                                                ;|||
 	setChineseLayout()
-	Sleep,100
+	Sleep,150
 	SendInput, #{Space}                                                                                            ;|||
 }                                                                                                                  ;|||
 																												   ;|||
