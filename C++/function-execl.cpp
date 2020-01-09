@@ -10,12 +10,14 @@ int main() {
     running_process_id = fork();
     // 在子进程中运行command, 并记录pid, 准备在下面kill之.
     if(running_process_id == 0) {
-        execl("/usr/bin/python3.6", "python3", "1.py", NULL);
+        execl("/usr/bin/python3.6", "python3", "../scripts/python/loopandprint1.py", NULL);
         exit(1);
     }
 
-    for(int i = 0; i <10000; ++i) {
-        std::this_thread::sleep_for(std::chrono::milliseconds(1));
+    if(running_process_id != 0) {
+        for(int i = 0; i <10000; ++i) {
+            std::this_thread::sleep_for(std::chrono::milliseconds(1));
+        }
+        kill(running_process_id, 15);
     }
-    kill(running_process_id, 15);
 }
