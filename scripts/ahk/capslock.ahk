@@ -569,11 +569,11 @@ return                                                                          
   ClipSaved := ClipboardAll                                                               ;|||
   selText:=getSelText()                                                                   ;|||
                                                                                           ;|||
-  ; 发送 Listary的呼出快捷键），呼出Listary                                               ;|||
   SendInput, !^+j                                                                         ;|||
                                                                                           ;|||
   ; 等待 Listary 输入框打开                                                               ;|||
-  sleep, 1000                                                                             ;|||
+  WinWaitActive, [ 在线翻译, "", 1, "", ""]
+  sleep, 100                                                                             ;|||
                                                                                           ;|||
   ; 如果有选中文字的话                                                                    ;|||
   if(selText){                                                                            ;|||
