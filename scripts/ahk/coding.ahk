@@ -28,11 +28,11 @@ GroupAdd,en,ahk_class Listary_WidgetWin_0                                       
 																												   ;|||
 ;窗口切换时，切换到中文输入法                                                                                      ;|||
 GroupAdd,cn32772,ahk_exe TIM.exe  ;TIM                                                                             ;|||
-GroupAdd,cn32772,ahk_exe DingTalk.exe  ;TIM                                                                        ;|||
-																												   ;|||
+GroupAdd,cn32772,ahk_exe DingTalk.exe  ;钉钉                                                                       ;|||
+GroupAdd,cn32772,ahk_exe chrome.exe	;谷歌浏览器																	   ;|||
 ;窗口切换时，切换到英文输入法                                                                                      ;|||
 GroupAdd,en32772,ahk_class Listary_WidgetWin_0                                                                     ;|||
-GroupAdd,en32772,ahk_exe Code.exe  ;Visual Studio                                                                  ;|||
+GroupAdd,en32772,ahk_exe Code.exe  ;Visual Studio Code                                                             ;|||
 GroupAdd,en32772,ahk_exe devenv.exe  ;Visual Studio                                                                ;|||
                                                                                                                    ;|||
 ;编辑器分组                                                                                                        ;|||
@@ -40,8 +40,8 @@ GroupAdd,editor,ahk_exe devenv.exe  ;Visual Studio                              
 GroupAdd,editor,ahk_exe Code.exe  ;Visual Studio                                                                   ;|||
 GroupAdd,editor,ahk_exe notepad.exe ;记事本                                                                        ;|||
 GroupAdd,editor,ahk_class Notepad++                                                                                ;|||
-
-GroupAdd,visualstudio,ahk_exe devenv.exe
+                                                                                                                   ;|||
+GroupAdd,visualstudio,ahk_exe devenv.exe                                                                           ;|||
 GroupAdd,visualstudiocode,ahk_exe Code.exe																		   ;|||
 																												   ;|||
 																												   ;|||
@@ -70,9 +70,9 @@ setChineseLayout(){                                                             
 }                                                                                                                  ;|||
 setEnglishLayout(){                                                                                                ;|||
 	;发送英文输入法切换快捷键，请根据实际情况设置。                                                                ;|||
-	setChineseLayout()
-	Sleep,150
-	SendInput, #{Space}                                                                                            ;|||
+	setChineseLayout()                                                                                             ;|||
+	send {LWin Down}{Space}                                                                                        ;|||
+	send {LWin Up}                                                                                                 ;|||
 }                                                                                                                  ;|||
 																												   ;|||
 ;监控消息回调ShellMessage，并自动设置输入法                                                                        ;|||
@@ -142,12 +142,12 @@ ShellMessage( wParam,lParam ) {                                                 
 																												   ;|||
 ;在所有编辑器中自动切换中英文输入法                                                                                ;|||
 #IfWinActive,ahk_group editor                                                                                      ;|||
-:*:// ::                                                                                                           ;|||
+:*://  ::                                                                                                          ;|||
 	;//加空格 时 切换到中文输入法                                                                                  ;|||
-	sendbyclip("//")                                                                                               ;|||
+	sendbyclip("// ")                                                                                              ;|||
 	setChineseLayout()                                                                                             ;|||
 return                                                                                                             ;|||
-:Z*:///::                                                                                                          ;|||
+:Z*:/// ::                                                                                                         ;|||
 	;///注释时 切换到中文输入法（也可以输入///加空格）                                                             ;|||
 	sendbyclip("//")                                                                                               ;|||
 	SendInput /                                                                                                    ;|||
@@ -160,6 +160,77 @@ return                                                                          
 return                                                                                                             ;|||
 #IfWinActive                                                                                                       ;|||
 ;------------------------------------------------------------------------------------------------------------------;|||
+
+;------------------------------------------------------------------------------------------------------------------;|||
+;======================编辑器中的小键盘改成调试功能================================================================;|||
+;------------------------------------------------------------------------------------------------------------------;|||
+#IfWinActive,ahk_group visualstudio                                                                                ;|||
+Numpad0::                                                                                                          ;|||
+	SendInput, {F5}                                                                                                ;|||
+	return                                                                                                         ;|||
+Numpad1::                                                                                                          ;|||
+	SendInput, {F11}                                                                                               ;|||
+	return                                                                                                         ;|||
+Numpad2::                                                                                                          ;|||
+	SendInput, {F10}                                                                                               ;|||
+	return                                                                                                         ;|||
+;step out                                                                                                          ;|||
+Numpad3::                                                                                                          ;|||
+	SendInput, +{F11}                                                                                              ;|||
+	return                                                                                                         ;|||
+                                                                                                                   ;|||
+Numpad6::                                                                                                          ;|||
+	SendInput, !g                                                                                                  ;|||
+	return                                                                                                         ;|||
+;断点                                                                                                              ;|||
+Numpad9::                                                                                                          ;|||
+	SendInput, {F9}                                                                                                ;|||
+	return                                                                                                         ;|||
+;注释                                                                                                              ;|||
+Numpad7::                                                                                                          ;|||
+	SendInput, ^k                                                                                                  ;|||
+	SendInput, ^c                                                                                                  ;|||
+	return                                                                                                         ;|||
+Numpad8::                                                                                                          ;|||
+	SendInput, ^k                                                                                                  ;|||
+	SendInput, ^u                                                                                                  ;|||
+	return                                                                                                         ;|||
+#IfWinActive                                                                                                       ;|||
+                                                                                                                   ;|||
+#IfWinActive,ahk_group visualstudiocode                                                                            ;|||
+Numpad0::                                                                                                          ;|||
+	SendInput, {F5}                                                                                                ;|||
+	return                                                                                                         ;|||
+Numpad1::                                                                                                          ;|||
+	SendInput, {F11}                                                                                               ;|||
+	return                                                                                                         ;|||
+Numpad2::                                                                                                          ;|||
+	SendInput, {F10}                                                                                               ;|||
+	return                                                                                                         ;|||
+;step out                                                                                                          ;|||
+Numpad3::                                                                                                          ;|||
+	SendInput, +{F11}                                                                                              ;|||
+	return                                                                                                         ;|||
+                                                                                                                   ;|||
+Numpad6::                                                                                                          ;|||
+	SendInput, !g                                                                                                  ;|||
+	return                                                                                                         ;|||
+;断点                                                                                                              ;|||
+Numpad9::                                                                                                          ;|||
+	SendInput, {F9}                                                                                                ;|||
+	return                                                                                                         ;|||
+;注释                                                                                                              ;|||
+Numpad7::                                                                                                          ;|||
+	SendInput, ^k                                                                                                  ;|||
+	SendInput, ^c                                                                                                  ;|||
+	return                                                                                                         ;|||
+Numpad8::                                                                                                          ;|||
+	SendInput, ^k                                                                                                  ;|||
+	SendInput, ^u                                                                                                  ;|||
+	return                                                                                                         ;|||
+#IfWinActive                                                                                                       ;|||
+;------------------------------------------------------------------------------------------------------------------;|||
+
 
 ;switch header & source between editors.
 ^1::
@@ -178,77 +249,13 @@ return                                                                          
 	return
 
 ^Space::
-	Sleep, 150
-	SendInput, #{Space}
+	Sleep, 300
+	send {LWin Down}{Space}{LWin Up}
 	return
 
 
 
-#IfWinActive,ahk_group visualstudio 
-Numpad0::
-	SendInput, {F5}
-	return
-Numpad1::
-	SendInput, {F11}
-	return
-Numpad2::
-	SendInput, {F10}
-	return
-;step out
-Numpad3::
-	SendInput, +{F11}
-	return
 
-Numpad6::
-	SendInput, !g
-	return
-;断点
-Numpad9::
-	SendInput, {F9}
-	return
-;注释
-Numpad7::
-	SendInput, ^k
-	SendInput, ^c
-	return
-Numpad8::
-	SendInput, ^k
-	SendInput, ^u
-	return
-#IfWinActive 
-
-#IfWinActive,ahk_group visualstudiocode 
-Numpad0::
-	SendInput, {F5}
-	return
-Numpad1::
-	SendInput, {F11}
-	return
-Numpad2::
-	SendInput, {F10}
-	return
-;step out
-Numpad3::
-	SendInput, +{F11}
-	return
-
-Numpad6::
-	SendInput, !g
-	return
-;断点
-Numpad9::
-	SendInput, {F9}
-	return
-;注释
-Numpad7::
-	SendInput, ^k
-	SendInput, ^c
-	return
-Numpad8::
-	SendInput, ^k
-	SendInput, ^u
-	return
-#IfWinActive 
 
 ;暂停脚本
 !^p::Suspend
