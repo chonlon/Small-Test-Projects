@@ -9,7 +9,7 @@ public:
     {
         static int ii{0};
         i = ++ii;
-        std::cout << "ctor " << ++i << "\n";
+        std::cout << "ctor " << i << "\n";
     }
 
     ~res()
@@ -29,7 +29,6 @@ private:
 
 void sptrfoo(std::shared_ptr<res> p)
 {
-    std::cout << std::string{""};
     std::cout << "owner count" << p.use_count() << "\n";
     std::cout << *p;
 }
