@@ -44,7 +44,8 @@
 #enable vscode config files
 !*c_cpp_properties.json
 !*launch.json
-!*task.json
+!*tasks.json
+!*settings.json
 
 #igore qt generate files
 ui*.h
