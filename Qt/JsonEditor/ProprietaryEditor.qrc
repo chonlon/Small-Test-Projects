@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/">
+        <file>Resources/power_input_24px_rounded.jpg</file>
+        <file>Resources/power_input_24px_rounded_hover.jpg</file>
+        <file>Resources/light.qss</file>
+    </qresource>
+</RCC>
