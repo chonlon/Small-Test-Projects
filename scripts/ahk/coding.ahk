@@ -258,7 +258,7 @@ Numpad8::                                                                       
 	return
 
 ^Space::
-	Sleep, 300
+	Sleep, 200
 	send {LWin Down}{Space}{LWin Up}
 	return
 

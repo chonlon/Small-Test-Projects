@@ -20,8 +20,5 @@ int main(int argc, char *argv[])
 
     test->foo();
 
-
-    
-
 	return a.exec();
 }
