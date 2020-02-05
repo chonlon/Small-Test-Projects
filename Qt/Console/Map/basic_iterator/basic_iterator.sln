@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.705
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "basic_iterator", "basic_iterator.vcxproj", "{DEAC3499-D46E-42CC-BA5E-256A54AD32BB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DEAC3499-D46E-42CC-BA5E-256A54AD32BB}.Debug|x64.ActiveCfg = Debug|x64
+		{DEAC3499-D46E-42CC-BA5E-256A54AD32BB}.Debug|x64.Build.0 = Debug|x64
+		{DEAC3499-D46E-42CC-BA5E-256A54AD32BB}.Release|x64.ActiveCfg = Release|x64
+		{DEAC3499-D46E-42CC-BA5E-256A54AD32BB}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7FCC5518-0FB4-45A8-937E-AFC4ABC43849}
+	EndGlobalSection
+EndGlobal
