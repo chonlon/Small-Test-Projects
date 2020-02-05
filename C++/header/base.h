@@ -12,6 +12,7 @@ void printDividing() {
 // classes
 ///////////////////////////////////////////////
 
+/// <summary> base field that count all this class construct time, and print when construct and destruct </summary>
 class BaseField
 {
     int construct_time_;
@@ -31,14 +32,15 @@ public:
     }
 };
 
+/// <summary> an intfield that prints int</summary>
 class IntField : public BaseField
 {
-    int var;
+    int var_;
 
 public:
-    IntField(int _var) : var(_var)
+    IntField(int _var) : var_(_var)
     {
     }
 
-    void print() { std::cout << "Int Field:" << var << "\n"; }
+    void print() { std::cout << "Int Field:" << var_ << "\n"; }
 };
