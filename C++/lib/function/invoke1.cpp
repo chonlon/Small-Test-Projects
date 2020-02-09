@@ -17,6 +17,13 @@ struct Fn {
 
 int main() {
     Fn fn;
-    std::cout << std::invoke(fn, 1, "a") << std::endl;
+
+    auto result = std::invoke(fn, 1, "2");
+    std::cout << result << std::endl;
+    auto cast_bool = static_cast<bool>(result);
+    std::cout << std::boolalpha << cast_bool << std::endl;
+
+    std::cout << std::is_same<char, std::invoke_result_t<Fn, int, int>>::value;
+    
     return 0;
 }
