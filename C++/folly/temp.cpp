@@ -31,7 +31,7 @@ void via3(R (&func)(Args...), Args&&... a) {
 // 这个函数的调用可以和上面使用右值的写法做一个对比.
 template <typename R, typename... Args>
 void via4(R (&func)(Args...), Args... a) {
-    std::cout << "is same? : " << std::boolalpha << std::is_same<R, std::invoke_result_t<decltype(func), Args...>>::value;
+    std::cout << "is same? : " << std::boolalpha << std::is_same<R, std::invoke_result_t<decltype(func), Args...>>::value << std::endl;
     // 不能写作: func(a);
     func(a...);
 }

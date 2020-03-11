@@ -39,6 +39,5 @@ int main()
     std::cout << std::boolalpha << callableWith<decltype(a), int>{}.value << " "
               << callableWith<decltype(a), void>{}.value;
 
-
     ff(9.0);
 }
