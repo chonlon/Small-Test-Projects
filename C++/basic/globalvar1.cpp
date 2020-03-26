@@ -1,7 +1,7 @@
 #define CATCH_CONFIG_MAIN
 
 #include "globalvar1.h"
-#include "Tests/cache2/catch.hpp"
+#include "../Tests/cache2/catch.hpp"
 
 
 const char* pp = "hello";
