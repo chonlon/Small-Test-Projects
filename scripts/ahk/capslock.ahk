@@ -510,16 +510,14 @@ WinTopToggle(w) {                                                               
   ;获取选中的文字                                                                         ;|||
   ClipSaved := ClipboardAll                                                               ;|||
   selText:=getSelText()                                                                   ;|||
-                                                                                          ;|||
- ; 发送 Listary的呼出快捷键），呼出Listary                                                ;|||
-  SendInput, !^+f                                                                         ;|||
+  SendInput, !{Space}                                                                     ;|||
                                                                                           ;|||
   ; 等待 Listary 输入框打开                                                               ;|||
   sleep, 50                                                                               ;|||
                                                                                           ;|||
   ; 如果有选中文字的话                                                                    ;|||
   if(selText){                                                                            ;|||
-    selText:="fy " . selText                                                              ;|||
+    selText:="sl " . selText                                                              ;|||
     ;ClipSaved := ClipboardAll       ; save clipboard                                     ;|||
     clipboard := selText                                                                  ;|||
      ClipWait, 2                                                                          ;|||
@@ -528,7 +526,7 @@ WinTopToggle(w) {                                                               
     }                                                                                     ;|||
     else                                                                                  ;|||
     {                                                                                     ;|||
-        ascinput("fy ")                                                                   ;|||
+        ascinput("sl ")                                                                   ;|||
     }                                                                                     ;|||
     SendInput, {Alt}                                                                      ;|||
 return                                                                                    ;|||
@@ -569,16 +567,15 @@ return                                                                          
   ClipSaved := ClipboardAll                                                               ;|||
   selText:=getSelText()                                                                   ;|||
                                                                                           ;|||
-  SendInput, !^+j                                                                         ;|||
+  SendInput, !{Space}                                                                     ;|||
                                                                                           ;|||
   ; 等待 Listary 输入框打开                                                               ;|||
-  WinWaitActive, [ 在线翻译, "", 1, "", ""]
-  sleep, 100                                                                             ;|||
+  sleep, 100                                                                              ;|||
                                                                                           ;|||
   ; 如果有选中文字的话                                                                    ;|||
   if(selText){                                                                            ;|||
     ;ClipSaved := ClipboardAll       ; save clipboard                                     ;|||
-    clipboard := selText                                                                  ;|||
+    clipboard :=  selText                                                                 ;|||
      ClipWait, 2                                                                          ;|||
      Send, ^v                                                                             ;|||
      clipboard := ClipSaved                                                               ;|||
