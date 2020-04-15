@@ -68,8 +68,8 @@ Capslock & b::return                                     ;|||
 Capslock & ,::return                                     ;|||
 ;Capslock & .::return                                    ;|||
 Capslock & \::return                                     ;|||
-Capslock & -::return                                     ;|||
-Capslock & =::return                                     ;|||
+;Capslock & -::return                                    ;|||
+;Capslock & =::return                                    ;|||
 Capslock & /::return                                     ;|||
                                                          ;|||
                                                          ;|||
@@ -166,19 +166,19 @@ Capslock & g::                          ;||                                     
                                         ;||                                               ;|||
 ;删除一整行                             ;||                                               ;|||
 Capslock & r::                          ;||                                               ;|||
-                                        ;||                                               ;|||
- SendInput,{End}                        ;||                                               ;|||
- SendInput,+{home}                      ;||                                               ;|||
- SendInput,+{home}                      ;||                                               ;|||
- SendInput,{bs}                         ;||                                               ;|||
-    Return                              ;||                                               ;|||
+    SendInput, ^{right}                 ;||                                               ;|||
+    Return                                                                                ;|||
 ;=======================================;||                                               ;|||
 ;;打开f盘                                                                                 ;|||
-;Capslock & w::                                                                           ;|||
-; Run, explore F:                                                                         ;|||
-; ;Run, C:\Program Files (x86)\FreeCommander XE\FreeCommander.exe F:                      ;|||
-; Return                                                                                  ;|||
-                                                                                          ;|||
+Capslock & w::                                                                            ;|||
+    SendInput, ^{left}                                                                    ;|||
+    Return                                                                                ;|||
+CapsLock & =::
+    SendInput, {PgDn}
+    Return
+CapsLock & -::
+    SendInput, {PgUp}
+    Return
  ;选取一整行                                                                              ;|||
  Capslock & Space::                                                                       ;|||
    SendInput,{End}+{home}                                                                 ;|||

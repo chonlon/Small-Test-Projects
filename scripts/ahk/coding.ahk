@@ -64,7 +64,7 @@ setChineseLayout(){                                                             
 	; send {Ctrl Down}{Shift}                                                                                      ;|||
 	; send {Ctrl Down},                                                                                            ;|||
 	; send {Ctrl Down}{Shift}                                                                                      ;|||
-	send {Ctrl Down}                                                                                              ;|||
+	send {Ctrl Down},                                                                                              ;|||
 	send {Ctrl Up}                                                                                                 ;|||
 	;send !+0                                                                                                      ;|||
 }                                                                                                                  ;|||
