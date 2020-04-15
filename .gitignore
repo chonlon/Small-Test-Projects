@@ -26,6 +26,7 @@
 #enable qt files
 !*.ui
 !*.qrc
+!*.qss
 
 #enable doc files
 !*.md
