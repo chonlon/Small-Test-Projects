@@ -7,6 +7,10 @@ namespace Ui {
 class AnimationCheckbox;
 }
 
+class QState;
+class QStateMachine;
+class QSignalTransition;
+
 class AnimationCheckbox : public QWidget
 {
     Q_OBJECT
@@ -17,6 +21,10 @@ public:
 
 private:
     Ui::AnimationCheckbox *ui;
+
+    QStateMachine* state_machine_p_{nullptr};
+    QSignalTransition* checked_transition_p_{nullptr};
+    QSignalTransition* unchecked_transition_p_{nullptr};
 };
 
 #endif // ANIMATIONCHECKBOX_H
