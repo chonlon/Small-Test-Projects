@@ -89,7 +89,7 @@ LAlt & Capslock::                                                               
     SetCapsLockState, % GetKeyState("CapsLock", "T") ? "Off" : "On"                       ;|||
 return                                                                                    ;|||
 Shift & Capslock::                                                                        ;|||
-    SetCapsLockState, % GetKeyState("CapsLock", "T") ? "Off" : "On"                       ;|||
+    ;SetCapsLockState, % GetKeyState("CapsLock", "T") ? "Off" : "On"                      ;|||
 return                                                                                    ;|||
 ;-----------------------------------------------------------------------------------------;|||
 
@@ -99,24 +99,33 @@ Capslock & Backspace::                                                          
     SendInput, {Backspace}                                                                ;|||
     return                                                                                ;|||
                                                                                           ;|||
-;=======上下左右======;||                                                                 ;|||
-Capslock & e::        ;||                                                                 ;|||
-SendInput,{up}        ;||                                                                 ;|||
-return                ;||                                                                 ;|||
-                      ;||                                                                 ;|||
-Capslock & s::        ;||                                                                 ;|||
- SendInput,{left}     ;||                                                                 ;|||
-    return            ;||                                                                 ;|||
-                      ;||                                                                 ;|||
-Capslock & d::        ;||                                                                 ;|||
- SendInput,{down}     ;||                                                                 ;|||
-    Return            ;||                                                                 ;|||
-                      ;||                                                                 ;|||
-Capslock & f::        ;||                                                                 ;|||
- SendInput,{right}    ;||                                                                 ;|||
-    Return            ;||                                                                 ;|||
-;=====================;||                                                                 ;|||
+;=======上下左右==========;||                                                             ;|||
+Capslock & e::            ;||                                                             ;|||
+GetKeyState, state, Ctrl  ;||                                                             ;|||
+if (state = "D")          ;||                                                             ;|||
+    Send, !^+k;代码上移一行;|                                                             ;|||
+else                      ;||                                                             ;|||
+    SendInput,{up}        ;||                                                             ;|||
+return                    ;||                                                             ;|||
+                          ;||                                                             ;|||
+Capslock & s::            ;||                                                             ;|||
+ SendInput,{left}         ;||                                                             ;|||
+    return                ;||                                                             ;|||
+                          ;||                                                             ;|||
+Capslock & d::            ;||                                                             ;|||
+GetKeyState, state, Ctrl  ;||                                                             ;|||
+if (state = "D")          ;||                                                             ;|||
+    Send, !^+{down}       ;||                                                             ;|||
+else                      ;||                                                             ;|||
+    SendInput,{down}      ;||                                                             ;|||
+    Return                ;||                                                             ;|||
+                          ;||                                                             ;|||
+Capslock & f::            ;||                                                             ;|||
+ SendInput,{right}        ;||                                                             ;|||
+    Return                ;||                                                             ;|||
+;=========================;||                                                             ;|||
                                                                                           ;|||
+
 ;===shfit+上下左右======;||                                                               ;|||
 Capslock & i::          ;||                                                               ;|||
  SendInput,+{up}        ;||                                                               ;|||
@@ -173,12 +182,12 @@ Capslock & r::                          ;||                                     
 Capslock & w::                                                                            ;|||
     SendInput, ^{left}                                                                    ;|||
     Return                                                                                ;|||
-CapsLock & =::
-    SendInput, {PgDn}
-    Return
-CapsLock & -::
-    SendInput, {PgUp}
-    Return
+CapsLock & =::                                                                            ;|||
+    SendInput, {PgDn}                                                                     ;|||
+    Return                                                                                ;|||
+CapsLock & -::                                                                            ;|||
+    SendInput, {PgUp}                                                                     ;|||
+    Return                                                                                ;|||
  ;选取一整行                                                                              ;|||
  Capslock & Space::                                                                       ;|||
    SendInput,{End}+{home}                                                                 ;|||
