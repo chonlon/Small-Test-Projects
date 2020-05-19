@@ -25,8 +25,10 @@ def handle_client(client_socket):
         for j in range(1, 10000):
             result = "@C3," + str(j) + "#"
             client_socket.send(result.encode())
-            print("sended : %s", result)
-            time.sleep(0.5)
+            print("sended : %s" % result)
+            request = client_socket.recv(1024)
+            print("recv:",request.decode())
+            time.sleep(0.2)
 
     client_socket.close()
 
