@@ -4,6 +4,7 @@ project(folly)
 find_package(folly CONFIG REQUIRED)
 find_package(ZLIB REQUIRED)
 
+add_subdirectory(future)
 
 set(
 	LinkLibs
@@ -11,9 +12,5 @@ set(
 	ZLIB::ZLIB
 )
 
-add_executable(future1 future1.cpp)
-target_link_libraries(future1 PRIVATE ${LinkLibs})
-
 add_executable(fbvector fbvector.cpp)
 target_link_libraries(fbvector PRIVATE ${LinkLibs})
-
