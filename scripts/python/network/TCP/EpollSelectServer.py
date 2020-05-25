@@ -1,15 +1,13 @@
 import os
 import sys
 
-current_dir = os.path.dirname(os.path.abspath(__file__))
-sys.path.append(current_dir)
-print(current_dir)
+dir_mytest = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.append(dir_mytest)
+import TCP.ListenFuncs
 
 import socket
 import selectors
 import threading
-
-import TCP.ListenFuncs
 
 
 # 注册一个epllo事件
