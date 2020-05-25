@@ -14,5 +14,4 @@ def sendC3Forever(client_socket):
             else:
                 print("sended : %s" % result)
                 time.sleep(0.2)
-
     client_socket.close()

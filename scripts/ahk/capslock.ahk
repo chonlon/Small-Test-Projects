@@ -98,8 +98,9 @@ Capslock & Backspace::
 ;=======上下左右==========
 Capslock & e::
 GetKeyState, state, Ctrl
+;代码上移一行
 if (state = "D")
-    Send, !^+k;代码上移一行
+    Send, !^+k
 else
     SendInput,{up}
 return
