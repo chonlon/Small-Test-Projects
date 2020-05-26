@@ -3,6 +3,8 @@
 
 !*/
 !/.gitignore
+!/**/.vscode/**
+!/**/.idea/**
 #enable cpp files
 !*.cc
 !*.hpp
@@ -46,7 +48,7 @@
 !*c_cpp_properties.json
 !*launch.json
 !*tasks.json
-!*settings.json
+!settings.json
 
 #igore qt generate files
 ui*.h
