@@ -11,6 +11,12 @@
 !*.cpp
 !*.h
 
+#enable web fils
+!*.js
+!*.css
+!*.html
+!*[Rr]obots.txt
+
 #enable go files
 !*.go
 
@@ -24,6 +30,7 @@
 #enable res files
 !*.jpg
 !*.png
+!*.ico
 
 #enable qt files
 !*.ui
@@ -45,10 +52,7 @@
 !*CMakeLists.txt
 
 #enable vscode config files
-!*c_cpp_properties.json
-!*launch.json
-!*tasks.json
-!settings.json
+!*.json
 
 #igore qt generate files
 ui*.h
