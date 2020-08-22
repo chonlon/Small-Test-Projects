@@ -11,6 +11,9 @@
 !*.cpp
 !*.h
 
+#enable docker files
+![Dd]ocker[Ff]ile
+
 #enable web fils
 !*.js
 !*.css
