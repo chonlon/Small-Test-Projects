@@ -5,6 +5,7 @@ find_package(folly CONFIG REQUIRED)
 find_package(ZLIB REQUIRED)
 
 add_subdirectory(future)
+add_subdirectory(io)
 
 set(
 	LinkLibs
@@ -12,5 +13,5 @@ set(
 	ZLIB::ZLIB
 )
 
-add_executable(fbvector fbvector.cpp)
+add_executable(fbvector fbvector.cpp "io/iobuf.cpp")
 target_link_libraries(fbvector PRIVATE ${LinkLibs})
