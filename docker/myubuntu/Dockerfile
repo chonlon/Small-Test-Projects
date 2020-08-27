@@ -6,7 +6,7 @@ RUN echo 'deb http://mirrors.aliyun.com/ubuntu/ focal main restricted\ndeb http:
 #zshs
 RUN apt-get install -y \
     zsh \
-    git-core && rm -rf /var/lib/apt/lists/*
+    git-core
 RUN git clone https://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh \
     && cp ~/.oh-my-zsh/templates/zshrc.zsh-template ~/.zshrc \
     && chsh -s /bin/zsh
