@@ -13,5 +13,5 @@ set(
 	ZLIB::ZLIB
 )
 
-add_executable(fbvector fbvector.cpp "io/iobuf.cpp")
+add_executable(fbvector fbvector.cpp)
 target_link_libraries(fbvector PRIVATE ${LinkLibs})
