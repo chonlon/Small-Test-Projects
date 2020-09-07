@@ -25,3 +25,6 @@ endif(UsingJemalloc)
 
 add_executable(fbvector fbvector.cpp)
 target_link_libraries(fbvector ${LinkLibs})
+
+add_executable(fbjson ${CMAKE_CURRENT_LIST_DIR}/json/json1.cpp)
+target_link_libraries(fbjson ${LinkLibs})
