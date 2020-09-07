@@ -13,5 +13,15 @@ set(
 	ZLIB::ZLIB
 )
 
+OPTION(UsingJemalloc "if using jemalloc" on)
+if(UsingJemalloc)
+	message(STATUS "jemalloc enabled!")
+	set(
+		LinkLibs
+		${LinkLibs}
+		jemalloc
+	)
+endif(UsingJemalloc)
+
 add_executable(fbvector fbvector.cpp)
-target_link_libraries(fbvector PRIVATE ${LinkLibs})
+target_link_libraries(fbvector ${LinkLibs})
