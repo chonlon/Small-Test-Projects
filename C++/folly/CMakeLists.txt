@@ -24,14 +24,20 @@ if(UsingJemalloc)
 	)
 endif(UsingJemalloc)
 
-add_executable(fbvector fbvector.cpp)
+add_executable(fbvector ${CMAKE_CURRENT_LIST_DIR}/vector/fbvector.cpp)
 target_link_libraries(fbvector ${FbvectorLinkLibs})
+
+add_executable(fbvector_custom_alloctor ${CMAKE_CURRENT_LIST_DIR}/vector/fbvector_custom_alloctor.cpp)
+target_link_libraries(fbvector_custom_alloctor ${FbvectorLinkLibs})
 
 add_executable(fbjson ${CMAKE_CURRENT_LIST_DIR}/json/json1.cpp)
 target_link_libraries(fbjson ${LinkLibs})
 
 add_executable(future1 ${CMAKE_CURRENT_LIST_DIR}/future/future1.cpp)
 target_link_libraries(future1 PRIVATE ${LinkLibs})
+
+add_executable(future2 ${CMAKE_CURRENT_LIST_DIR}/future/future2.cpp)
+target_link_libraries(future2 PRIVATE ${LinkLibs})
 
 add_executable(iobuf ${CMAKE_CURRENT_LIST_DIR}/io/iobuf.cpp)
 target_link_libraries(iobuf PRIVATE ${LinkLibs})

@@ -2,24 +2,8 @@
 #include <vector>
 #include <folly/FBString.h>
 #include <iostream>
+#include "../../header/base.h"
 
-template <typename T>
-class myalloctor : public std::allocator<T>
-{
-private:
-    using Allocator = std::allocator<T>;
-    int unused;
-public:
-    myalloctor() : Allocator() {}
-    /* implicit */ myalloctor(const Allocator& alloc)
-        : Allocator(alloc) {}
-    /* implicit */ myalloctor(Allocator&& alloc)
-        : Allocator(std::move(alloc)) {}
-    myalloctor(size_t n, const Allocator& alloc)
-    : Allocator(alloc) {}
-};
-
-// not using std alloctor will not use memcpy to move and will destory old memory manually.
 
 int main() {
     std::cout << std::boolalpha << folly::usingJEMalloc() << '\n';
@@ -41,7 +25,7 @@ int main() {
     for(auto i = 4; i < 10000; ++i) {
         strings.push_back("1");
     }
-    std::cout << "<===================================>\n";
+    printDividing();
     std::vector<int> sv{1, 2, 3};
     for(auto i = 4; i < 1000; ++i) {
         sv.push_back(1);
@@ -51,16 +35,6 @@ int main() {
             same_marker = _capacity;
         }
     }
-    std::cout << std::endl;
-
-
-    std::cout << "<===================================>\n";
-    folly::fbvector<int, myalloctor<int>> mfv{1, 2, 3};
-    for(auto i = 4; i < 10; ++i) {
-        mfv.push_back(1);
-    }
-    for(auto& i : mfv) {
-        std::cout << i << ' ';
-    }
+    std::cout << '\n';
     return 0;
 }
