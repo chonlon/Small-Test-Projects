@@ -22,6 +22,8 @@ public:
 // not using std alloctor will not use memcpy to move and will destory old memory manually.
 
 int main() {
+    std::cout << std::boolalpha << folly::usingJEMalloc() << '\n';
+
     folly::fbvector<int> v{1, 2, 3};
     
     int _capacity = v.capacity();
