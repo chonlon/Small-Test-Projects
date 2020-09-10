@@ -1,7 +1,0 @@
-cmake_minimum_required(VERSION 3.0.2)
-project(boost)
-
-find_path(BOOST_ALGORITHM_INCLUDE_DIRS "boost/algorithm/algorithm.hpp")
-
-add_executable(hex ${CMAKE_CURRENT_LIST_DIR}/algorithm/hex.cpp)
-target_include_directories(hex PRIVATE ${BOOST_ALGORITHM_INCLUDE_DIRS})
