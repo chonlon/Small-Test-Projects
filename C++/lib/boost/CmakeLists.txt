@@ -14,3 +14,11 @@ target_include_directories(increasing_decreasing PRIVATE ${BOOST_INCLUDE_DIRS})
 
 add_executable(itoa "${CMAKE_CURRENT_LIST_DIR}/algorithm/itoa.cpp")
 target_include_directories(itoa PRIVATE ${BOOST_INCLUDE_DIRS})
+
+add_executable(clamp "${CMAKE_CURRENT_LIST_DIR}/algorithm/clamp.cpp")
+target_include_directories(clamp PRIVATE ${BOOST_INCLUDE_DIRS})
+
+add_executable(palindrome "${CMAKE_CURRENT_LIST_DIR}/algorithm/palindrome.cpp")
+target_include_directories(palindrome PRIVATE ${BOOST_INCLUDE_DIRS})
+
+

@@ -57,3 +57,24 @@ public:
 
     void print() { std::cout << "Int Field:" << var_ << "\n"; }
 };
+
+
+/**
+ * \brief mark test case in output.
+ */
+class CaseMarker {
+    int time_;
+public:
+    CaseMarker() {
+        //not use std::string_literals; cause it need cpp14.
+        static int time = 0;
+        time_ = ++time;
+        printDividing(std::string("run case") + std::to_string(time_));
+    }
+
+    ~CaseMarker() {
+        //using std::string_literals;
+        printDividing(std::string("end case") + std::to_string(time_));
+        std::cout << '\n';
+    }
+};
