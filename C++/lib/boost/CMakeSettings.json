@@ -13,7 +13,7 @@
       "cmakeToolchain": "C:/2_libs/vcpkg/scripts/buildsystems/vcpkg.cmake",
       "variables": [
         {
-          "name": "BOOST_ALGORITHM_INCLUDE_DIRS",
+          "name": "BOOST_INCLUDE_DIRS",
           "value": "C:/2_libs/vcpkg/installed/x86-windows/include",
           "type": "PATH"
         }
