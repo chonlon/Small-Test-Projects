@@ -64,6 +64,8 @@ public:
  */
 class CaseMarker {
     int time_;
+    std::string marker_;
+
 public:
     CaseMarker() {
         //not use std::string_literals; cause it need cpp14.
@@ -72,9 +74,17 @@ public:
         printDividing(std::string("run case") + std::to_string(time_));
     }
 
+    CaseMarker(const std::string& marker) : marker_{marker} {
+        if (marker_.size() == 0)
+            throw std::logic_error{ "marker should be not empty" };
+        printDividing(std::string("run case ") + marker_);
+    }
+
     ~CaseMarker() {
-        //using std::string_literals;
-        printDividing(std::string("end case") + std::to_string(time_));
+        if (marker_.empty())
+            printDividing(std::string("end case") + std::to_string(time_));
+        else
+            printDividing(std::string("end case ") + marker_);
         std::cout << '\n';
     }
 };
