@@ -1,7 +1,12 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\algorithm",
+    "\\beast",
+    "\\beast\\simple",
+    "\\beast\\simple\\out\\build",
+    "\\beast\\simple\\out\\build\\x64-Debug (默认值)"
   ],
-  "SelectedNode": "\\beast",
+  "SelectedNode": "\\CmakeLists.txt",
   "PreviewInSolutionExplorer": false
 }

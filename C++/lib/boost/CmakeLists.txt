@@ -6,12 +6,17 @@ find_path(BOOST_INCLUDE_DIRS "boost/any.hpp")
 include(../../cmake/AddSingleExeFile.cmake)
 
 add_subdirectory(algorithm)
+add_subdirectory(beast)
 
 
-foreach(FILESPATH ${ALGORITHM_FILES}) 
+foreach(FILESPATH ${ALGORITHM_FILES})
 	get_filename_component(FILE_NAME ${FILESPATH} NAME_WE)
 	add_executable(${FILE_NAME} ${FILESPATH})
 	target_include_directories(${FILE_NAME}  PRIVATE ${BOOST_INCLUDE_DIRS})
 endforeach()
 
-message("done")
+foreach(FILESPATH ${BEAST_FILES})
+	get_filename_component(FILE_NAME ${FILESPATH} NAME_WE)
+	add_executable(${FILE_NAME} ${FILESPATH})
+	target_include_directories(${FILE_NAME}  PRIVATE ${BOOST_INCLUDE_DIRS})
+endforeach()
