@@ -1,7 +1,14 @@
 {
   "ExpandedNodes": [
     "",
-    "\\regex",
+    "\\any",
+    "\\array",
+    "\\function",
+    "\\iterator",
+    "\\out",
+    "\\range",
+    "\\range\\1_init",
+    "\\range\\1_init\\1_init",
     "\\tuple"
   ],
   "SelectedNode": "\\CMakeLists.txt",

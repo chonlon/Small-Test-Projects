@@ -2,6 +2,7 @@
 #include <iostream>
 #include <string>
 #include "../../../header/base.h"
+#include <any>
 
 using namespace std::string_literals;
 using namespace std;
@@ -80,7 +81,7 @@ int main() {
         while (regex_search(iterStart, iterEnd, result, pattern))
         {
             temp = result[0];
-            cout << temp << " ";
+            cout << temp << " " << result[0].second - result[0].first << ' ';
             iterStart = result[0].second;	//更新搜索起始位置,搜索剩下的字符串
         }
         cout << '\n';
