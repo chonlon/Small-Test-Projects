@@ -1,6 +1,7 @@
-#pragma once
+﻿#pragma once
 #include <iostream>
 #include <string>
+#include <type_traits>
 ///////////////////////////////////////////////
 // micros
 ///////////////////////////////////////////////
@@ -19,6 +20,51 @@ void printDividing() {
 void printDividing(std::string&& s) {
     std::cout << "===================" << s << "====================\n";
 }
+
+namespace lon {
+    template <typename T>
+    struct IsPrintable : std::conditional_t<
+        std::is_scalar<T>::value | std::is_same<std::string, T>::value,
+        std::true_type,
+        std::false_type
+    > {};
+
+    //像vector和list这样的模板类怎么再次作为模板参数呢?下面的做法还是会导致代码重复.
+
+    template <typename T, typename = std::enable_if_t<lon::IsPrintable<T>::value>>
+    inline void printVector(const std::vector<T>& is, char divider = '\n') {
+        for (const auto& i : is) {
+            std::cout << i << divider;
+        }
+    }
+
+    template <typename T, typename = std::enable_if_t<lon::IsPrintable<T>::value>>
+    inline void printList(const std::list<T>& is, char divider = '\n') {
+        for (const auto& i : is) {
+            std::cout << i << divider;
+        }
+    }
+
+    template<typename K, typename V, typename = std::enable_if_t<lon::IsPrintable<K>::value>, typename = std::enable_if_t<lon::IsPrintable<V>::value>>
+    inline void printMap(const std::map<K, V>& is, char divider = '\n') {
+        for(const auto& i : is) {
+            std::cout << i.first << ' ' << i.second << divider;
+        }
+    }
+
+    namespace print_container {
+        template <typename T, typename = std::enable_if_t<lon::IsPrintable<T>::value>>
+        auto operator<<(std::ostream& lhs,
+            const std::vector<T>& is)->std::ostream& {
+            for (const auto& i : is) {
+                std::cout << i << '\n';
+            }
+            return lhs;
+        }
+    }
+
+}
+
 
 
 ///////////////////////////////////////////////
