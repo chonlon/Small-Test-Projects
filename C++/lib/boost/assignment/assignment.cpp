@@ -18,6 +18,9 @@ using namespace boost::assign;
 
 int main() {
     {
+        // 咋一看, 会好奇这样的+=和()()是怎么实现的, 其实+=后面的是一个arg...的参数包, 而()()每次会返回一个函数对象, 这样就能连续调用了.
+
+        
         CaseMarker c("vector");
         vector<int> v {1, 2, 3};
         v += 4, 5, 6, 7, 8, 9, 10;
