@@ -3,10 +3,9 @@
     "",
     "\\algorithm",
     "\\assignment",
-    "\\beast\\simple",
-    "\\beast\\simple\\out\\build",
-    "\\beast\\simple\\out\\build\\x64-Debug (默认值)"
+    "\\beast",
+    "\\beast\\simple"
   ],
-  "SelectedNode": "\\algorithm\\CMakeLists.txt",
+  "SelectedNode": "\\beast\\simple\\async-sever.cpp",
   "PreviewInSolutionExplorer": false
 }
