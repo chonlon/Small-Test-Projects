@@ -30,7 +30,8 @@ namespace lon {
 
     template
        <typename ContainerType,
-        typename = std::enable_if_t<lon::IsCoutable<ContainerType::value_type>::value>>
+        typename Type = ContainerType::value_type,
+        typename = std::enable_if_t<lon::IsCoutable<Type>::value>>
     inline void printContainer(const ContainerType& is, char divider = '\n') {
         for (const auto& i : is) {
             std::cout << i << divider;

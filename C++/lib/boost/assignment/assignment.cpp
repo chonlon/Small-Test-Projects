@@ -15,7 +15,6 @@ using namespace std;
 using namespace lon::print_container;
 using namespace boost::assign;
 
-struct test;
 
 int main() {
     {
@@ -23,7 +22,7 @@ int main() {
         vector<int> v {1, 2, 3};
         v += 4, 5, 6, 7, 8, 9, 10;
         push_back(v)(11)(12)(13);
-        lon::printVector(v, ' ');
+        lon::printContainer(v, ' ');
         cout << '\n';
     }
     {
