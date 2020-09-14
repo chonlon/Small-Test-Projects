@@ -23,29 +23,38 @@ void printDividing(std::string&& s) {
 
 namespace lon {
     template <typename T>
-    struct IsPrintable : std::conditional_t<
+    struct IsCoutable : std::conditional_t<
         std::is_scalar<T>::value | std::is_same<std::string, T>::value,
         std::true_type,
-        std::false_type
-    > {};
+        std::false_type> {};
+
+    template
+       <typename ContainerType,
+        typename = std::enable_if_t<lon::IsCoutable<ContainerType::value_type>::value>>
+    inline void printContainer(const ContainerType& is, char divider = '\n') {
+        for (const auto& i : is) {
+            std::cout << i << divider;
+        }
+    }
+    
 
     //像vector和list这样的模板类怎么再次作为模板参数呢?下面的做法还是会导致代码重复.
 
-    template <typename T, typename = std::enable_if_t<lon::IsPrintable<T>::value>>
+    template <typename T, typename = std::enable_if_t<lon::IsCoutable<T>::value>>
     inline void printVector(const std::vector<T>& is, char divider = '\n') {
         for (const auto& i : is) {
             std::cout << i << divider;
         }
     }
 
-    template <typename T, typename = std::enable_if_t<lon::IsPrintable<T>::value>>
+    template <typename T, typename = std::enable_if_t<lon::IsCoutable<T>::value>>
     inline void printList(const std::list<T>& is, char divider = '\n') {
         for (const auto& i : is) {
             std::cout << i << divider;
         }
     }
 
-    template<typename K, typename V, typename = std::enable_if_t<lon::IsPrintable<K>::value>, typename = std::enable_if_t<lon::IsPrintable<V>::value>>
+    template<typename K, typename V, typename = std::enable_if_t<lon::IsCoutable<K>::value>, typename = std::enable_if_t<lon::IsCoutable<V>::value>>
     inline void printMap(const std::map<K, V>& is, char divider = '\n') {
         for(const auto& i : is) {
             std::cout << i.first << ' ' << i.second << divider;
@@ -53,7 +62,7 @@ namespace lon {
     }
 
     namespace print_container {
-        template <typename T, typename = std::enable_if_t<lon::IsPrintable<T>::value>>
+        template <typename T, typename = std::enable_if_t<lon::IsCoutable<T>::value>>
         auto operator<<(std::ostream& lhs,
             const std::vector<T>& is)->std::ostream& {
             for (const auto& i : is) {
