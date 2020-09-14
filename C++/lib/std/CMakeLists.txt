@@ -1,13 +1,14 @@
 project(stds)
 cmake_minimum_required(VERSION 3.0.2)
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 include(../../cmake/AddSingleExeFile.cmake)
 
 AddSingleExeFile(
 	STD_LIB
 	"regex/regex.cpp"
 	"any/any.cpp"
+	"string/u8string.cpp"
 )
 
 foreach(FILESPATH ${STD_LIB_FILES})
