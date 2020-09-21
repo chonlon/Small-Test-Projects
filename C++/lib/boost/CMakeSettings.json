@@ -16,6 +16,11 @@
           "name": "BOOST_INCLUDE_DIRS",
           "value": "C:/2_libs/vcpkg/installed/x86-windows/include",
           "type": "PATH"
+        },
+        {
+          "name": "VCPKG_TARGET_TRIPLET",
+          "value": "x64-windows",
+          "type": "STRING"
         }
       ]
     }

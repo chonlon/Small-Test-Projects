@@ -1,0 +1,4 @@
+AddSingleExeFile(
+	Serialize
+	"serialization.cpp"
+)

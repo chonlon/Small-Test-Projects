@@ -1,17 +1,17 @@
 cmake_minimum_required(VERSION 3.0.2)
 project(boost)
 
-find_path(BOOST_INCLUDE_DIRS "boost/any.hpp")
-
 include(../../cmake/AddSingleExeFile.cmake)
 
 add_subdirectory(algorithm)
 add_subdirectory(beast)
+add_subdirectory(serialization)
 
 AddSingleExeFile(
 	BOOST_OTHER
 	"assignment/assignment.cpp"
 )
+find_package(Boost 1.67 COMPONENTS serialization REQUIRED)
 
 
 foreach(FILESPATH ${ALGORITHM_FILES})
@@ -30,4 +30,11 @@ foreach(FILESPATH ${BOOST_OTHER_FILES})
 	get_filename_component(FILE_NAME ${FILESPATH} NAME_WE)
 	add_executable(${FILE_NAME} ${FILESPATH})
 	target_include_directories(${FILE_NAME}  PRIVATE ${BOOST_INCLUDE_DIRS})
+endforeach()
+
+foreach(FILESPATH ${Serialize_FILES})
+	get_filename_component(FILE_NAME ${FILESPATH} NAME_WE)
+	add_executable(${FILE_NAME} ${FILESPATH})
+	target_include_directories(${FILE_NAME}  PRIVATE ${BOOST_INCLUDE_DIRS})
+	target_link_libraries(${FILE_NAME} PRIVATE ${Boost_LIBRARIES})
 endforeach()

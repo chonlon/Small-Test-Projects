@@ -4,8 +4,11 @@
     "\\algorithm",
     "\\assignment",
     "\\beast",
-    "\\beast\\simple"
+    "\\beast\\simple",
+    "\\out",
+    "\\out\\build",
+    "\\serialization"
   ],
-  "SelectedNode": "\\beast\\simple\\async-sever.cpp",
+  "SelectedNode": "\\serialization",
   "PreviewInSolutionExplorer": false
 }
