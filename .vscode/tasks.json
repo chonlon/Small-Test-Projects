@@ -9,6 +9,7 @@
                 "-g",
                 "${file}",
                 "-lpthread",
+                "-std=c++17",
                 "-o",
                 "${fileDirname}/${fileBasenameNoExtension}"
             ],

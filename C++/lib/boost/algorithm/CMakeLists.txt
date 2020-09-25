@@ -1,0 +1,9 @@
+AddSingleExeFile(
+	ALGORITHM
+	"clamp.cpp"
+	"equal.cpp"
+	"hex.cpp"
+	"increasing_decreasing.cpp"
+	"itoa.cpp"
+	"palindrome.cpp"
+)

@@ -3,8 +3,6 @@ project(folly)
 
 find_package(folly CONFIG REQUIRED)
 find_package(ZLIB REQUIRED)
-find_package(asio)
-
 
 set(
 	LinkLibs
@@ -15,9 +13,10 @@ set(
 add_executable(future1 future1.cpp)
 target_link_libraries(future1 PRIVATE ${LinkLibs})
 
-if (${asio_FOUND}) 
-	add_executable(async_server async_server.cpp)
-	target_link_libraries(async_server PRIVATE ${LinkLibs} asio asio::asio)
-else(${asio_FOUND})
-	MESSAGE("asio not found")
-endif(${asio_FOUND}) 
+#if (${asio_FOUND}) 
+#	add_executable(async_server async_server.cpp)
+#	target_link_libraries(async_server PRIVATE ${LinkLibs} asio asio::asio)
+#else(${asio_FOUND})
+#	MESSAGE("asio not found")
+#endif(${asio_FOUND}) 
+#

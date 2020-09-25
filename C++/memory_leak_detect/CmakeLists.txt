@@ -1,0 +1,14 @@
+cmake_minimum_required(VERSION 3.0.2)
+project(memory_leak)
+#see https://github.com/google/sanitizers for more details
+
+option(ENABLE_MEMORY_DETECT ON)
+option(ENABLE_THREAD_DETECT ON)
+if(${ENABLE_MEMORY_DETECT})
+    SET(CMAKE_CXX_FLAGS "-fsanitize=address")
+elseif(${ENABLE_THREAD_DETECT} OFF)
+    SET(CMAKE_CXX_FLAGS "-fsanitize=thread")
+endif(${ENABLE_MEMORY_DETECT})
+
+
+add_executable(1 main.cpp)

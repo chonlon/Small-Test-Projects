@@ -70,7 +70,9 @@
         "concepts": "cpp",
         "ranges": "cpp",
         "shared_mutex": "cpp",
-        "stop_token": "cpp"
+        "stop_token": "cpp",
+        "*.ipp": "cpp",
+        "csetjmp": "cpp"
     },
     "C_Cpp.errorSquiggles": "Disabled",
     "python.formatting.provider": "black"

@@ -2,8 +2,12 @@
 #include <vector>
 #include <folly/FBString.h>
 #include <iostream>
+#include "../../header/base.h"
+
 
 int main() {
+    std::cout << std::boolalpha << folly::usingJEMalloc() << '\n';
+
     folly::fbvector<int> v{1, 2, 3};
     
     int _capacity = v.capacity();
@@ -21,7 +25,7 @@ int main() {
     for(auto i = 4; i < 10000; ++i) {
         strings.push_back("1");
     }
-    std::cout << "<===================================>\n";
+    printDividing();
     std::vector<int> sv{1, 2, 3};
     for(auto i = 4; i < 1000; ++i) {
         sv.push_back(1);
@@ -31,7 +35,6 @@ int main() {
             same_marker = _capacity;
         }
     }
-    std::cout << std::endl;
-
+    std::cout << '\n';
     return 0;
 }

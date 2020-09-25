@@ -1,0 +1,6 @@
+﻿cmake_minimum_required(VERSION 3.0.2)
+project(protobuf-rpc)
+
+find_package(protobuf CONFIG REQUIRED)
+add_executable(main main.cpp 1.pb.cc 1.pb.h)
+target_link_libraries(main PRIVATE protobuf::libprotoc protobuf::libprotobuf protobuf::libprotobuf-lite)

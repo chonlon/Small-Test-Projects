@@ -1,0 +1,19 @@
+{
+  "version": "0.2.1",
+  "defaults": {},
+  "configurations": [
+    {
+      "type": "default",
+      "project": "CmakeLists.txt",
+      "projectTarget": "clamp.exe",
+      "name": "clamp.exe"
+    },
+    {
+      "type": "default",
+      "project": "CmakeLists.txt",
+      "projectTarget": "async-sever.exe",
+      "name": "async-sever.exe",
+      "args": [ "0.0.0.0", 8080, ".", 2 ]
+    }
+  ]
+}

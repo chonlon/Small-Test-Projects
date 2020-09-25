@@ -21,29 +21,29 @@ int main() {
     // clang-format on
     [&value](){
         folly::json::serialization_opts opt;
-        opt.pretty_formatting = true;
-        opt.sort_keys = false;
-        cout << folly::json::serialize(value, opt) << "\n";
-        printDividing();
-
+        opt.pretty_formatting = false;
         opt.sort_keys = true;
         cout << folly::json::serialize(value, opt) << "\n";
+        printDividing("1");
 
-        printDividing();
+        opt.sort_keys = false;
+        cout << folly::json::serialize(value, opt) << "\n";
+
+        printDividing("2");
 
         auto s = folly::toJson(value);
 
         cout << s  << "\n";
-        printDividing();
+        printDividing("3");
 
 
         cout << folly::toPrettyJson(value) << "\n";
     }();
     
 
-    printDividing();
+    printDividing("4");
     cout << "\n\n";
-    printDividing();
+    printDividing("5");
 
     auto s = std::string{
         "{"

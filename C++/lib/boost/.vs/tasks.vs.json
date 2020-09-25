@@ -1,0 +1,16 @@
+{
+  "version": "0.2.1",
+  "tasks": [
+    {
+      "taskLabel": "任务-CmakeLists",
+      "appliesTo": "CmakeLists.txt",
+      "type": "launch"
+    },
+    {
+      "taskLabel": "任务-async-sever",
+      "appliesTo": "beast/simple/async-sever.cpp",
+      "type": "launch",
+      "args": [ "0.0.0.0", 8080, ".", 2 ]
+    }
+  ]
+}

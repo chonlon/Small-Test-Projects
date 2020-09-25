@@ -51,15 +51,17 @@ setChineseLayout(){
 	; send {Ctrl Down}{Shift}
 	; send {Ctrl Down},
 	; send {Ctrl Down}{Shift}
-	send {Ctrl Down}{0}
-	send {Ctrl Up}
+	; send !+1
 	;send !+0
 }
 setEnglishLayout(){
 	;发送英文输入法切换快捷键，请根据实际情况设置。
-	setChineseLayout()
-	send {Ctrl Down}{Space}
-	send {Ctrl Up}
+	; setChineseLayout()
+	; send ``
+	; send {Ctrl Down}{Shift}
+	; send {Ctrl Down},
+	; send {Ctrl Down}{Shift}
+	; send {Ctrl Up}
 }
 ;监控消息回调ShellMessage，并自动设置输入法
 Gui +LastFound
@@ -106,6 +108,10 @@ ShellMessage( wParam,lParam ) {
 			;TrayTip,AHK, 2已自动切换到英文输入法
 			return
 		}
+
+		setChineseLayout()
+		;TrayTip,AHK, 1已自动切换到中文输入法
+		return
 	}
 	If ( wParam = 32772 )
 	{
@@ -123,6 +129,10 @@ ShellMessage( wParam,lParam ) {
 			;TrayTip,AHK, 4已自动切换到英文输入法
 			return
 		}
+
+		setChineseLayout()
+		;TrayTip,AHK, 1已自动切换到中文输入法
+		return
 	}
 }
 ;在所有编辑器中自动切换中英文输入法
@@ -247,4 +257,3 @@ Numpad8::
 ^r::
 	SendInput,^+!{Backspace}
 	return
-	
