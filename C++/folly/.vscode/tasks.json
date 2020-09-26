@@ -18,6 +18,7 @@
                 "-levent",
                 "-lboost_context",
                 "-liberty",
+                "-std=c++17",
                 "-o",
                 "${fileDirname}/${fileBasenameNoExtension}"
             ],
