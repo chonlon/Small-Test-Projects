@@ -4,6 +4,7 @@
 #include <folly/executors/ManualExecutor.h>
 #include <folly/futures/Future.h>
 #include <iostream>
+#include <thread>
 using namespace folly;
 using std::cout;
 using std::boolalpha;
@@ -20,9 +21,11 @@ void viafoo1() {
 void multiThenTryFoo1() {
     struct Worker {
         Future<std::string> doWork(Try<std::string>&& t) {
+            std::cout << "doWork: " << std::this_thread::get_id() << '\n';
             return makeFuture(t.value() + ";class");
         }
         static Future<std::string> doWorkStatic(Try<std::string>&& t) {
+            std::cout << "doWorkStatic: " << std::this_thread::get_id() << '\n';
             return makeFuture(t.value() + ";class-static");
         }
     } w;
@@ -32,6 +35,7 @@ void multiThenTryFoo1() {
 }
 
 int main() {
+    std::cout << "main: " << std::this_thread::get_id() << '\n';
     printDividing();
     viafoo1();
     printDividing();
