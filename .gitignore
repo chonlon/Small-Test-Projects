@@ -29,6 +29,7 @@
 #enable scipt files
 !*.ahk
 !*.bat
+!*.sh
 
 #enable res files
 !*.jpg
