@@ -16,6 +16,7 @@ fi
 for((i=$_left; i <= $_right; i++));
 do
     file_name="Ep$i"
+    #if file exists
     if [ -f $file_name.cpp ];then
         git add $file_name.cpp
         git commit -m "add: (c++ weekly) $file_name"
