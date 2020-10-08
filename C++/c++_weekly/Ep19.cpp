@@ -1,4 +1,5 @@
 #include <cstdint>
+//g++ -O3 Ep19.cpp -S -o-
 
 enum class  Color : uint8_t {
     Black = 0x00,
