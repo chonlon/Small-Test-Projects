@@ -70,7 +70,7 @@ namespace lon {
         auto operator<<(std::ostream& lhs,
             const std::vector<T>& is)->std::ostream& {
             for (const auto& i : is) {
-                std::cout << i << '\n';
+                lhs<< i << '\n';
             }
             return lhs;
         }
