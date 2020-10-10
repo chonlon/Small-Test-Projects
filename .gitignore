@@ -5,6 +5,7 @@
 !/.gitignore
 !/**/.vscode/**
 !/**/.idea/**
+!/**/readme
 #enable cpp files
 !*.cc
 !*.hpp
