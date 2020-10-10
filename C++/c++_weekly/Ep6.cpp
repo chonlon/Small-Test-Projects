@@ -24,7 +24,7 @@ std::vector<std::string> to_string(const P1& p1, const Param& ... param) {
     
     return ret;
 }
-#else 
+#else
 template <typename T>
 std::string to_string_for_one(const T& t) {
     std::stringstream ss;
@@ -32,29 +32,28 @@ std::string to_string_for_one(const T& t) {
     return ss.str();
 }
 
-void to_string_impl(std::vector<std::string>& ss) {
+void to_string_impl(std::vector<std::string>& ss) { // 终结递归
 }
 
 template <typename P1, typename... Param>
 void to_string_impl(std::vector<std::string>& ss, const P1& p1, const Param& ... param) {
     ss.push_back(to_string_for_one(p1));
-    to_string_impl(ss, param...);
+    to_string_impl(ss, param...); // 递归展开
 }
 
 template <typename... Param>
 std::vector<std::string> to_string(const Param& ... param) {
     std::vector<std::string> ret;
 
-    to_string_impl(ret, param...);
-    
+    to_string_impl(ret, param...); // 参数展开
+
     return ret;
 }
-
 #endif
 
 int main() {
     auto vec = to_string("hello", 1, 5.3);
-    for(const auto& o : vec) {
+    for (const auto& o : vec) {
         std::cout << o << '\n';
     }
 }
