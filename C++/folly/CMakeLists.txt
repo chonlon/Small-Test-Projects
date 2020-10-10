@@ -14,7 +14,7 @@ set(FbvectorLinkLibs
 	${LinkLibs}
 )
 
-OPTION(UsingJemalloc "if using jemalloc" on)
+OPTION(UsingJemalloc "if using jemalloc" off)
 if(UsingJemalloc)
 	message(STATUS "jemalloc enabled!")
 	set(
@@ -23,6 +23,7 @@ if(UsingJemalloc)
 		jemalloc
 	)
 endif(UsingJemalloc)
+
 
 add_executable(fbvector ${CMAKE_CURRENT_LIST_DIR}/vector/fbvector.cpp)
 target_link_libraries(fbvector ${FbvectorLinkLibs})
@@ -44,3 +45,6 @@ target_link_libraries(iobuf PRIVATE ${LinkLibs})
 
 add_executable(trait1 trait1.cpp)
 target_link_libraries(trait1 PRIVATE ${LinkLibs})
+
+add_executable(iterator ./container/iterator.cpp)
+target_link_libraries(iterator PRIVATE ${LinkLibs})
