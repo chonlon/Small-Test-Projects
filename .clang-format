@@ -1,48 +1,74 @@
+## 顺序和clang-format一样, https://clang.llvm.org/docs/ClangFormatStyleOptions.html.
+
 Language:        Cpp
-AccessModifierOffset: -4
+BasedOnStyle: Mozilla
+
+#public 等访问修饰符缩进
+AccessModifierOffset: 0
+#括号换行对齐参数
 AlignAfterOpenBracket: Align
-AlignConsecutiveAssignments: false
-AlignConsecutiveDeclarations: true
+
+# 排列连续多行 赋值/声明
+AlignConsecutiveAssignments: true
+AlignConsecutiveDeclarations: false
+##
+
 AlignEscapedNewlines: Left
 AlignOperands:   false
-AlignTrailingComments: false
+#对齐尾注释
+AlignTrailingComments: true
+# 如果超过最大长度, 对齐函数声明参数为多行
 AllowAllParametersOfDeclarationOnNextLine: true
+# 如果超过最大长度, 对齐函数调用参数为多行
+AllowAllArgumentsOnNextLine: true
+# 如果超过最大长度, 对齐构造初始化为多行
+AllowAllConstructorInitializersOnNextLine: true
+
+#允许 短的 块, if, enum, for, while, case是否可以整理到一行中.
 AllowShortBlocksOnASingleLine: false
 AllowShortCaseLabelsOnASingleLine: false
+AllowShortEnumsOnASingleLine: true
 AllowShortFunctionsOnASingleLine: Empty
+AllowShortLambdasOnASingleLine: Inline
 AllowShortIfStatementsOnASingleLine: false
 AllowShortLoopsOnASingleLine: false
+##
+
 AlwaysBreakAfterDefinitionReturnType: None
 AlwaysBreakAfterReturnType: None
 AlwaysBreakBeforeMultilineStrings: true
 AlwaysBreakTemplateDeclarations: true
 BinPackArguments: false
 BinPackParameters: false
-BraceWrapping:   
-  AfterClass:      false
-  AfterControlStatement: false
-  AfterEnum:       false
-  AfterFunction:   true
-  AfterNamespace:  false
-  AfterObjCDeclaration: false
-  AfterStruct:     false
-  AfterUnion:      false
-  AfterExternBlock: false
-  BeforeCatch:     false
-  BeforeElse:      false
-  IndentBraces:    false
-  SplitEmptyFunction: true
-  SplitEmptyRecord: true
-  SplitEmptyNamespace: true
 
-BreakBeforeBraces: Attach
+# 配置了一下, 不是很满意, 直接使用Mozilla了
+# BraceWrapping:
+#   AfterClass:      true
+#   AfterControlStatement:Never
+#   AfterEnum:       true
+#   AfterFunction:   true
+#   AfterNamespace:  false
+#   AfterObjCDeclaration: false
+#   AfterStruct:     false
+#   AfterUnion:      false
+#   AfterExternBlock: false
+#   BeforeCatch:     false
+#   BeforeElse:      false
+#   BeforeLambdaBody:true
+#   IndentBraces:    false
+#   SplitEmptyFunction: true
+#   SplitEmptyRecord: true
+#   SplitEmptyNamespace: true
+
+#大括号换行方式
+BreakBeforeBraces: Mozilla
 BreakBeforeInheritanceComma: false
 BreakBeforeTernaryOperators: true
 BreakConstructorInitializersBeforeComma: false
 BreakConstructorInitializers: BeforeColon
 BreakAfterJavaFieldAnnotations: false
 BreakStringLiterals: true
-ColumnLimit:     50
+ColumnLimit:     80
 CommentPragmas:  ''
 CompactNamespaces: false
 ConstructorInitializerAllOnOneLineOrOnePerLine: true
