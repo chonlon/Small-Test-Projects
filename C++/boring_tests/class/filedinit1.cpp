@@ -1,5 +1,5 @@
 #include <iostream>
-#include "../header/base.h"
+#include "../../header/base.h"
 
 // 测试class里面成员变量初始化采用的方式
 

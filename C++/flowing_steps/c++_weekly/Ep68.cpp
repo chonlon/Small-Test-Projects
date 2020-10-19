@@ -2,7 +2,7 @@
 #include <array>
 #include <iostream>
 #include <numeric>
-#include "../header/base.h"
+#include "../../header/base.h"
 
 int main() {
     std::array<int, 10> arr{};
