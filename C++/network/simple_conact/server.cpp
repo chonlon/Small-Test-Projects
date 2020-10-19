@@ -6,6 +6,8 @@
 #include <cstdlib>
 #include <unistd.h>
 #include <memory.h>
+#include <unistd.h>
+#include <string>
 
 constexpr int PORT = 22222;
 
@@ -50,10 +52,37 @@ static int acceptOrDie(uint16_t port)
     return sockfd;
 }
 
+int write_n(int sockfd, void* buf, int length) {
+    int written = 0;
+    while (written < length) {
+        ssize_t nw = ::write(sockfd, static_cast<char*>(buf) + written, length - written);
+        if (nw > 0) {
+            written += static_cast<int>(nw);
+        }
+        else if (nw == 0) {
+            break;
+        }
+        else {
+            perror("write");
+            break;
+        }
+    }
+    return written;
+}
+
 int read_foo(int sockfd)
 {
-    char buf[40];
+    char buf[10000];
     return static_cast<int>(::read(sockfd, buf, sizeof(buf) - 1));
+}
+
+void readAndResponse(int sockfd) {
+    int len = read_foo(sockfd);
+    
+    constexpr char* str = "recieved ";
+    std::string respone = std::string(str) + std::to_string(len);
+    printf("%s", respone.c_str());
+    write_n(sockfd, reinterpret_cast<void*>(const_cast<char*>((respone.c_str()))), respone.length());
 }
 
 int main()
@@ -61,8 +90,9 @@ int main()
     int sockfd = acceptOrDie(PORT);
     int count = 0;
 
-    while(count < 100) {
-        if(read_foo(sockfd)) ++count;
+    while(count < 10) {
+        readAndResponse(sockfd);
+        ++count;
     }
     
     ::close(sockfd);
