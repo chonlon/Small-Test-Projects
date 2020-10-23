@@ -1,3 +1,5 @@
+#include <cstdio>
+
 template <class T>
 void dumpobject(T const* t) {
     unsigned char const* p = reinterpret_cast<unsigned char const*>(t);

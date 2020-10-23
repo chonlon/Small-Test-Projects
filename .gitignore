@@ -5,7 +5,11 @@
 !/.gitignore
 !/**/.vscode/**
 !/**/.idea/**
+#enable doc
 !/**/readme
+!*.md
+
+
 #enable cpp files
 !*.cc
 !*.hpp

@@ -1,6 +1,9 @@
 class Base {
 public:
     virtual void foo() = 0;
+    
+private:
+    int base_var_;
 };
 
 class SimpleInherit : public Base {

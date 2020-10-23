@@ -21,7 +21,7 @@ public:
 protected:
     int bar, baz;
     Point a_point;
-    //static char c;
+    static char c;
 };
 
 int main(int argc, char** argv) {
