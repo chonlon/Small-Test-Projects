@@ -107,7 +107,7 @@ ShellMessage( wParam,lParam ) {
 			return
 		}
 
-		setChineseLayout()
+		;setChineseLayout() ;sourcetail会对ctrl+space响应..., 想了想, 其它程序不自动切换了.
 		;TrayTip,AHK, 1已自动切换到中文输入法
 		return
 	}
