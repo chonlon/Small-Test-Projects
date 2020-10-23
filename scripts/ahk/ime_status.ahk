@@ -1,4 +1,4 @@
-;功能：输入法状态提示
+﻿;功能：输入法状态提示
 ;环境：win10+搜狗输入法，输入法状态切换用默认的shift键。
 ;作者：sunwind
 ;时间：2018年9月1日
@@ -6,11 +6,17 @@
  
 
  
+~LButton::
+If  (A_Cursor = "IBeam" ) {
+	Edit_Mode := 1
+} else if(A_Cursor = "Arrow" ) {
+   Edit_Mode := 0
+} 
+ 
 MouseGetPos, , , WhichWindow, WhichControl
 WinGetPos,winx,winy,,,%WhichWindow%
 ControlGetPos, x, y, w, h, %WhichControl%, ahk_id %WhichWindow%
 ;~ ToolTip, %WhichControl%`nX%X%`tY%Y%`nW%W%`t%H%
-ToolTip,EEE
 if ( 0 = not_Edit_InFocus())
 {
 	If (IME_GET()=1)
@@ -20,6 +26,11 @@ if ( 0 = not_Edit_InFocus())
 }
 return
 
+~Lbutton up::
+Sleep,1000
+ToolTip
+return
+ 
 not_Edit_InFocus(){
 Global Edit_Mode
 ControlGetFocus theFocus, A ; 取得目前活動窗口 的焦點之控件标识符

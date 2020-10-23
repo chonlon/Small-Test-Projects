@@ -3,12 +3,14 @@
 ;切换方法为点击状态栏到语言首选项进入高级键盘设置, 点击语言栏选项点击高级.                                         |
 ;------------------------------------------------------------------------------------------------------------------|
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;|
-; 原作者：		lspcieee <lspcieee@gmail.com>                                                 |
-; 网站：		http://www.lspcieee.com/                                                      |
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;|
+; 注意, 新加的ahk需要加到这段下面, 不然这段代码不能执行成功.
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; 原作者：		lspcieee <lspcieee@gmail.com>
+; 网站：		http://www.lspcieee.com/     
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;---edit by lon---
 ;=====分组配置
+;分组分配的程序名字可以通过右键托盘ahk找到winspy, 使用它查看.
 ;新开窗口时，切换到中文输入法的分组
 GroupAdd,cn,ahk_exe QQ.exe  ;QQ
 GroupAdd,cn,ahk_exe TIM.exe  ;TIM
@@ -17,7 +19,7 @@ GroupAdd,cn,ahk_exe wps.exe ;wps
 GroupAdd,cn,ahk_exe DingTalk.exe
 ;新开窗口时，切换到英文输入法的分组
 GroupAdd,en,ahk_exe devenv.exe  ;Visual Studio
-GroupAdd,en,ahk_exe Code.exe  ;Visual Studio
+GroupAdd,en,ahk_exe Code.exe  ;Visual Studio Code
 GroupAdd,en,ahk_class Notepad++
 GroupAdd,en,ahk_class Listary_WidgetWin_0
 ;窗口切换时，切换到中文输入法
@@ -33,36 +35,11 @@ GroupAdd,editor,ahk_exe devenv.exe  ;Visual Studio
 GroupAdd,editor,ahk_exe Code.exe  ;Visual Studio
 GroupAdd,editor,ahk_exe notepad.exe ;记事本
 GroupAdd,editor,ahk_class Notepad++
+;单独分组是因为在下面会对两个编辑器应用不同快捷键.
 GroupAdd,visualstudio,ahk_exe devenv.exe
 GroupAdd,visualstudiocode,ahk_exe Code.exe
-;函数
-;从剪贴板输入到界面
-sendbyclip(var_string)
-{
-    ClipboardOld = %ClipboardAll%
-    Clipboard =%var_string%
-	ClipWait, 2
-    send ^v
-    sleep 100
-    Clipboard = %ClipboardOld%  ; Restore previous contents of clipboard.
-}
-setChineseLayout(){
-	;发送中文输入法切换快捷键，请根据实际情况设置。
-	; send {Ctrl Down}{Shift}
-	; send {Ctrl Down},
-	; send {Ctrl Down}{Shift}
-	; send !+1
-	;send !+0
-}
-setEnglishLayout(){
-	;发送英文输入法切换快捷键，请根据实际情况设置。
-	; setChineseLayout()
-	; send ``
-	; send {Ctrl Down}{Shift}
-	; send {Ctrl Down},
-	; send {Ctrl Down}{Shift}
-	; send {Ctrl Up}
-}
+
+
 ;监控消息回调ShellMessage，并自动设置输入法
 Gui +LastFound
 hWnd := WinExist()
@@ -158,14 +135,14 @@ return
 
 
 
-;------------------------------------------------------------------------------------------------------------------|
-;======================编辑器中的小键盘改成调试功能================================================================|
-;------------------------------------------------------------------------------------------------------------------|
-;0:开始调试/停止/继续                                                                                              |
-;1:step in                                                                                                         |
-;2:step over                                                                                                       |
-;3:step out                                                                                                        |
-;------------------------------------------------------------------------------------------------------------------|
+;------------------------------------------------------------
+;======================编辑器中的小键盘改成调试功能=============
+;------------------------------------------------------------
+;0:开始调试/停止/继续                                          
+;1:step in                                                    
+;2:step over                                                  
+;3:step out                                                   
+;------------------------------------------------------------
 #IfWinActive,ahk_group visualstudio
 Numpad0::
 	SendInput, {F5}
@@ -233,27 +210,107 @@ Numpad8::
 
 ;switch header & source between editors.
 ^1::
-	IfWinActive,ahk_group visualstudio                                                                                   
-	{                                                                                                          
+	IfWinActive,ahk_group visualstudio
+	{
 		SendInput, ^k
 		Sleep, 100
 		SendInput, ^o
-		return                                                                                             
+		return
 	}
-	IfWinActive,ahk_group visualstudiocode                                                                                   
-	{                                                                                                          
+	IfWinActive,ahk_group visualstudiocode
+	{
 		SendInput, !o
-		return                                                                                             
+		return
 	}
 	return
-
-
-
-
-
 
 ;暂停脚本
 !^p::Suspend
 ^r::
 	SendInput,^+!{Backspace}
 	return
+
+; 鼠标左键按下显示输入法状态
+~LButton::
+If  (A_Cursor = "IBeam" ) {
+	Edit_Mode := 1
+} else if(A_Cursor = "Arrow" ) {
+   Edit_Mode := 0
+} 
+
+MouseGetPos, , , WhichWindow, WhichControl
+WinGetPos,winx,winy,,,%WhichWindow%
+ControlGetPos, x, y, w, h, %WhichControl%, ahk_id %WhichWindow%
+;~ ToolTip, %WhichControl%`nX%X%`tY%Y%`nW%W%`t%H%
+	showIMEStatus()
+return
+
+~Lbutton up::
+Sleep,500
+ToolTip
+return
+
+;函数
+;从剪贴板输入到界面
+sendbyclip(var_string)
+{
+    ClipboardOld = %ClipboardAll%
+    Clipboard =%var_string%
+	ClipWait, 2
+    send ^v
+    sleep 100
+    Clipboard = %ClipboardOld%  ; Restore previous contents of clipboard.
+}
+
+setChineseLayout(){
+	;发送中文输入法切换快捷键，请根据实际情况设置。
+
+	If (IME_GET()=1)
+		return
+	else
+		; 输入法切换中英快捷键, 如果是ctrl+shift, 把下面Space替换成shift就行了
+		send {Ctrl Down}{Space}
+		send {Ctrl Up}
+}
+setEnglishLayout(){
+	;发送英文输入法切换快捷键，请根据实际情况设置。
+	If (IME_GET()=0)
+		return
+	else
+		; 输入法切换中英快捷键
+		send {Ctrl Down}{Space}
+		send {Ctrl Up}
+}
+
+
+showIMEStatus() {
+	if ( 0 = not_Edit_InFocus())
+	{
+		If (IME_GET()=1)
+			ToolTip,中
+		else
+			ToolTip, EN
+	}
+}
+ 
+not_Edit_InFocus(){
+	Global Edit_Mode
+	ControlGetFocus theFocus, A ; 取得目前活動窗口 的焦點之控件标识符
+	return  !(inStr(theFocus , "Edit") or  (theFocus = "Scintilla1")   ;把查到是文字編輯卻不含Edit名的theFucus加進來
+	or (theFocus ="DirectUIHWND1") or  (Edit_Mode = 1))
+}
+ 
+IME_GET(WinTitle="")
+; 获取当前输入法状态
+{
+    ifEqual WinTitle,,  SetEnv,WinTitle,A
+    WinGet,hWnd,ID,%WinTitle%
+    DefaultIMEWnd := DllCall("imm32\ImmGetDefaultIMEWnd", Uint,hWnd, Uint)
+ 
+    ;Message : WM_IME_CONTROL  wParam:IMC_GETOPENSTATUS
+    DetectSave := A_DetectHiddenWindows
+    DetectHiddenWindows,ON
+    SendMessage 0x283, 0x005,0,,ahk_id %DefaultIMEWnd%
+    DetectHiddenWindows,%DetectSave%
+    Return ErrorLevel
+}
