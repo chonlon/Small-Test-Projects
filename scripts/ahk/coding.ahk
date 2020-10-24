@@ -1,7 +1,6 @@
-﻿;------------------------------------------------------------------------------------------------------------------|
-;不同窗口之间输入法协调, 需要将中文输入法快捷键切换到ctrl+shift+1, 英文输入法切换到ctrl+shift+0才能工作            |
-;切换方法为点击状态栏到语言首选项进入高级键盘设置, 点击语言栏选项点击高级.                                         |
-;------------------------------------------------------------------------------------------------------------------|
+﻿;--------------------------------------------------------------------|
+;切换方法为点击状态栏到语言首选项进入高级键盘设置, 点击语言栏选项点击高级.  |
+;--------------------------------------------------------------------|
 
 ; 注意, 新加的ahk需要加到这段下面, 不然这段代码不能执行成功.
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -65,7 +64,7 @@ ShellMessage( wParam,lParam ) {
 ;53 全屏
 ;54 退出全屏
 ;32772 窗口切换
-	If ( wParam = 1 )
+	If ( wParam = 1 ) ;新窗口被创建
 	{
 		;WinGetclass, WinClass, ahk_id %lParam%
 		;MsgBox,%Winclass%
@@ -90,7 +89,7 @@ ShellMessage( wParam,lParam ) {
 		;TrayTip,AHK, 1已自动切换到中文输入法
 		return
 	}
-	If ( wParam = 32772 )
+	If ( wParam = 32772 ) ;窗口切换
 	{
 		IfWinActive,ahk_group cn32772
 		{
@@ -112,7 +111,8 @@ ShellMessage( wParam,lParam ) {
 		return
 	}
 }
-;在所有编辑器中自动切换中英文输入法
+
+;在所有编辑器中注释时自动切换中文输入法
 #IfWinActive,ahk_group editor
 :*://  ::
 	;//加空格 时 切换到中文输入法
@@ -134,15 +134,14 @@ return
 ;------------------------------------------------------------------------------------------------------------------
 
 
-
-;------------------------------------------------------------
-;======================编辑器中的小键盘改成调试功能=============
-;------------------------------------------------------------
-;0:开始调试/停止/继续                                          
-;1:step in                                                    
-;2:step over                                                  
-;3:step out                                                   
-;------------------------------------------------------------
+;------------------------------------------------------------|
+;======================编辑器中的小键盘改成调试功能=============|
+;------------------------------------------------------------|
+;0:开始调试/停止/继续                                          |
+;1:step in                                                   |
+;2:step over                                                 |
+;3:step out                                                  |
+;------------------------------------------------------------|
 #IfWinActive,ahk_group visualstudio
 Numpad0::
 	SendInput, {F5}
@@ -208,7 +207,10 @@ Numpad8::
 ;------------------------------------------------------------------------------------------------------------------
 
 
+
+;----------------------------------------------------------------------------
 ;switch header & source between editors.
+; 这里是ctrl + 1
 ^1::
 	IfWinActive,ahk_group visualstudio
 	{
@@ -222,7 +224,8 @@ Numpad8::
 		SendInput, !o
 		return
 	}
-	return
+return
+;------------------------------------------------------------------------------
 
 ;暂停脚本
 !^p::Suspend
@@ -230,27 +233,31 @@ Numpad8::
 	SendInput,^+!{Backspace}
 	return
 
-; 鼠标左键按下显示输入法状态
+;---------------------------------------------|
+; 鼠标左键按下显示输入法状态.
+; 如果不需要把这 LButton和LButton up两段删掉就行.
 ~LButton::
-If  (A_Cursor = "IBeam" ) {
-	Edit_Mode := 1
-} else if(A_Cursor = "Arrow" ) {
-   Edit_Mode := 0
-} 
+	If  (A_Cursor = "IBeam" ) {
+		Edit_Mode := 1
+	} else if(A_Cursor = "Arrow" ) {
+		Edit_Mode := 0
+	} 
 
-MouseGetPos, , , WhichWindow, WhichControl
-WinGetPos,winx,winy,,,%WhichWindow%
-ControlGetPos, x, y, w, h, %WhichControl%, ahk_id %WhichWindow%
+	MouseGetPos, , , WhichWindow, WhichControl
+	WinGetPos,winx,winy,,,%WhichWindow%
+	ControlGetPos, x, y, w, h, %WhichControl%, ahk_id %WhichWindow%
 ;~ ToolTip, %WhichControl%`nX%X%`tY%Y%`nW%W%`t%H%
 	showIMEStatus()
 return
 
 ~Lbutton up::
-Sleep,500
+Sleep,500 ;tooltip显示时间.
 ToolTip
 return
+;--------------------------------------------|
 
-;函数
+
+;-----------以下是依赖函数--------------------------------------------|
 ;从剪贴板输入到界面
 sendbyclip(var_string)
 {
@@ -261,6 +268,7 @@ sendbyclip(var_string)
     sleep 100
     Clipboard = %ClipboardOld%  ; Restore previous contents of clipboard.
 }
+
 
 setChineseLayout(){
 	;发送中文输入法切换快捷键，请根据实际情况设置。
