@@ -85,7 +85,7 @@ ShellMessage( wParam,lParam ) {
 			return
 		}
 
-		setChineseLayout()
+		;setChineseLayout() ;有的弹窗会对{space}有响应, 所以也关了自动切换了..
 		;TrayTip,AHK, 1已自动切换到中文输入法
 		return
 	}
@@ -106,7 +106,7 @@ ShellMessage( wParam,lParam ) {
 			return
 		}
 
-		;setChineseLayout() ;sourcetail会对ctrl+space响应..., 想了想, 其它程序不自动切换了.
+		;setChineseLayout() ;sourcetail会对ctrl+space响应..., 想了想, 其它程序不自动切换了... 当然如果你设切换中英快捷键和我不一样可以开启.
 		;TrayTip,AHK, 1已自动切换到中文输入法
 		return
 	}
@@ -239,9 +239,14 @@ return
 ~LButton::
 	If  (A_Cursor = "IBeam" ) {
 		Edit_Mode := 1
-	} else if(A_Cursor = "Arrow" ) {
-		Edit_Mode := 0
 	} 
+	else {
+		Edit_Mode := 0
+	}
+	; else if(A_Cursor = "Arrow" ) {
+	; 	Edit_Mode := 0
+	; }
+	
 
 	MouseGetPos, , , WhichWindow, WhichControl
 	WinGetPos,winx,winy,,,%WhichWindow%
@@ -251,7 +256,7 @@ return
 return
 
 ~Lbutton up::
-Sleep,500 ;tooltip显示时间.
+Sleep,200 ;tooltip显示时间.
 ToolTip
 return
 ;--------------------------------------------|
