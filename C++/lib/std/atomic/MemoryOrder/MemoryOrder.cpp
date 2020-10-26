@@ -37,9 +37,7 @@ int main()
     auto setInner = [time_sleep_ms ,&av_global, &a, &b](
         int bv,
         std::memory_order ma,
-        std::memory_order mb,
-        int c = 0,
-        int d = 0)
+        std::memory_order mb)
     {
         for (int i = 0; i < 10; ++i) {
             a.store(av_global, ma);
