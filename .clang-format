@@ -27,7 +27,7 @@ AllowAllConstructorInitializersOnNextLine: true
 #允许 短的 块, if, enum, for, while, case是否可以整理到一行中.
 AllowShortBlocksOnASingleLine: false
 AllowShortCaseLabelsOnASingleLine: false
-AllowShortEnumsOnASingleLine: true
+#AllowShortEnumsOnASingleLine: true #这个选项貌似不支持
 AllowShortFunctionsOnASingleLine: Empty
 AllowShortLambdasOnASingleLine: Inline
 AllowShortIfStatementsOnASingleLine: false
@@ -41,27 +41,28 @@ AlwaysBreakTemplateDeclarations: true
 BinPackArguments: false
 BinPackParameters: false
 
-# 配置了一下, 不是很满意, 直接使用Mozilla了
-# BraceWrapping:
-#   AfterClass:      true
-#   AfterControlStatement:Never
-#   AfterEnum:       true
-#   AfterFunction:   true
-#   AfterNamespace:  false
-#   AfterObjCDeclaration: false
-#   AfterStruct:     false
-#   AfterUnion:      false
-#   AfterExternBlock: false
-#   BeforeCatch:     false
-#   BeforeElse:      false
-#   BeforeLambdaBody:true
-#   IndentBraces:    false
-#   SplitEmptyFunction: true
-#   SplitEmptyRecord: true
-#   SplitEmptyNamespace: true
-
 #大括号换行方式
-BreakBeforeBraces: Mozilla
+BreakBeforeBraces: Custom
+BraceWrapping:
+  AfterClass:      true
+  AfterControlStatement: Never
+  AfterEnum:       true
+  AfterFunction:   false
+  AfterNamespace:  false
+  AfterObjCDeclaration: false
+  AfterStruct:     true
+  AfterUnion:      true
+  AfterExternBlock: false
+  BeforeCatch:     false
+  BeforeElse:      false
+  #BeforeLambdaBody: true #这个选项貌似不支持
+  IndentBraces:    false
+  SplitEmptyFunction: true
+  SplitEmptyRecord: true
+  SplitEmptyNamespace: true
+
+
+
 BreakBeforeInheritanceComma: false
 BreakBeforeTernaryOperators: true
 BreakConstructorInitializersBeforeComma: false
