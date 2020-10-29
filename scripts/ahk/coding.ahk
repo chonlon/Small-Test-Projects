@@ -233,6 +233,12 @@ return
 	SendInput,^+!{Backspace}
 	return
 
+; 编程相关字串
+
+^2::
+	sendbyclip("#include ")
+	return
+
 ;---------------------------------------------|
 ; 鼠标左键按下显示输入法状态.
 ; 如果不需要把这 LButton和LButton up两段删掉就行.
