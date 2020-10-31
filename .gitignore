@@ -73,5 +73,8 @@ ui*.h
 *Release
 *build
 
+#ignore vs dir
+**/.vs/**
+
 #ignore node_models
 *node_modules*
