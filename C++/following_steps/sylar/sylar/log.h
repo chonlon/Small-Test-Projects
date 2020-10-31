@@ -3,6 +3,8 @@
 #include <memory>
 #include <string>
 #include <list>
+#include <sstream>
+#include <fstream>
 
 namespace sylar {
 
@@ -44,24 +46,6 @@ struct LogLevel
     };
 };
 
-
-/**
- * @brief 日志输出器
- *
- */
-class LogAppender
-{
-public:
-    typedef std::shared_ptr<LogAppender> ptr;
-
-    virtual ~LogAppender() = 0;
-
-    void log(LogLevel::Level level, LogEvent::ptr event);
-
-private:
-    LogLevel::Level m_level;
-};
-
 /**
  * @brief
  *
@@ -80,6 +64,34 @@ public:
     ~LogFormatter() {
     }
 };
+
+
+/**
+ * @brief 日志输出器
+ *
+ */
+class LogAppender
+{
+public:
+    typedef std::shared_ptr<LogAppender> ptr;
+
+    virtual ~LogAppender() = 0;
+
+    virtual void log(LogLevel::Level level, LogEvent::ptr event) = 0;
+
+    auto Formatter() const -> LogFormatter::ptr {
+        return m_formatter;
+    }
+
+    auto setFormatter(const LogFormatter::ptr& m_formatter) -> void {
+        this->m_formatter = m_formatter;
+    }
+
+protected:
+    LogLevel::Level m_level;
+    LogFormatter::ptr m_formatter;
+};
+
 
 /**
  * @brief 日志器
@@ -121,24 +133,34 @@ class StdoutLogAppender : public LogAppender
 private:
     /* data */
 public:
-    StdoutLogAppender(/* args */) {
-    }
+    typedef std::shared_ptr<StdoutLogAppender> ptr;
+
+    StdoutLogAppender(/* args */);
 
     ~StdoutLogAppender() {
     }
+
+    void log(LogLevel::Level level, LogEvent::ptr event) override;
 };
 
 class FileLogAppender : public LogAppender
 {
 private:
     /* data */
+    std::string m_filename;
+    std::ofstream m_filestream;
 public:
+    typedef std::shared_ptr<FileLogAppender> ptr;
+
     FileLogAppender(/* args */) {
     }
 
     ~FileLogAppender() {
     }
-};
 
+    bool reopen();
+
+    void log(LogLevel::Level level, LogEvent::ptr event) override;
+};
 
 } // namespace sylar
