@@ -1,10 +1,10 @@
-## 顺序和clang-format一样, https://clang.llvm.org/docs/ClangFormatStyleOptions.html.
+﻿## 顺序和clang-format一样, https://clang.llvm.org/docs/ClangFormatStyleOptions.html.
 
 Language:        Cpp
 BasedOnStyle: Mozilla
 
 #public 等访问修饰符缩进
-AccessModifierOffset: 0
+AccessModifierOffset: -4
 #括号换行对齐参数
 AlignAfterOpenBracket: Align
 
@@ -27,9 +27,9 @@ AllowAllConstructorInitializersOnNextLine: true
 #允许 短的 块, if, enum, for, while, case是否可以整理到一行中.
 AllowShortBlocksOnASingleLine: false
 AllowShortCaseLabelsOnASingleLine: false
-#AllowShortEnumsOnASingleLine: true #这个选项貌似不支持
+#AllowShortEnumsOnASingleLine: true #unknown key
 AllowShortFunctionsOnASingleLine: Empty
-AllowShortLambdasOnASingleLine: Inline
+AllowShortLambdasOnASingleLine: Inline #unknown key
 AllowShortIfStatementsOnASingleLine: false
 AllowShortLoopsOnASingleLine: false
 ##
@@ -45,7 +45,7 @@ BinPackParameters: false
 BreakBeforeBraces: Custom
 BraceWrapping:
   AfterClass:      true
-  AfterControlStatement: Never
+  AfterControlStatement: true
   AfterEnum:       true
   AfterFunction:   false
   AfterNamespace:  false
