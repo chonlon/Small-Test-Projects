@@ -1,39 +1,46 @@
-#include <iostream>
-#include <cstdio>
 #include <cstdint>
-template<typename T>
-struct has_no_destroy {
-    template<typename C>
+#include <cstdio>
+#include <iostream>
+
+template <typename T>
+struct has_no_destroy
+{
+    template <typename C>
     static char test(decltype(&C::no_destroy));
 
 
-    template<typename C>
+    template <typename C>
     static int32_t test(...);
 
     const static bool value = sizeof(test<T>()) == 1;
 };
+
 // 其作用就是用来判断是否有 no_destroy 函数
 
-struct A {
-
+struct A
+{
+    A() {}
 };
 
-struct B {
-    void no_destroy(){}
+struct B
+{
+    void no_destroy() {}
 };
-struct C {
+
+struct C
+{
     int no_destroy;
 };
 
-struct D : B {
-
+struct D : B
+{
 };
 
 void testNoDestroy() {
-    printf("%d\n",has_no_destroy<A>::value);
-    printf("%d\n",has_no_destroy<B>::value);
-    printf("%d\n",has_no_destroy<C>::value);
-    printf("%d\n",has_no_destroy<D>::value);
+    printf("%d\n", has_no_destroy<A>::value);
+    printf("%d\n", has_no_destroy<B>::value);
+    printf("%d\n", has_no_destroy<C>::value);
+    printf("%d\n", has_no_destroy<D>::value);
 }
 
 int main() {
