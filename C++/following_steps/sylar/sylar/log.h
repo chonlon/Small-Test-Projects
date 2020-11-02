@@ -9,6 +9,7 @@
 #include <cstdint>
 
 namespace sylar {
+class Logger;
 
 /**
  * @brief 日志事件
@@ -57,7 +58,6 @@ public:
     typedef std::shared_ptr<LogEvent> ptr;
 
 
-
     LogEvent(/* args */) {
     }
 
@@ -91,8 +91,10 @@ private:
     {
     public:
         typedef std::shared_ptr<FormatItem> ptr;
+        FormatItem(const std::string& fmt = "") {  }
         virtual ~FormatItem() = 0;
         virtual void format(std::ostream& os,
+                            std::shared_ptr<Logger> logger,
                             LogLevel::Level level,
                             LogEvent::ptr event) = 0;
     };
@@ -103,7 +105,7 @@ private:
     void init();
 public:
     typedef std::shared_ptr<LogFormatter> ptr;
-    std::string format(LogLevel::Level level, LogEvent::ptr event);
+    std::string format(std::shared_ptr<Logger> logger, LogLevel::Level level, LogEvent::ptr event);
 
     LogFormatter(/* args */) {
     }
@@ -129,7 +131,9 @@ public:
 
     virtual ~LogAppender();
 
-    virtual void log(LogLevel::Level level, LogEvent::ptr event) = 0;
+    virtual void log(std::shared_ptr<Logger> logger,
+                     LogLevel::Level level,
+                     LogEvent::ptr event) = 0;
 
     auto Formatter() const -> LogFormatter::ptr {
         return m_formatter;
@@ -173,6 +177,7 @@ public:
     LogLevel::Level getLevel() const { return m_level; }
     void setLevel(LogLevel::Level val) { m_level = val; }
 
+    const std::string& getName() const { return m_name; }
 private:
     std::string m_name;
     LogLevel::Level m_level;
@@ -192,7 +197,9 @@ public:
     ~StdoutLogAppender() {
     }
 
-    void log(LogLevel::Level level, LogEvent::ptr event) override;
+    void log(std::shared_ptr<Logger> logger,
+             LogLevel::Level level,
+             LogEvent::ptr event) override;
 };
 
 class FileLogAppender : public LogAppender
@@ -212,7 +219,9 @@ public:
 
     bool reopen();
 
-    void log(LogLevel::Level level, LogEvent::ptr event) override;
+    void log(std::shared_ptr<Logger> logger,
+             LogLevel::Level level,
+             LogEvent::ptr event) override;
 };
 
 } // namespace sylar
