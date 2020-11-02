@@ -1,0 +1,11 @@
+{
+    "cmake.configureSettings": {
+        "CMAKE_TOOLCHAIN_FILE": "/home/lon/2_lib/vcpkg/scripts/buildsystems/vcpkg.cmake"
+    },
+    "cmake.configureArgs": [
+        "-DEnableTests=ON",
+        "-DVCPKG_TARGET_TRIPLET=x64-linux"
+    ],
+    "python.pythonPath": "/usr/bin/python",
+    "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools"
+}

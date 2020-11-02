@@ -5,7 +5,7 @@
       "generator": "Unix Makefiles",
       "configurationType": "Debug",
       "cmakeExecutable": "cmake",
-      "remoteCopySourcesExclusionList": [ ".vs", ".git", "out" ],
+      "remoteCopySourcesExclusionList": [ ".vs", ".git", "out", "build", "cmake-build-debug-ubuntuserver" ],
       "cmakeCommandArgs": "",
       "buildCommandArgs": "",
       "ctestCommandArgs": "",
@@ -19,7 +19,14 @@
       "remoteCopyBuildOutput": false,
       "remoteCopySourcesMethod": "rsync",
       "addressSanitizerRuntimeFlags": "detect_leaks=0",
-      "variables": []
+      "variables": [
+        {
+          "name": "EnableTests",
+          "value": "True",
+          "type": "BOOL"
+        }
+      ],
+      "cmakeToolchain": "/home/lon/2_lib/vcpkg/scripts/buildsystems/vcpkg.cmake"
     },
     {
       "name": "WSL-GCC-Debug",

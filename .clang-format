@@ -45,7 +45,7 @@ BinPackParameters: false
 BreakBeforeBraces: Custom
 BraceWrapping:
   AfterClass:      true
-  AfterControlStatement: true
+  AfterControlStatement: false
   AfterEnum:       true
   AfterFunction:   false
   AfterNamespace:  false
@@ -57,7 +57,7 @@ BraceWrapping:
   BeforeElse:      false
   #BeforeLambdaBody: true #这个选项貌似不支持
   IndentBraces:    false
-  SplitEmptyFunction: true
+  SplitEmptyFunction: false
   SplitEmptyRecord: true
   SplitEmptyNamespace: true
 

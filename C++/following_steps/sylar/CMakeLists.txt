@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.8)
+cmake_minimum_required(VERSION 3.10)
 
 project(sylar)
 
@@ -49,8 +49,17 @@ target_sources(sylar PRIVATE
     sylar/log.cc
 )
 
-add_executable(test test/test.cc)
-add_dependencies(test sylar)
-target_link_libraries(test sylar)
+option(EnableTests "BUILD TESTS" OFF)
+
+add_executable(runner runner/runner.cc)
+add_dependencies(runner sylar)
+target_link_libraries(runner sylar)
+target_include_directories(runner PRIVATE sylar/)
+
+if(EnableTests)
+    enable_testing()
+    add_subdirectory(test)
+    message(STATUS "test was enabled")
+endif()
 
 

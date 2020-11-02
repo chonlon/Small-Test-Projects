@@ -1,0 +1,10 @@
+include(GoogleTest)
+find_package(GTest CONFIG REQUIRED)
+
+add_executable(LogTest LogTest.cc)
+add_dependencies(LogTest sylar)
+target_include_directories(LogTest PRIVATE ../sylar/)
+target_link_libraries(LogTest PRIVATE GTest::gmock GTest::gtest GTest::gmock_main GTest::gtest_main sylar)
+#gtest_add_tests(LogTest "" AUTO)
+#add_test(NAME logtest COMMAND LogTest)
+gtest_discover_tests(LogTest)
