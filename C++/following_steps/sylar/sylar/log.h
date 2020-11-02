@@ -25,8 +25,20 @@ private:
     uint32_t m_elapsedMs = 0;       // 程序启动经过时间
     uint32_t m_fiberid   = 0;       // 协程ID
     uint64_t m_time;                // 时间戳
-    std::string m_content;
+    std::stringstream m_content_stream;
 public:
+    typedef std::shared_ptr<LogEvent> ptr;
+
+    LogEvent(const char* file,
+             int32_t line,
+             uint32_t thread_id,
+             uint32_t elapsed_ms,
+             uint32_t fiberid,
+             uint64_t time);
+
+    ~LogEvent() {
+    }
+
     auto getFile() const -> const char* {
         return m_file;
     }
@@ -52,17 +64,11 @@ public:
     }
 
     auto getContent() const -> std::string {
-        return m_content;
+        return m_content_stream.str();
     }
 
-    typedef std::shared_ptr<LogEvent> ptr;
+    std::stringstream& getSS() { return m_content_stream; }
 
-
-    LogEvent(/* args */) {
-    }
-
-    ~LogEvent() {
-    }
 };
 
 struct LogLevel
@@ -91,7 +97,10 @@ private:
     {
     public:
         typedef std::shared_ptr<FormatItem> ptr;
-        FormatItem(const std::string& fmt = "") {  }
+
+        FormatItem(const std::string& fmt = "") {
+        }
+
         virtual ~FormatItem() = 0;
         virtual void format(std::ostream& os,
                             std::shared_ptr<Logger> logger,
@@ -101,14 +110,24 @@ private:
 
     friend struct LevelFormatItem;
     friend struct MessageFormatItem;
+    friend struct ElapseFormatItem;
+    friend struct NameFormatItem;
+    friend struct ThreadIdFormatItem;
+    friend struct FiberIdFormatItem;
+    friend struct DateTimeFormatItem;
+    friend struct FilenameFormatItem;
+    friend struct LineFormatItem;
+    friend struct NewLineFormatItem;
+    friend struct StringFormatItem;
 
     void init();
 public:
     typedef std::shared_ptr<LogFormatter> ptr;
-    std::string format(std::shared_ptr<Logger> logger, LogLevel::Level level, LogEvent::ptr event);
+    std::string format(std::shared_ptr<Logger> logger,
+                       LogLevel::Level level,
+                       LogEvent::ptr event);
 
-    LogFormatter(/* args */) {
-    }
+    LogFormatter(const std::string& str);
 
     ~LogFormatter() {
     }
@@ -144,7 +163,7 @@ public:
     }
 
 protected:
-    LogLevel::Level m_level;
+    LogLevel::Level m_level = LogLevel::Level::DEBUG;
     LogFormatter::ptr m_formatter;
 };
 
@@ -153,7 +172,7 @@ protected:
  * @brief 日志器
  *
  */
-class Logger
+class Logger : public std::enable_shared_from_this<Logger>
 {
 private:
     /* data */
@@ -161,7 +180,7 @@ private:
 public:
     typedef std::shared_ptr<Logger> ptr;
 
-    Logger(const std::string& name = "root");
+    explicit Logger(const std::string& name = "root");
 
     void log(LogLevel::Level level, LogEvent::ptr event);
 
@@ -182,6 +201,7 @@ private:
     std::string m_name;
     LogLevel::Level m_level;
     std::list<LogAppender::ptr> m_appenders;
+    LogFormatter::ptr m_formatter;
 };
 
 
@@ -224,4 +244,18 @@ public:
              LogEvent::ptr event) override;
 };
 
+//namespace {
+/**
+ * @brief 用于测试
+*/
+struct StringLogAppender : public LogAppender
+{
+    std::stringstream log_sstream;
+
+    void log(std::shared_ptr<Logger> logger,
+        LogLevel::Level level,
+        LogEvent::ptr event) override;
+};
+
+//}
 } // namespace sylar

@@ -8,6 +8,12 @@ namespace sylar {
 
 struct MessageFormatItem : public LogFormatter::FormatItem
 {
+    MessageFormatItem(const std::string& str)
+        : FormatItem{str} {
+    }
+
+    virtual ~MessageFormatItem() = default;
+
     void format(std::ostream& os,
                 std::shared_ptr<Logger> logger,
                 LogLevel::Level level,
@@ -18,6 +24,12 @@ struct MessageFormatItem : public LogFormatter::FormatItem
 
 struct LevelFormatItem : public LogFormatter::FormatItem
 {
+    LevelFormatItem(const std::string& str)
+        : FormatItem{str} {
+    }
+
+    virtual ~LevelFormatItem() = default;
+
     void format(std::ostream& os,
                 std::shared_ptr<Logger> logger,
                 LogLevel::Level level,
@@ -28,6 +40,12 @@ struct LevelFormatItem : public LogFormatter::FormatItem
 
 struct ElapseFormatItem : public LogFormatter::FormatItem
 {
+    ElapseFormatItem(const std::string& str)
+        : FormatItem{str} {
+    }
+
+    virtual ~ElapseFormatItem() = default;
+
     void format(std::ostream& os,
                 std::shared_ptr<Logger> logger,
                 LogLevel::Level level,
@@ -38,6 +56,12 @@ struct ElapseFormatItem : public LogFormatter::FormatItem
 
 struct NameFormatItem : public LogFormatter::FormatItem
 {
+    NameFormatItem(const std::string& str)
+        : FormatItem{str} {
+    }
+
+    virtual ~NameFormatItem() = default;
+
     void format(std::ostream& os,
                 std::shared_ptr<Logger> logger,
                 LogLevel::Level level,
@@ -48,6 +72,12 @@ struct NameFormatItem : public LogFormatter::FormatItem
 
 struct ThreadIdFormatItem : public LogFormatter::FormatItem
 {
+    ThreadIdFormatItem(const std::string& str)
+        : FormatItem{str} {
+    }
+
+    virtual ~ThreadIdFormatItem() = default;
+
     void format(std::ostream& os,
                 std::shared_ptr<Logger> logger,
                 LogLevel::Level level,
@@ -58,6 +88,12 @@ struct ThreadIdFormatItem : public LogFormatter::FormatItem
 
 struct FiberIdFormatItem : public LogFormatter::FormatItem
 {
+    FiberIdFormatItem(const std::string& str)
+        : FormatItem{str} {
+    }
+
+    virtual ~FiberIdFormatItem() = default;
+
     void format(std::ostream& os,
                 std::shared_ptr<Logger> logger,
                 LogLevel::Level level,
@@ -72,6 +108,8 @@ struct DateTimeFormatItem : public LogFormatter::FormatItem
         : m_format{format} {
     }
 
+    virtual ~DateTimeFormatItem() = default;
+
     void format(std::ostream& os,
                 std::shared_ptr<Logger> logger,
                 LogLevel::Level level,
@@ -85,6 +123,12 @@ private:
 
 struct FilenameFormatItem : public LogFormatter::FormatItem
 {
+    FilenameFormatItem(const std::string& str)
+        : FormatItem{str} {
+    }
+
+    virtual ~FilenameFormatItem() = default;
+
     void format(std::ostream& os,
                 std::shared_ptr<Logger> logger,
                 LogLevel::Level level,
@@ -95,6 +139,12 @@ struct FilenameFormatItem : public LogFormatter::FormatItem
 
 struct LineFormatItem : public LogFormatter::FormatItem
 {
+    LineFormatItem(const std::string& str)
+        : FormatItem{str} {
+    }
+
+    virtual ~LineFormatItem() = default;
+
     void format(std::ostream& os,
                 std::shared_ptr<Logger> logger,
                 LogLevel::Level level,
@@ -105,6 +155,12 @@ struct LineFormatItem : public LogFormatter::FormatItem
 
 struct NewLineFormatItem : public LogFormatter::FormatItem
 {
+    NewLineFormatItem(const std::string& str)
+        : FormatItem{str} {
+    }
+
+    virtual ~NewLineFormatItem() = default;
+
     void format(std::ostream& os,
                 std::shared_ptr<Logger> logger,
                 LogLevel::Level level,
@@ -120,6 +176,8 @@ struct StringFormatItem : public LogFormatter::FormatItem
           m_string{str} {
     }
 
+    virtual ~StringFormatItem() = default;
+
     void format(std::ostream& os,
                 std::shared_ptr<Logger> logger,
                 LogLevel::Level level,
@@ -131,6 +189,20 @@ private:
     std::string m_string;
 };
 
+
+LogEvent::LogEvent(const char* file,
+                   int32_t line,
+                   uint32_t thread_id,
+                   uint32_t elapsed_ms,
+                   uint32_t fiberid,
+                   uint64_t time)
+    : m_file{file},
+      m_line{line},
+      m_threadId{thread_id},
+      m_elapsedMs{elapsed_ms},
+      m_fiberid{fiberid},
+      m_time{time} {
+}
 
 const char* LogLevel::toString(LogLevel::Level level) {
     switch (level) {
@@ -150,9 +222,12 @@ const char* LogLevel::toString(LogLevel::Level level) {
     }
 }
 
+LogFormatter::FormatItem::~FormatItem() {
+}
+
 void LogFormatter::init() {
     std::vector<std::tuple<std::string, std::string, int>> vec;
-    std::string nstr;
+    std::string nstr{};
     for (std::size_t i = 0, size = m_pattern.size(); i < size; ++i) {
         if (m_pattern[i] != '%') {
             nstr.append(1, m_pattern[i]);
@@ -171,8 +246,8 @@ void LogFormatter::init() {
         std::string str;
         std::string fmt;
 
-        while (++n < size) {
-            if (isspace(m_pattern[n])) {
+        while (n < size) {
+            if (!isalpha(m_pattern[n]) && m_pattern[n] != '{' && m_pattern[n] != '}') {
                 break;
             }
             if (fmt_status == 0) {
@@ -186,13 +261,14 @@ void LogFormatter::init() {
             }
             if (fmt_status == 1) {
                 if (m_pattern[n] == '}') {
-                    fmt        = m_pattern.substr(fmt_begin + 1, n - fmt_begin);
+                    fmt        = m_pattern.substr(fmt_begin, n - fmt_begin);
                     fmt_status = 2;
                     ++n;
-                    continue;
+                    break;
                 }
             }
-
+            ++n;
+            break;// once got pattern, next char is not part of pattern
         }
 
         if (fmt_status == 0) {
@@ -201,7 +277,7 @@ void LogFormatter::init() {
             }
             str = m_pattern.substr(i + 1, n - i - 1);
             vec.emplace_back(str, fmt, 1);
-            i = n;
+            i = n - 1;
         } else if (fmt_status == 1) {
             std::cout << "pattern parse error: " << m_pattern << " - " <<
                 m_pattern.substr(i) << '\n';
@@ -211,17 +287,16 @@ void LogFormatter::init() {
                 vec.emplace_back(nstr, "", 0);
             }
             vec.emplace_back(str, fmt, 1);
-            i = n;
+            i = n - 1;
         }
-
-
+        nstr.clear();
     }
     if (!nstr.empty()) {
         vec.emplace_back(nstr, "", 0);
     }
 
     static std::unordered_map<std::string, std::function<FormatItem::ptr(
-                        const std::string& str)>> s_format_items = {
+                                  const std::string& str)>> s_format_items = {
 #define XX(str, C) \
         {#str, [](const std::string& fmt) {return std::make_shared<C>(fmt);}}
 
@@ -256,16 +331,19 @@ void LogFormatter::init() {
             if (it == s_format_items.end()) {
                 m_items.emplace_back(
                     std::make_shared<StringFormatItem>(
-                        "<<error_format%" + std::get<0> + ">>"));
+                        "<<error_format%" + std::get<0>(i) + ">>"));
             } else {
                 m_items.emplace_back(it->second(std::get<1>(i)));
             }
         }
-        std::cout << std::get<0>(i) << " - " << std::get<1>(i) << " - " << std::get<2>(i) << std::endl;
+        std::cout << std::get<0>(i) << " - " << std::get<1>(i) << " - " <<
+            std::get<2>(i) << std::endl;
     }
 }
 
-std::string LogFormatter::format(std::shared_ptr<Logger> logger, LogLevel::Level level, LogEvent::ptr event) {
+std::string LogFormatter::format(std::shared_ptr<Logger> logger,
+                                 LogLevel::Level level,
+                                 LogEvent::ptr event) {
     std::stringstream ss;
     for (auto& i : m_items) {
         i->format(ss, logger, level, event);
@@ -273,10 +351,27 @@ std::string LogFormatter::format(std::shared_ptr<Logger> logger, LogLevel::Level
     return ss.str();
 }
 
+LogFormatter::LogFormatter(const std::string& str)
+    : m_pattern{str} {
+    init();
+}
+
 LogAppender::~LogAppender() {
 }
 
+Logger::Logger(const std::string& name)
+    : m_name{name},
+      m_level{LogLevel::Level::DEBUG} {
+    m_formatter.reset(new LogFormatter("%d [%p] %f:%l %n"));
+}
+
 void Logger::log(LogLevel::Level level, LogEvent::ptr event) {
+    if (level >= m_level) {
+        auto self = shared_from_this();
+        for (auto& i : m_appenders) {
+            i->log(self, level, event);
+        }
+    }
 }
 
 void Logger::debug(LogEvent::ptr event) {
@@ -300,6 +395,9 @@ void Logger::fatal(LogEvent::ptr event) {
 }
 
 void Logger::addAppender(LogAppender::ptr appender) {
+    if (!appender->Formatter()) {
+        appender->setFormatter(m_formatter);
+    }
     m_appenders.push_back(appender);
 }
 
@@ -337,6 +435,14 @@ void FileLogAppender::log(std::shared_ptr<Logger> logger,
                           LogEvent::ptr event) {
     if (level >= m_level) {
         m_filestream << m_formatter->format(logger, level, event);
+    }
+}
+
+void StringLogAppender::log(std::shared_ptr<Logger> logger,
+    LogLevel::Level level,
+    LogEvent::ptr event) {
+    if(level>= m_level) {
+        log_sstream << m_formatter->format(logger, level, event);
     }
 }
 
