@@ -26,7 +26,7 @@ int main() {
         string str = "Hello_2018";
         smatch result;
         regex pattern("(.{5})_(\\d{4})");	//匹配5个任意单字符 + 下划线 + 4个数字
-
+        // 需要注意的是\n不在.可表示的字符内, 需要另外写.
         if (regex_match(str, result, pattern))
         {
             // smatch的op[]或者at返回一个sub_match, 这个类继承了pair, first是成功匹配序列的开始位置, second是成功匹配的序列的结尾的下一个位置.
