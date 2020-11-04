@@ -1,9 +1,7 @@
-set(
-	GUISRC
-	widget.ui
-	widget.h
-	widget.cpp
-)
 
-add_library(LIBGUI STATIC ${GUISRC})
-target_link_libraries(LIBGUI Qt5::Widgets Qt5::Gui Qt5::Core)
+target_sources(
+	cmake_subdir PRIVATE
+	${CMAKE_CURRENT_LIST_DIR}/Widget.h
+	${CMAKE_CURRENT_LIST_DIR}/Widget.cpp
+	${CMAKE_CURRENT_LIST_DIR}/Widget.ui
+)
