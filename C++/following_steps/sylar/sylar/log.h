@@ -244,7 +244,7 @@ public:
              LogEvent::ptr event) override;
 };
 
-//namespace {
+namespace {
 /**
  * @brief 用于测试
 */
@@ -253,9 +253,13 @@ struct StringLogAppender : public LogAppender
     std::stringstream log_sstream;
 
     void log(std::shared_ptr<Logger> logger,
-        LogLevel::Level level,
-        LogEvent::ptr event) override;
+             LogLevel::Level level,
+             LogEvent::ptr event) override {
+        if (level >= m_level) {
+            log_sstream << m_formatter->format(logger, level, event);
+        }
+    }
 };
 
-//}
+}
 } // namespace sylar

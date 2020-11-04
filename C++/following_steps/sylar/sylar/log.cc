@@ -3,6 +3,8 @@
 #include <functional>
 #include <iostream>
 #include <unordered_map>
+#include <time.h>
+#include <string.h>
 
 namespace sylar {
 
@@ -106,6 +108,9 @@ struct DateTimeFormatItem : public LogFormatter::FormatItem
 {
     DateTimeFormatItem(const std::string& format = "%Y:%m:%d %H:%M:%S")
         : m_format{format} {
+        if(m_format.empty()) {
+            m_format = "%Y-%m-%d %H:%M:%S";
+        }
     }
 
     virtual ~DateTimeFormatItem() = default;
@@ -114,7 +119,13 @@ struct DateTimeFormatItem : public LogFormatter::FormatItem
                 std::shared_ptr<Logger> logger,
                 LogLevel::Level level,
                 LogEvent::ptr event) override {
-        os << event->getTime();
+        struct tm tm;
+        time_t time = event->getTime();
+        localtime_r(&time, &tm);
+        char buf[64];
+        strftime(buf, sizeof(buf), m_format.c_str(), &tm);
+
+        os << buf;
     }
 
 private:
@@ -362,7 +373,7 @@ LogAppender::~LogAppender() {
 Logger::Logger(const std::string& name)
     : m_name{name},
       m_level{LogLevel::Level::DEBUG} {
-    m_formatter.reset(new LogFormatter("%d [%p] %f:%l %n"));
+    m_formatter.reset(new LogFormatter("%d [%p] <%f:%l>     %m %n"));
 }
 
 void Logger::log(LogLevel::Level level, LogEvent::ptr event) {
@@ -438,13 +449,6 @@ void FileLogAppender::log(std::shared_ptr<Logger> logger,
     }
 }
 
-void StringLogAppender::log(std::shared_ptr<Logger> logger,
-    LogLevel::Level level,
-    LogEvent::ptr event) {
-    if(level>= m_level) {
-        log_sstream << m_formatter->format(logger, level, event);
-    }
-}
 
 
 }

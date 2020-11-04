@@ -13,6 +13,7 @@ int main() {
     logger->addAppender(sylar::LogAppender::ptr(std::make_shared<sylar::StdoutLogAppender>()));
 
     sylar::LogEvent::ptr event(new sylar::LogEvent(__FILE__, __LINE__, 0, 1, 2, time(0)));
+    event->getSS() << "Hello log";
     logger->log(sylar::LogLevel::Level::DEBUG, event);
 
     std::cout << "hello log";

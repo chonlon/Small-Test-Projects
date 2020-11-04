@@ -16,6 +16,7 @@ TEST(LogTest, LogLeveltoString) {
 }
 
 TEST(LogTest, LogOutTest) {
+    // note that now log is under developing , test need change later.
     using namespace sylar;
     sylar::Logger::ptr logger(std::make_shared<sylar::Logger>());
     auto string_log_appender = std::make_shared<sylar::StringLogAppender>();
