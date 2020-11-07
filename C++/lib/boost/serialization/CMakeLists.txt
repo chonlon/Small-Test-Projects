@@ -1,4 +1,4 @@
-AddSingleExeFile(
+AddFilesToParent(
 	Serialize
 	"serialization.cpp"
 )

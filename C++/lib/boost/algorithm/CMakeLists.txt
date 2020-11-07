@@ -1,4 +1,4 @@
-AddSingleExeFile(
+AddFilesToParent(
 	ALGORITHM
 	"clamp.cpp"
 	"equal.cpp"
