@@ -20,12 +20,12 @@ struct C
 
 struct class_has_func {
     template<typename T, typename... Args>
-    static constexpr bool test(decltype(std::declval<T>().func(std::declval<Args...>()))*) {
+    static constexpr bool test(std::decay_t<(std::declval<T>().func(std::declval<Args...>()))>*) {
         return true;
     }
 
     template<typename T>
-    static constexpr bool test(decltype(std::declval<T>().func())*) {
+    static constexpr bool test(std::decay_t<(decltype(std::declval<T>().func())>*) {
         return true;
     }
 

@@ -56,9 +56,9 @@ public:
 int main()
 {
     std::cout << add(1, 1);
-    std::cout << add(1.1, 1.2);
+    //std::cout << add(1.1, 1.2);
 
-    //std::cout << add_before(1, 2);
-    std::cout << add_before(1.1, 1.2);
+    std::cout << add_before(1, 2);
+    //std::cout << add_before(1.1, 1.2);
     return 0;
 }
