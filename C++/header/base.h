@@ -36,8 +36,7 @@ template <typename ContainerType,
           typename Type = typename ContainerType::value_type,
           typename      = std::enable_if_t<lon::IsCoutable<Type>::value>>
 inline void printContainer(const ContainerType& is, char divider = '\n') {
-    for (const auto& i : is)
-    {
+    for (const auto& i : is) {
         std::cout << i << divider;
     }
 }
@@ -47,16 +46,14 @@ inline void printContainer(const ContainerType& is, char divider = '\n') {
 
 template <typename T, typename = std::enable_if_t<lon::IsCoutable<T>::value>>
 inline void printVector(const std::vector<T>& is, char divider = '\n') {
-    for (const auto& i : is)
-    {
+    for (const auto& i : is) {
         std::cout << i << divider;
     }
 }
 
 template <typename T, typename = std::enable_if_t<lon::IsCoutable<T>::value>>
 inline void printList(const std::list<T>& is, char divider = '\n') {
-    for (const auto& i : is)
-    {
+    for (const auto& i : is) {
         std::cout << i << divider;
     }
 }
@@ -66,8 +63,7 @@ template <typename K,
           typename = std::enable_if_t<lon::IsCoutable<K>::value>,
           typename = std::enable_if_t<lon::IsCoutable<V>::value>>
 inline void printMap(const std::map<K, V>& is, char divider = '\n') {
-    for (const auto& i : is)
-    {
+    for (const auto& i : is) {
         std::cout << i.first << ' ' << i.second << divider;
     }
 }
@@ -75,8 +71,7 @@ inline void printMap(const std::map<K, V>& is, char divider = '\n') {
 namespace print_container {
 template <typename T, typename = std::enable_if_t<lon::IsCoutable<T>::value>>
 auto operator<<(std::ostream& lhs, const std::vector<T>& is) -> std::ostream& {
-    for (const auto& i : is)
-    {
+    for (const auto& i : is) {
         lhs << i << '\n';
     }
     return lhs;
@@ -95,7 +90,7 @@ class BaseField
 {
     int construct_time_;
 
-    public:
+public:
     BaseField() {
         static int construct_time = 0;
         construct_time_           = ++construct_time;
@@ -114,7 +109,7 @@ class IntField : public BaseField
 {
     int var_;
 
-    public:
+public:
     IntField(int _var) : var_(_var) {}
 
     void print() {
@@ -129,9 +124,10 @@ class IntField : public BaseField
 class CaseMarker
 {
     int time_;
+    int sub_counter_ = 0;
     std::string marker_;
 
-    public:
+public:
     CaseMarker() {
         // not use std::string_literals; cause it need cpp14.
         static int time = 0;
@@ -143,6 +139,14 @@ class CaseMarker
         if (marker_.size() == 0)
             throw std::logic_error{"marker should be not empty"};
         printDividing(std::string("run case ") + marker_);
+    }
+
+    void printSub(const std::string& sub_marker) {
+        std::cout << "--- " << ++sub_counter_  << ':' << sub_marker <<" ---\n";
+    }
+
+    void printSub() {
+        std::cout << "--- " << ++sub_counter_  <<" ---\n";
     }
 
     ~CaseMarker() {

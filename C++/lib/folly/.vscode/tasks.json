@@ -32,14 +32,6 @@
                 "kind": "build",
                 "isDefault": true
             }
-        },
-        {
-            "type": "shell",
-            "label": "cmake build current dir",
-            "command": "cmake ..",
-            "args":[
-                "-DCMAKE_TOOLCHAIN_FILE=/mnt/c/Users/lon/vcpkg/scripts/buildsystems/vcpkg.cmake"
-            ]
         }
     ]
 }

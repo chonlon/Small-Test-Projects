@@ -64,11 +64,12 @@
         "random": "cpp",
         "future": "cpp",
         "iomanip": "cpp",
-        "variant": "cpp"
+        "variant": "cpp",
+        "shared_mutex": "cpp"
     },
     "python.pythonPath": "/usr/bin/python3",
     "cmake.configureSettings": {
-        "CMAKE_TOOLCHAIN_FILE" :"/home/lon/2_libs/vcpkg/scripts/buildsystems/vcpkg.cmake"
+        "CMAKE_TOOLCHAIN_FILE" :"/home/lon/2_lib/vcpkg/scripts/buildsystems/vcpkg.cmake"
     },
     "cmake.configureOnOpen": false
 }
