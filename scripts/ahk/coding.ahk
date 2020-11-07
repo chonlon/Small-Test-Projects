@@ -125,11 +125,11 @@ return
 	SendInput /
 	setChineseLayout()
 return
-:*:" ::
-	;引号加空格 时 切换到中文输入法
-	SendInput "
-	setChineseLayout()
-return
+; :*:" ::
+; 	;引号加空格 时 切换到中文输入法
+; 	SendInput "
+; 	setChineseLayout()
+; return
 #IfWinActive
 ;------------------------------------------------------------------------------------------------------------------
 
