@@ -4,7 +4,7 @@ cmake_minimum_required(VERSION 3.0.2)
 set(CMAKE_CXX_STANDARD 20)
 include(../../cmake/AddSingleExeFile.cmake)
 
-AddSingleExeFile(
+AddFilesToParent(
 	STD_LIB
 	"regex/regex.cpp"
 	"any/any.cpp"
