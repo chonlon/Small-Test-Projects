@@ -1,0 +1,7 @@
+{
+    "cmake.configureSettings": {
+        "CMAKE_TOOLCHAIN_FILE": "/home/lon/2_lib/vcpkg/scripts/buildsystems/vcpkg.cmake"
+    },
+    "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools",
+    "python.pythonPath": "/usr/bin/python3"
+}
