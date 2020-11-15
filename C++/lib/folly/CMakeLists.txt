@@ -24,6 +24,9 @@ if(UsingJemalloc)
 		${FbvectorLinkLibs}
 		jemalloc
 	)
+	
+	add_executable(jemalloc_test jemalloc_test.cpp)
+	target_link_libraries(jemalloc_test ${LinkLibs})
 endif(UsingJemalloc)
 
 include_directories(${CMAKE_CURRENT_LIST_DIR}/../../header)
@@ -44,3 +47,5 @@ add_subdirectory(vector)
 add_subdirectory(fbstring)
 add_subdirectory(conv)
 add_subdirectory(format)
+add_subdirectory(synchronized)
+add_subdirectory(logging)
