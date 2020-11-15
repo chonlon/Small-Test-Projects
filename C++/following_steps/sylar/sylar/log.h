@@ -7,9 +7,41 @@
 #include <fstream>
 #include <vector>
 #include <cstdint>
+#include <iostream>
+#include <unordered_map>
+#include "util.h"
+#include "singleton.h"
+
+#define SYLAR_LOG_LEVEL(logger, level) \
+    if(logger->getLevel() <= level) \
+        sylar::LogEventWrapper(std::make_shared<sylar::LogEvent>(logger, level, __FILE__, __LINE__, 0, sylar::GetThreadId(), \
+                sylar::GetFiberId(), time(0))).getSS()
+
+
+#define SYLAY_LOG_DEBUG(logger) SYLAR_LOG_LEVEL(logger, sylar::LogLevel::Level::DEBUG)
+#define SYLAY_LOG_INFO(logger) SYLAR_LOG_LEVEL(logger, sylar::LogLevel::Level::INFO)
+#define SYLAY_LOG_WARN(logger) SYLAR_LOG_LEVEL(logger, sylar::LogLevel::Level::WARN)
+#define SYLAY_LOG_ERROR(logger) SYLAR_LOG_LEVEL(logger, sylar::LogLevel::Level::ERROR)
+#define SYLAY_LOG_FATAL(logger) SYLAR_LOG_LEVEL(logger, sylar::LogLevel::Level::FATAL )
 
 namespace sylar {
 class Logger;
+
+struct LogLevel
+{
+    enum class Level
+    {
+        UNKNOW = 0,
+        DEBUG = 1,
+        INFO = 2,
+        WARN = 3,
+        ERROR = 4,
+        FATAL = 5
+    };
+
+    static const char* toString(LogLevel::Level level);
+};
+
 
 /**
  * @brief 日志事件
@@ -26,18 +58,23 @@ private:
     uint32_t m_fiberid   = 0;       // 协程ID
     uint64_t m_time;                // 时间戳
     std::stringstream m_content_stream;
+
+    std::shared_ptr<Logger> m_logger;
+    LogLevel::Level m_level;
 public:
+
     typedef std::shared_ptr<LogEvent> ptr;
 
-    LogEvent(const char* file,
+    LogEvent(std::shared_ptr<Logger> logger,
+             LogLevel::Level level,
+             const char* file,
              int32_t line,
-             uint32_t thread_id,
              uint32_t elapsed_ms,
+             uint32_t thread_id,
              uint32_t fiberid,
              uint64_t time);
 
-    ~LogEvent() {
-    }
+    ~LogEvent() = default;
 
     auto getFile() const -> const char* {
         return m_file;
@@ -68,23 +105,25 @@ public:
     }
 
     std::stringstream& getSS() { return m_content_stream; }
+    std::shared_ptr<Logger> getLogger() { return m_logger; }
 
+    auto getLevel() const -> LogLevel::Level {
+        return m_level;
+    }
 };
 
-struct LogLevel
+class LogEventWrapper
 {
-    enum class Level
-    {
-        UNKNOW = 0,
-        DEBUG = 1,
-        INFO = 2,
-        WARNN = 3,
-        ERROR = 4,
-        FATAL = 5
-    };
+public:
+    LogEventWrapper(LogEvent::ptr e);
 
-    static const char* toString(LogLevel::Level level);
+    ~LogEventWrapper();
+
+    std::stringstream& getSS();
+private:
+    LogEvent::ptr m_event;
 };
+
 
 /**
  * @brief
@@ -119,6 +158,7 @@ private:
     friend struct LineFormatItem;
     friend struct NewLineFormatItem;
     friend struct StringFormatItem;
+    friend struct TabFormatItem;
 
     void init();
 public:
@@ -162,8 +202,19 @@ public:
         this->m_formatter = formatter;
     }
 
+
+    auto getLevel() const -> LogLevel::Level {
+        return m_level;
+    }
+
+
+    auto setLevel(LogLevel::Level level) -> void {
+        this->m_level = level;
+    }
+
 protected:
     LogLevel::Level m_level = LogLevel::Level::DEBUG;
+
     LogFormatter::ptr m_formatter;
 };
 
@@ -180,7 +231,7 @@ private:
 public:
     typedef std::shared_ptr<Logger> ptr;
 
-    explicit Logger(const std::string& name = "root");
+    Logger(const std::string& name = "root");
 
     void log(LogLevel::Level level, LogEvent::ptr event);
 
@@ -231,8 +282,7 @@ private:
 public:
     typedef std::shared_ptr<FileLogAppender> ptr;
 
-    FileLogAppender(/* args */) {
-    }
+    FileLogAppender(const std::string& filename);
 
     ~FileLogAppender() {
     }
@@ -243,6 +293,20 @@ public:
              LogLevel::Level level,
              LogEvent::ptr event) override;
 };
+
+class LoggerManager
+{
+public:
+    LoggerManager();
+
+    Logger::ptr getLogger(const std::string& name);
+    void init();
+private:
+    std::unordered_map<std::string, Logger::ptr> m_loggers;
+    Logger::ptr m_root;
+};
+
+using LoggerMgr = sylar::Singleton<LoggerManager>;
 
 namespace {
 /**
@@ -260,6 +324,8 @@ struct StringLogAppender : public LogAppender
         }
     }
 };
+
+
 
 }
 } // namespace sylar

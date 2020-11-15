@@ -4,63 +4,104 @@
 #include <bits/basic_string.h>
 
 
+
 TEST(LogTest, LogLeveltoString) {
-    EXPECT_STREQ(sylar::LogLevel::toString(sylar::LogLevel::Level::DEBUG), "DEBUG");
-    EXPECT_STREQ(sylar::LogLevel::toString(sylar::LogLevel::Level::WARNN), "WARNN");
-    EXPECT_STREQ(sylar::LogLevel::toString(sylar::LogLevel::Level::INFO), "INFO");
-    EXPECT_STREQ(sylar::LogLevel::toString(sylar::LogLevel::Level::ERROR), "ERROR");
-    EXPECT_STREQ(sylar::LogLevel::toString(sylar::LogLevel::Level::FATAL), "FATAL");
-    EXPECT_STREQ(sylar::LogLevel::toString(sylar::LogLevel::Level::UNKNOW), "UNKNOW");
-    EXPECT_STREQ(sylar::LogLevel::toString(static_cast<sylar::LogLevel::Level>(1000)), "UNKNOW");
+    EXPECT_STREQ(sylar::LogLevel::toString(sylar::LogLevel::Level::DEBUG),
+                 "DEBUG");
+    EXPECT_STREQ(sylar::LogLevel::toString(sylar::LogLevel::Level::WARN),
+                 "WARN");
+    EXPECT_STREQ(sylar::LogLevel::toString(sylar::LogLevel::Level::INFO),
+                 "INFO");
+    EXPECT_STREQ(sylar::LogLevel::toString(sylar::LogLevel::Level::ERROR),
+                 "ERROR");
+    EXPECT_STREQ(sylar::LogLevel::toString(sylar::LogLevel::Level::FATAL),
+                 "FATAL");
+    EXPECT_STREQ(sylar::LogLevel::toString(sylar::LogLevel::Level::UNKNOW),
+                 "UNKNOW");
+    EXPECT_STREQ(
+        sylar::LogLevel::toString(static_cast<sylar::LogLevel::Level>(1000)),
+        "UNKNOW");
 
 }
 
 TEST(LogTest, LogOutTest) {
-    // note that now log is under developing , test need change later.
+    // test defualt format log output
     using namespace sylar;
-    sylar::Logger::ptr logger(std::make_shared<sylar::Logger>());
+    const char* logger_name = "LogOutTest";
+
+    Logger::ptr logger(std::make_shared<sylar::Logger>(logger_name));
     auto string_log_appender = std::make_shared<sylar::StringLogAppender>();
     logger->addAppender(sylar::LogAppender::ptr(string_log_appender));
 
     const char* file_name = "test.cc";
-    int32_t line = 10;
-    uint32_t thread_id = 0;
-    uint32_t elapsed_ms = 1;
-    uint32_t fiber_id = 2;
-    uint64_t _time = time(0);
+    int32_t line          = 10;
+    uint32_t thread_id    = 0;
+    uint32_t elapsed_ms   = 1;
+    uint32_t fiber_id     = 2;
+    uint64_t _time        = time(0);
     LogLevel::Level level = sylar::LogLevel::Level::DEBUG;
 
-    sylar::LogEvent::ptr event(new sylar::LogEvent(file_name, line, thread_id, elapsed_ms, fiber_id, _time));
+    sylar::LogEvent::ptr event(new sylar::LogEvent(
+        logger,
+        level,
+        file_name,
+        line,
+        elapsed_ms,
+        thread_id,
+        fiber_id,
+        _time));
+    event->getSS() << "log";
     logger->log(level, event);
 
     std::string string_log = string_log_appender->log_sstream.str();
     std::smatch result;
-    std::regex pattern("(\\d{0,15}) (.*)\\n");
-    
-    if(std::regex_match(string_log, result, pattern)) {
-        auto part1 = result.str(1);
-        char* ptr;
-        uint64_t time_result = strtoull(part1.c_str(), &ptr, 10);
-        EXPECT_EQ(_time, time_result);
+    std::regex pattern("(\\d+-\\d+-\\d+\\s\\d+:\\d+:\\d+)\\s+(.*)\\n");
 
 
+    if (std::regex_match(string_log, result, pattern)) {
+        // part1 for time fmt check
+        struct tm tm;
+        time_t time = event->getTime();
+        localtime_r(&time, &tm);
+        char buf[64];
+        strftime(buf, sizeof(buf), "%Y-%m-%d %H:%M:%S", &tm);
+        EXPECT_STREQ(result.str(1).c_str(), buf);
+
+        // part2 for rest check
         auto part2 = result.str(2);
-        std::string str_result{'['};
-        str_result.append(LogLevel::toString(level));
-        str_result.append("] ");
-        str_result.append(file_name);
-        str_result.push_back(':');
-        str_result.append(std::to_string(line));
-        str_result.push_back(' ');
-        EXPECT_STREQ(part2.c_str(), str_result.c_str());
+        std::stringstream str_result;
+        str_result << thread_id << '\t' << fiber_id << '\t'
+            << '[' << LogLevel::toString(level) << ']'
+            << '\t'
+            << '[' << logger_name << ']' << '\t'
+            << '<' << file_name << ':' << line << '>'
+            << '\t'
+            << "log";
+        auto s = str_result.str();
+        EXPECT_STREQ(part2.c_str(), s.c_str());
     } else {
         EXPECT_FALSE(true);
     }
 
 }
 
-int main(int argc, char* argv[])
-{
+TEST(LogTest, LogFmtTest) {
+    const char* logger_name = "LogOutTest";
+
+    sylar::Logger::ptr logger(std::make_shared<sylar::Logger>(logger_name));
+    
+    auto string_log_appender = std::make_shared<sylar::StringLogAppender>();
+    string_log_appender->setFormatter(std::make_shared<sylar::LogFormatter>("%t%T%m%n"));
+    logger->addAppender(string_log_appender);
+    const char* msg = "log msg";
+    SYLAY_LOG_INFO(logger) << msg;
+
+    std::stringstream ss;
+    ss << sylar::GetThreadId() << '\t' << msg << '\n';
+    EXPECT_STREQ(string_log_appender->log_sstream.str().c_str(), ss.str().c_str());
+}
+
+int main(int argc, char* argv[]) {
     ::testing::InitGoogleTest(&argc, argv);
     return RUN_ALL_TESTS();
 }

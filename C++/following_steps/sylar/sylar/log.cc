@@ -106,9 +106,9 @@ struct FiberIdFormatItem : public LogFormatter::FormatItem
 
 struct DateTimeFormatItem : public LogFormatter::FormatItem
 {
-    DateTimeFormatItem(const std::string& format = "%Y:%m:%d %H:%M:%S")
+    DateTimeFormatItem(const std::string& format)
         : m_format{format} {
-        if(m_format.empty()) {
+        if (m_format.empty()) {
             m_format = "%Y-%m-%d %H:%M:%S";
         }
     }
@@ -134,7 +134,7 @@ private:
 
 struct FilenameFormatItem : public LogFormatter::FormatItem
 {
-    FilenameFormatItem(const std::string& str)
+    FilenameFormatItem(const std::string& str = "")
         : FormatItem{str} {
     }
 
@@ -150,7 +150,7 @@ struct FilenameFormatItem : public LogFormatter::FormatItem
 
 struct LineFormatItem : public LogFormatter::FormatItem
 {
-    LineFormatItem(const std::string& str)
+    LineFormatItem(const std::string& str = "")
         : FormatItem{str} {
     }
 
@@ -166,7 +166,7 @@ struct LineFormatItem : public LogFormatter::FormatItem
 
 struct NewLineFormatItem : public LogFormatter::FormatItem
 {
-    NewLineFormatItem(const std::string& str)
+    NewLineFormatItem(const std::string& str = "")
         : FormatItem{str} {
     }
 
@@ -182,7 +182,7 @@ struct NewLineFormatItem : public LogFormatter::FormatItem
 
 struct StringFormatItem : public LogFormatter::FormatItem
 {
-    StringFormatItem(const std::string& str)
+    StringFormatItem(const std::string& str = "")
         : FormatItem{str},
           m_string{str} {
     }
@@ -200,11 +200,29 @@ private:
     std::string m_string;
 };
 
+struct TabFormatItem : LogFormatter::FormatItem
+{
+    TabFormatItem(const std::string& str = "")
+        : FormatItem{str} {
+    }
 
-LogEvent::LogEvent(const char* file,
+    virtual ~TabFormatItem() = default;
+
+    void format(std::ostream& os,
+                std::shared_ptr<Logger> logger,
+                LogLevel::Level level,
+                LogEvent::ptr event) override {
+        os << '\t';
+    }
+};
+
+
+LogEvent::LogEvent(std::shared_ptr<Logger> logger,
+                   LogLevel::Level level,
+                   const char* file,
                    int32_t line,
-                   uint32_t thread_id,
                    uint32_t elapsed_ms,
+                   uint32_t thread_id,
                    uint32_t fiberid,
                    uint64_t time)
     : m_file{file},
@@ -212,7 +230,22 @@ LogEvent::LogEvent(const char* file,
       m_threadId{thread_id},
       m_elapsedMs{elapsed_ms},
       m_fiberid{fiberid},
-      m_time{time} {
+      m_time{time},
+      m_logger{logger},
+      m_level{level} {
+}
+
+
+LogEventWrapper::LogEventWrapper(LogEvent::ptr e)
+    : m_event{e} {
+}
+
+LogEventWrapper::~LogEventWrapper() {
+    m_event->getLogger()->log(m_event->getLevel(), m_event);
+}
+
+std::stringstream& LogEventWrapper::getSS() {
+    return m_event->getSS();
 }
 
 const char* LogLevel::toString(LogLevel::Level level) {
@@ -224,7 +257,7 @@ const char* LogLevel::toString(LogLevel::Level level) {
 
         XX(DEBUG)
         XX(INFO)
-        XX(WARNN)
+        XX(WARN)
         XX(ERROR)
         XX(FATAL)
 #undef XX
@@ -257,36 +290,42 @@ void LogFormatter::init() {
         std::string str;
         std::string fmt;
 
-        while (n < size) {
-            if (!isalpha(m_pattern[n]) && m_pattern[n] != '{' && m_pattern[n] != '}') {
+        while (n < m_pattern.size()) {
+            if (!fmt_status && (!isalpha(m_pattern[n]) && m_pattern[n] != '{'
+                && m_pattern[n] != '}')) {
+                str = m_pattern.substr(i + 1, n - i - 1);
                 break;
             }
             if (fmt_status == 0) {
                 if (m_pattern[n] == '{') {
                     str        = m_pattern.substr(i + 1, n - i - 1);
-                    fmt_status = 1; // 
+                    fmt_status = 1; //解析格式
+                    fmt_begin  = n;
                     ++n;
-                    fmt_begin = n;
                     continue;
                 }
-            }
-            if (fmt_status == 1) {
+            } else if (fmt_status == 1) {
                 if (m_pattern[n] == '}') {
-                    fmt        = m_pattern.substr(fmt_begin, n - fmt_begin);
-                    fmt_status = 2;
+                    fmt = m_pattern.substr(fmt_begin + 1, n - fmt_begin - 1);
+                    fmt_status = 0;
                     ++n;
                     break;
                 }
             }
             ++n;
-            break;// once got pattern, next char is not part of pattern
+            if (n == m_pattern.size()) {
+                if (str.empty()) {
+                    str = m_pattern.substr(i + 1);
+                }
+            }
         }
 
         if (fmt_status == 0) {
             if (!nstr.empty()) {
                 vec.emplace_back(nstr, "", 0);
+                nstr.clear();
             }
-            str = m_pattern.substr(i + 1, n - i - 1);
+            //str = m_pattern.substr(i + 1, n - i - 1);
             vec.emplace_back(str, fmt, 1);
             i = n - 1;
         } else if (fmt_status == 1) {
@@ -300,8 +339,8 @@ void LogFormatter::init() {
             vec.emplace_back(str, fmt, 1);
             i = n - 1;
         }
-        nstr.clear();
     }
+
     if (!nstr.empty()) {
         vec.emplace_back(nstr, "", 0);
     }
@@ -320,6 +359,8 @@ void LogFormatter::init() {
         XX(d, DateTimeFormatItem),
         XX(f, FilenameFormatItem),
         XX(l, LineFormatItem),
+        XX(T, TabFormatItem),
+        XX(F, FiberIdFormatItem)
 #undef XX
     };
 
@@ -347,8 +388,8 @@ void LogFormatter::init() {
                 m_items.emplace_back(it->second(std::get<1>(i)));
             }
         }
-        std::cout << std::get<0>(i) << " - " << std::get<1>(i) << " - " <<
-            std::get<2>(i) << std::endl;
+        //     std::cout << std::get<0>(i) << " - " << std::get<1>(i) << " - " <<
+        //         std::get<2>(i) << std::endl;
     }
 }
 
@@ -373,7 +414,9 @@ LogAppender::~LogAppender() {
 Logger::Logger(const std::string& name)
     : m_name{name},
       m_level{LogLevel::Level::DEBUG} {
-    m_formatter.reset(new LogFormatter("%d [%p] <%f:%l>     %m %n"));
+    m_formatter.reset(
+        new LogFormatter(
+            "%d{%Y-%m-%d %H:%M:%S}%T%t%T%F%T[%p]%T[%c]%T<%f:%l>%T%m%n"));
 }
 
 void Logger::log(LogLevel::Level level, LogEvent::ptr event) {
@@ -394,7 +437,7 @@ void Logger::info(LogEvent::ptr event) {
 }
 
 void Logger::warn(LogEvent::ptr event) {
-    log(LogLevel::Level::WARNN, event);
+    log(LogLevel::Level::WARN, event);
 }
 
 void Logger::error(LogEvent::ptr event) {
@@ -433,11 +476,16 @@ void StdoutLogAppender::log(std::shared_ptr<Logger> logger,
     }
 }
 
+FileLogAppender::FileLogAppender(const std::string& filename)
+    : m_filename{filename} {
+    reopen();
+}
+
 bool FileLogAppender::reopen() {
     if (m_filestream) {
         m_filestream.close();
     }
-    m_filestream.open(m_filename);
+    m_filestream.open(m_filename, std::ios_base::app);
     return !m_filestream;
 }
 
@@ -448,6 +496,18 @@ void FileLogAppender::log(std::shared_ptr<Logger> logger,
         m_filestream << m_formatter->format(logger, level, event);
     }
 }
+
+LoggerManager::LoggerManager() {
+    m_root = std::make_shared<Logger>("root");
+
+    m_root->addAppender(std::make_shared<StdoutLogAppender>());
+}
+
+Logger::ptr LoggerManager::getLogger(const std::string& name) {
+    auto it = m_loggers.find(name);
+    return it == m_loggers.end() ? m_root : it->second;
+}
+
 
 
 

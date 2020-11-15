@@ -47,7 +47,8 @@ message(STATUS "CXX_FLAGS = " ${CMAKE_CXX_FLAGS} " " ${CMAKE_CXX_FLAGS_${BUILD_T
 add_library(sylar SHARED)
 target_sources(sylar PRIVATE
     sylar/log.cc
-)
+    sylar/util.cc
+    sylar/util.h)
 
 option(EnableTests "BUILD TESTS" OFF)
 
