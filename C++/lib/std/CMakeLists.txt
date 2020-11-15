@@ -9,6 +9,7 @@ AddFilesToParent(
 	"regex/regex.cpp"
 	"any/any.cpp"
 	"string/u8string.cpp"
+	"typetraits/common_type.cpp"
 )
 
 foreach(FILESPATH ${STD_LIB_FILES})
