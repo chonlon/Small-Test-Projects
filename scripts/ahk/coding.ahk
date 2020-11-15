@@ -261,10 +261,8 @@ return
 	showIMEStatus()
 return
 
-~Lbutton up::
-Sleep,200 ;tooltip显示时间.
-ToolTip
-return
+; ~Lbutton up::
+; return
 ;--------------------------------------------|
 
 
@@ -305,10 +303,14 @@ setEnglishLayout(){
 showIMEStatus() {
 	if ( 0 = not_Edit_InFocus())
 	{
+		Sleep,100
 		If (IME_GET()=1)
 			ToolTip,中
 		else
 			ToolTip, EN
+
+		Sleep,200 ;tooltip显示时间.
+		ToolTip
 	}
 }
  
