@@ -168,6 +168,7 @@ Numpad7::
 	SendInput, ^k
 	SendInput, ^c
 	return
+;取消注释
 Numpad8::
 	SendInput, ^k
 	SendInput, ^u
@@ -226,6 +227,17 @@ Numpad8::
 	}
 return
 ;------------------------------------------------------------------------------
+
+;使用和vscode一样的快捷键format文档.
++!f::
+	IfWinActive,ahk_group visualstudio
+	{
+		SendInput, ^k
+		SendInput, ^d
+		return
+	}
+return
+	
 
 ;暂停脚本
 !^p::Suspend
