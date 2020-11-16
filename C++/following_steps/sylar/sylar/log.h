@@ -24,6 +24,8 @@
 #define SYLAY_LOG_ERROR(logger) SYLAR_LOG_LEVEL(logger, sylar::LogLevel::Level::ERROR)
 #define SYLAY_LOG_FATAL(logger) SYLAR_LOG_LEVEL(logger, sylar::LogLevel::Level::FATAL )
 
+#define SYLAR_LOG_ROOT() sylar::LoggerMgr::getInstance()->getRoot()
+
 namespace sylar {
 class Logger;
 
@@ -301,6 +303,8 @@ public:
 
     Logger::ptr getLogger(const std::string& name);
     void init();
+
+    Logger::ptr getRoot() { return m_root; }
 private:
     std::unordered_map<std::string, Logger::ptr> m_loggers;
     Logger::ptr m_root;
@@ -324,7 +328,6 @@ struct StringLogAppender : public LogAppender
         }
     }
 };
-
 
 
 }

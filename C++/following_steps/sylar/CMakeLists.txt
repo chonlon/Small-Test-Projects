@@ -2,6 +2,10 @@ cmake_minimum_required(VERSION 3.10)
 
 project(sylar)
 
+find_package(Boost REQUIRED)
+
+include(./cmake/AddExe.cmake)
+
 set(CMAKE_VERBOSE_MAKEFILE ON)
 set(CMAKE_CXX_STANDARD 11)
 
@@ -46,16 +50,27 @@ message(STATUS "CXX_FLAGS = " ${CMAKE_CXX_FLAGS} " " ${CMAKE_CXX_FLAGS_${BUILD_T
 
 add_library(sylar SHARED)
 target_sources(sylar PRIVATE
-    sylar/log.cc
-    sylar/util.cc
-    sylar/util.h)
+    "sylar/log.cc"
+    "sylar/util.cc"
+    "sylar/util.h"
+    "sylar/config.h"
+    "sylar/config.cc")
+target_include_directories(sylar SYSTEM PUBLIC  ${Boost_INCLUDE_DIRS})
 
 option(EnableTests "BUILD TESTS" OFF)
 
-add_executable(runner runner/runner.cc)
-add_dependencies(runner sylar)
-target_link_libraries(runner sylar)
-target_include_directories(runner PRIVATE sylar/)
+set(
+    Runners
+    runner/runner_log.cc
+    runner/runner_config.cc
+)
+
+AddExeFromFilesWithLib("sylar" "sylar/" ${Runners})
+
+#add_executable(runner runner/runner.cc)
+#add_dependencies(runner sylar)
+#target_link_libraries(runner sylar)
+#target_include_directories(runner PRIVATE sylar/)
 
 if(EnableTests)
     enable_testing()
