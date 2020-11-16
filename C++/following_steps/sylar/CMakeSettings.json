@@ -24,6 +24,11 @@
           "name": "EnableTests",
           "value": "True",
           "type": "BOOL"
+        },
+        {
+          "name": "EnableRunner",
+          "value": "True",
+          "type": "BOOL"
         }
       ],
       "cmakeToolchain": "/home/lon/2_lib/vcpkg/scripts/buildsystems/vcpkg.cmake"

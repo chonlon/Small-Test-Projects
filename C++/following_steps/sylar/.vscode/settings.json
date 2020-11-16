@@ -3,6 +3,7 @@
         "CMAKE_TOOLCHAIN_FILE": "/home/lon/2_lib/vcpkg/scripts/buildsystems/vcpkg.cmake"
     },
     "cmake.configureArgs": [
+        "-DEnableRunner=ON",
         "-DEnableTests=ON",
         "-DVCPKG_TARGET_TRIPLET=x64-linux"
     ],

@@ -53,7 +53,7 @@ public:
         try {
             return boost::lexical_cast<std::string>(m_val);
         } catch (std::exception& e) {
-            SYLAY_LOG_ERROR(SYLAR_LOG_ROOT())
+            SYLAR_LOG_ERROR(SYLAR_LOG_ROOT())
                 << __FUNCTION__ << " expection " << e.what()
                 << " convert: " << typeid(m_val).name() << " to string";
         }
@@ -65,7 +65,7 @@ public:
             m_val = boost::lexical_cast<T>(str);
             return true;
         } catch (std::exception& e) {
-            SYLAY_LOG_ERROR(SYLAR_LOG_ROOT())
+            SYLAR_LOG_ERROR(SYLAR_LOG_ROOT())
                 << __FUNCTION__ << " expection " << e.what()
                 << " convert: string to " << typeid(m_val).name();
         }
@@ -105,13 +105,13 @@ public:
         const std::string& description = "") {
         auto tmp = loopUp<T>(name);
         if (tmp) {
-            SYLAY_LOG_INFO(SYLAR_LOG_ROOT())
+            SYLAR_LOG_INFO(SYLAR_LOG_ROOT())
                 << "Lookup name=" << name << " exits";
             return tmp;
         }
         if (name.find_first_not_of("abcdefghikjlmnopqrstuvwxyz._012345678 ") !=
             std::string::npos) {
-            SYLAY_LOG_ERROR(SYLAR_LOG_ROOT()) << "Lookup name invalid " << name;
+            SYLAR_LOG_ERROR(SYLAR_LOG_ROOT()) << "Lookup name invalid " << name;
             throw std::invalid_argument(name);
         }
         auto v = std::make_shared<ConfigVar<T>>(name, description, default_val);

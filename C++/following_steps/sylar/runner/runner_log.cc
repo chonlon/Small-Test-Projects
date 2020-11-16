@@ -25,16 +25,16 @@ int main() {
     // event->getSS() << "Hello log";
     // logger->log(sylar::LogLevel::Level::DEBUG, event);
     
-    SYLAY_LOG_INFO(logger) << "test macro";
-    SYLAY_LOG_ERROR(logger) << "test macro";
+    SYLAR_LOG_INFO(logger) << "test macro";
+    SYLAR_LOG_ERROR(logger) << "test macro";
 
 
 
-    SYLAY_LOG_FATAL(logger) << "test macro";
-    SYLAY_LOG_DEBUG(logger) << "test macro";
+    SYLAR_LOG_FATAL(logger) << "test macro";
+    SYLAR_LOG_DEBUG(logger) << "test macro";
 
     auto l = sylar::LoggerMgr::getInstance()->getLogger("xx");
-    SYLAY_LOG_INFO(l) << "mgr";
+    SYLAR_LOG_INFO(l) << "mgr";
 
     return 0;
 }

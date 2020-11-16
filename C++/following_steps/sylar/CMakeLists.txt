@@ -2,7 +2,12 @@ cmake_minimum_required(VERSION 3.10)
 
 project(sylar)
 
+option(EnableTests "BUILD TESTS" OFF)
+option(EnableRunner "BUILD RUNNER" OFF)
+
 find_package(Boost REQUIRED)
+find_package(yaml-cpp CONFIG REQUIRED)
+    
 
 include(./cmake/AddExe.cmake)
 
@@ -57,20 +62,20 @@ target_sources(sylar PRIVATE
     "sylar/config.cc")
 target_include_directories(sylar SYSTEM PUBLIC  ${Boost_INCLUDE_DIRS})
 
-option(EnableTests "BUILD TESTS" OFF)
+target_link_libraries(sylar PUBLIC yaml-cpp)
 
+if(EnableRunner)
 set(
     Runners
     runner/runner_log.cc
     runner/runner_config.cc
 )
 
-AddExeFromFilesWithLib("sylar" "sylar/" ${Runners})
+AddExeFromFilesWithLib("sylar" "sylar" "sylar/" ${Runners})
 
-#add_executable(runner runner/runner.cc)
-#add_dependencies(runner sylar)
-#target_link_libraries(runner sylar)
-#target_include_directories(runner PRIVATE sylar/)
+configure_file("./bin/conf/log.yml" "${EXECUTABLE_OUTPUT_PATH}/log.yml" COPYONLY)
+message(STATUS "runner was enabled")
+endif()
 
 if(EnableTests)
     enable_testing()

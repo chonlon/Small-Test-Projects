@@ -94,7 +94,7 @@ TEST(LogTest, LogFmtTest) {
     string_log_appender->setFormatter(std::make_shared<sylar::LogFormatter>("%t%T%m%n"));
     logger->addAppender(string_log_appender);
     const char* msg = "log msg";
-    SYLAY_LOG_INFO(logger) << msg;
+    SYLAR_LOG_INFO(logger) << msg;
 
     std::stringstream ss;
     ss << sylar::GetThreadId() << '\t' << msg << '\n';
