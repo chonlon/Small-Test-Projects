@@ -1,7 +1,7 @@
 #include "config.h"
 
 namespace sylar {
-Config::ConfigVarMap Config::s_datas{};
+
 
 static void ListAllMember(
     const std::string& prefix,
@@ -19,7 +19,6 @@ static void ListAllMember(
         }
     }
 }
-
 
 void Config::LoadFromYaml(const YAML::Node& root) {
     std::list<std::pair<std::string, const YAML::Node>> all_nodes;
@@ -44,6 +43,7 @@ void Config::LoadFromYaml(const YAML::Node& root) {
     }
 }
 
+#if USING_YAML_CPP_CONVERT
 void Config::LoadFromYaml_2(const YAML::Node& root) {
     std::list<std::pair<std::string, const YAML::Node>> all_nodes;
     ListAllMember("", root, all_nodes);
@@ -60,9 +60,9 @@ void Config::LoadFromYaml_2(const YAML::Node& root) {
         }
     }
 }
-
+#endif
 ConfigVarBase::ptr Config::LookupBase(const std::string& name) {
-    auto it = s_datas.find(name);
-    return it == s_datas.end() ? nullptr : it->second;
+    auto it = getDatas().find(name);
+    return it == getDatas().end() ? nullptr : it->second;
 }
 }  // namespace sylar

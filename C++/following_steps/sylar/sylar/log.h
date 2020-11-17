@@ -25,9 +25,11 @@
 #define SYLAR_LOG_FATAL(logger) SYLAR_LOG_LEVEL(logger, sylar::LogLevel::Level::FATAL )
 
 #define SYLAR_LOG_ROOT() sylar::LoggerMgr::getInstance()->getRoot()
+#define SYLAR_LOG_NAME(name) sylar::LoggerMgr::getInstance()->getLogger(name)
 
 namespace sylar {
 class Logger;
+class LoggerManager;
 
 struct LogLevel
 {
@@ -42,6 +44,7 @@ struct LogLevel
     };
 
     static const char* toString(LogLevel::Level level);
+    static Level FromString(const std::string& str);
 };
 
 
@@ -133,6 +136,7 @@ private:
  */
 class LogFormatter
 {
+
 private:
     class FormatItem
     {
@@ -163,6 +167,7 @@ private:
     friend struct TabFormatItem;
 
     void init();
+
 public:
     typedef std::shared_ptr<LogFormatter> ptr;
     std::string format(std::shared_ptr<Logger> logger,
@@ -174,10 +179,14 @@ public:
     ~LogFormatter() {
     }
 
+    bool isError() const {return m_error;}
+    std::string getPattern() { return m_pattern; }
 private:
     /* data */
     std::string m_pattern;
     std::vector<FormatItem::ptr> m_items;
+
+    bool m_error = false;
 };
 
 
@@ -187,6 +196,7 @@ private:
  */
 class LogAppender
 {
+friend Logger;
 public:
     typedef std::shared_ptr<LogAppender> ptr;
 
@@ -196,13 +206,13 @@ public:
                      LogLevel::Level level,
                      LogEvent::ptr event) = 0;
 
+    virtual std::string toYamlString() = 0;
+
     auto Formatter() const -> LogFormatter::ptr {
         return m_formatter;
     }
 
-    auto setFormatter(const LogFormatter::ptr& formatter) -> void {
-        this->m_formatter = formatter;
-    }
+    auto setFormatter(const LogFormatter::ptr& formatter) -> void;
 
 
     auto getLevel() const -> LogLevel::Level {
@@ -216,7 +226,7 @@ public:
 
 protected:
     LogLevel::Level m_level = LogLevel::Level::DEBUG;
-
+    bool m_hasFormatter = false;
     LogFormatter::ptr m_formatter;
 };
 
@@ -227,6 +237,7 @@ protected:
  */
 class Logger : public std::enable_shared_from_this<Logger>
 {
+friend class LoggerManager;
 private:
     /* data */
 
@@ -245,16 +256,24 @@ public:
 
     void addAppender(LogAppender::ptr appender);
     void delAppender(LogAppender::ptr appender);
+    void clearAppenders();
 
     LogLevel::Level getLevel() const { return m_level; }
     void setLevel(LogLevel::Level val) { m_level = val; }
 
     const std::string& getName() const { return m_name; }
+
+    void setFormatter(LogFormatter::ptr val);
+    void setFormatter(const std::string& val);
+    LogFormatter::ptr getFormatter();
+
+    std::string toYamlString();
 private:
     std::string m_name;
     LogLevel::Level m_level;
     std::list<LogAppender::ptr> m_appenders;
     LogFormatter::ptr m_formatter;
+    Logger::ptr m_root;
 };
 
 
@@ -273,6 +292,8 @@ public:
     void log(std::shared_ptr<Logger> logger,
              LogLevel::Level level,
              LogEvent::ptr event) override;
+
+    std::string toYamlString() override;
 };
 
 class FileLogAppender : public LogAppender
@@ -294,17 +315,20 @@ public:
     void log(std::shared_ptr<Logger> logger,
              LogLevel::Level level,
              LogEvent::ptr event) override;
+
+    std::string toYamlString() override;
 };
 
 class LoggerManager
 {
 public:
-    LoggerManager();
+    LoggerManager(); 
 
     Logger::ptr getLogger(const std::string& name);
     void init();
 
     Logger::ptr getRoot() { return m_root; }
+    std::string toYamlString();
 private:
     std::unordered_map<std::string, Logger::ptr> m_loggers;
     Logger::ptr m_root;
@@ -328,7 +352,7 @@ struct StringLogAppender : public LogAppender
         }
     }
 };
-
-
 }
+
+
 } // namespace sylar

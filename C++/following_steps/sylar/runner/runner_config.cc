@@ -6,16 +6,16 @@ sylar::ConfigVar<float>::ptr g_float_value_config;
 sylar::ConfigVar<std::vector<int>>::ptr g_vector_value_config;
 
 void initGlobal() {
-    g_int_value_config = sylar::Config::loopUp(
+    g_int_value_config = sylar::Config::lookUp(
         "system.port", static_cast<int>(8080), "system port");
-    g_float_value_config = sylar::Config::loopUp(
+    g_float_value_config = sylar::Config::lookUp(
         "system.value", static_cast<float>(10.2f), "system port");
-    g_vector_value_config = sylar::Config::loopUp(
+    g_vector_value_config = sylar::Config::lookUp(
         "system.int_vec", std::vector<int>({1, 2, 3}), "system vec");
 }
 
 void print_yaml(const YAML::Node& node, int level) {
-    //auto i = node.as<std::vector<int>>();
+    // auto i = node.as<std::vector<int>>();
     if (node.IsScalar()) {
         SYLAR_LOG_INFO(SYLAR_LOG_ROOT())
             << std::string(level * 4, ' ') << node.Scalar() << " - "
@@ -65,10 +65,10 @@ void test_config() {
     }
 
     auto root = YAML::LoadFile("./log.yml");
-#if 0
-    sylar::Config::LoadFromYaml(root);
-#else
+#if USING_YAML_CPP_CONVERT
     sylar::Config::LoadFromYaml_2(root);
+#else
+    sylar::Config::LoadFromYaml(root);
 #endif
 
 
@@ -85,8 +85,27 @@ void test_config() {
             << g_vector_value_config->getDescription() << " " << i;
     }
 }
+void test_log() {
+    static sylar::Logger::ptr system_log = SYLAR_LOG_NAME("system");
+    SYLAR_LOG_INFO(system_log) << "hello system\n";
+    std::cout << sylar::LoggerMgr::getInstance()->toYamlString() << '\n';
+    std::cout << "--------------------\n";
+    
+    auto root = YAML::LoadFile("./log.yml");
+    sylar::Config::LoadFromYaml(root);
+
+
+    std::cout << "-------------------\n";
+    std::cout << sylar::LoggerMgr::getInstance()->toYamlString() << std::endl;
+    SYLAR_LOG_INFO(system_log) << "hello system\n";
+}
 
 int main() {
+#define SYLAR__MAIN__TEST 2
+#if (SYLAR__MAIN__TEST == 2)
+    test_log();
+
+#elif (SYLAR__MAIN__TEST == 1)
     try {
         initGlobal();
         test_config();
@@ -96,13 +115,14 @@ int main() {
     } catch (std::exception& e) {
         SYLAR_LOG_ERROR(SYLAR_LOG_ROOT()) << e.what();
     }
-#if 0
+#elif (SYLAR__MAIN__TEST == 0)
     try {
         test_yaml();
     } catch (YAML::BadFile& e) {
         SYLAR_LOG_ERROR(SYLAR_LOG_ROOT()) << "log.yml" << e.what();
     } catch (YAML::ParserException& e) {
-        SYLAR_LOG_ERROR(SYLAR_LOG_ROOT()) <<"parse log.yml failed! " <<  e.what();
+        SYLAR_LOG_ERROR(SYLAR_LOG_ROOT())
+            << "parse log.yml failed! " << e.what();
     } catch (std::exception& e) {
         SYLAR_LOG_ERROR(SYLAR_LOG_ROOT()) << e.what();
     }
