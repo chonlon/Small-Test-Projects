@@ -8,7 +8,7 @@ void initGlobal() {
     g_int_value_config = sylar::Config::loopUp(
         "system.port", static_cast<int>(8080), "system port");
     g_float_value_config = sylar::Config::loopUp(
-        "system.port", static_cast<float>(10.2f), "system port");
+        "system.value", static_cast<float>(10.2f), "system port");
 }
 
 void print_yaml(const YAML::Node& node, int level) {
@@ -43,19 +43,29 @@ void test_yaml() {
     //SYLAR_LOG_INFO(SYLAR_LOG_ROOT()) << root;
 }
 
+void test_config() {
+    SYLAR_LOG_INFO(SYLAR_LOG_ROOT()) << g_int_value_config->getDescription() << "before: " << g_int_value_config->getValue();
+    SYLAR_LOG_INFO(SYLAR_LOG_ROOT()) << g_int_value_config->getDescription() << "before: " <<  g_float_value_config->toString();
+
+    auto root = YAML::LoadFile("./log.yml");
+    sylar::Config::LoadFromYaml(root);
+
+
+    SYLAR_LOG_INFO(SYLAR_LOG_ROOT()) << g_int_value_config->getDescription() <<  "after: " << g_int_value_config->getValue();
+    SYLAR_LOG_INFO(SYLAR_LOG_ROOT()) << g_int_value_config->getDescription() << "after: " <<  g_float_value_config->toString();
+}
+
 int main() {
     try {
         initGlobal();
-
-        SYLAR_LOG_INFO(SYLAR_LOG_ROOT()) << g_int_value_config->getValue();
-        SYLAR_LOG_INFO(SYLAR_LOG_ROOT()) << g_float_value_config->toString();
+        test_config();
     } catch (std::invalid_argument& e) {
         SYLAR_LOG_ERROR(SYLAR_LOG_ROOT())
             << "look for wrong type; " << e.what();
     } catch (std::exception& e) {
         SYLAR_LOG_ERROR(SYLAR_LOG_ROOT()) << e.what();
     }
-
+#if 0
     try {
         test_yaml();
     } catch (YAML::BadFile& e) {
@@ -66,6 +76,7 @@ int main() {
         SYLAR_LOG_ERROR(SYLAR_LOG_ROOT()) << e.what();
     }
 
+#endif
 
     return 0;
 }
