@@ -20,7 +20,6 @@ static void ListAllMember(
     }
 }
 
-
 void Config::LoadFromYaml(const YAML::Node& root) {
     std::list<std::pair<std::string, const YAML::Node>> all_nodes;
     ListAllMember("", root, all_nodes);
@@ -43,6 +42,7 @@ void Config::LoadFromYaml(const YAML::Node& root) {
         }
     }
 }
+
 
 void Config::LoadFromYaml_2(const YAML::Node& root) {
     std::list<std::pair<std::string, const YAML::Node>> all_nodes;

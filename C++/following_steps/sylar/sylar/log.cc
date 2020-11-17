@@ -1,18 +1,18 @@
 ﻿#include "log.h"
+#include "config.h"
 
 #include <functional>
 #include <iostream>
-#include <unordered_map>
-#include <time.h>
 #include <string.h>
+#include <string>
+#include <time.h>
+#include <unordered_map>
 
 namespace sylar {
 
 struct MessageFormatItem : public LogFormatter::FormatItem
 {
-    MessageFormatItem(const std::string& str)
-        : FormatItem{str} {
-    }
+    MessageFormatItem(const std::string& str) : FormatItem{str} {}
 
     virtual ~MessageFormatItem() = default;
 
@@ -26,9 +26,7 @@ struct MessageFormatItem : public LogFormatter::FormatItem
 
 struct LevelFormatItem : public LogFormatter::FormatItem
 {
-    LevelFormatItem(const std::string& str)
-        : FormatItem{str} {
-    }
+    LevelFormatItem(const std::string& str) : FormatItem{str} {}
 
     virtual ~LevelFormatItem() = default;
 
@@ -42,9 +40,7 @@ struct LevelFormatItem : public LogFormatter::FormatItem
 
 struct ElapseFormatItem : public LogFormatter::FormatItem
 {
-    ElapseFormatItem(const std::string& str)
-        : FormatItem{str} {
-    }
+    ElapseFormatItem(const std::string& str) : FormatItem{str} {}
 
     virtual ~ElapseFormatItem() = default;
 
@@ -58,9 +54,7 @@ struct ElapseFormatItem : public LogFormatter::FormatItem
 
 struct NameFormatItem : public LogFormatter::FormatItem
 {
-    NameFormatItem(const std::string& str)
-        : FormatItem{str} {
-    }
+    NameFormatItem(const std::string& str) : FormatItem{str} {}
 
     virtual ~NameFormatItem() = default;
 
@@ -68,15 +62,13 @@ struct NameFormatItem : public LogFormatter::FormatItem
                 std::shared_ptr<Logger> logger,
                 LogLevel::Level level,
                 LogEvent::ptr event) override {
-        os << logger->getName();
+        os << event->getLogger()->getName();
     }
 };
 
 struct ThreadIdFormatItem : public LogFormatter::FormatItem
 {
-    ThreadIdFormatItem(const std::string& str)
-        : FormatItem{str} {
-    }
+    ThreadIdFormatItem(const std::string& str) : FormatItem{str} {}
 
     virtual ~ThreadIdFormatItem() = default;
 
@@ -90,9 +82,7 @@ struct ThreadIdFormatItem : public LogFormatter::FormatItem
 
 struct FiberIdFormatItem : public LogFormatter::FormatItem
 {
-    FiberIdFormatItem(const std::string& str)
-        : FormatItem{str} {
-    }
+    FiberIdFormatItem(const std::string& str) : FormatItem{str} {}
 
     virtual ~FiberIdFormatItem() = default;
 
@@ -106,8 +96,7 @@ struct FiberIdFormatItem : public LogFormatter::FormatItem
 
 struct DateTimeFormatItem : public LogFormatter::FormatItem
 {
-    DateTimeFormatItem(const std::string& format)
-        : m_format{format} {
+    DateTimeFormatItem(const std::string& format) : m_format{format} {
         if (m_format.empty()) {
             m_format = "%Y-%m-%d %H:%M:%S";
         }
@@ -134,9 +123,7 @@ private:
 
 struct FilenameFormatItem : public LogFormatter::FormatItem
 {
-    FilenameFormatItem(const std::string& str = "")
-        : FormatItem{str} {
-    }
+    FilenameFormatItem(const std::string& str = "") : FormatItem{str} {}
 
     virtual ~FilenameFormatItem() = default;
 
@@ -150,9 +137,7 @@ struct FilenameFormatItem : public LogFormatter::FormatItem
 
 struct LineFormatItem : public LogFormatter::FormatItem
 {
-    LineFormatItem(const std::string& str = "")
-        : FormatItem{str} {
-    }
+    LineFormatItem(const std::string& str = "") : FormatItem{str} {}
 
     virtual ~LineFormatItem() = default;
 
@@ -166,9 +151,7 @@ struct LineFormatItem : public LogFormatter::FormatItem
 
 struct NewLineFormatItem : public LogFormatter::FormatItem
 {
-    NewLineFormatItem(const std::string& str = "")
-        : FormatItem{str} {
-    }
+    NewLineFormatItem(const std::string& str = "") : FormatItem{str} {}
 
     virtual ~NewLineFormatItem() = default;
 
@@ -183,9 +166,7 @@ struct NewLineFormatItem : public LogFormatter::FormatItem
 struct StringFormatItem : public LogFormatter::FormatItem
 {
     StringFormatItem(const std::string& str = "")
-        : FormatItem{str},
-          m_string{str} {
-    }
+        : FormatItem{str}, m_string{str} {}
 
     virtual ~StringFormatItem() = default;
 
@@ -202,9 +183,7 @@ private:
 
 struct TabFormatItem : LogFormatter::FormatItem
 {
-    TabFormatItem(const std::string& str = "")
-        : FormatItem{str} {
-    }
+    TabFormatItem(const std::string& str = "") : FormatItem{str} {}
 
     virtual ~TabFormatItem() = default;
 
@@ -232,13 +211,10 @@ LogEvent::LogEvent(std::shared_ptr<Logger> logger,
       m_fiberid{fiberid},
       m_time{time},
       m_logger{logger},
-      m_level{level} {
-}
+      m_level{level} {}
 
 
-LogEventWrapper::LogEventWrapper(LogEvent::ptr e)
-    : m_event{e} {
-}
+LogEventWrapper::LogEventWrapper(LogEvent::ptr e) : m_event{e} {}
 
 LogEventWrapper::~LogEventWrapper() {
     m_event->getLogger()->log(m_event->getLevel(), m_event);
@@ -250,9 +226,9 @@ std::stringstream& LogEventWrapper::getSS() {
 
 const char* LogLevel::toString(LogLevel::Level level) {
     switch (level) {
-#define XX(name) \
+#define XX(name)                \
     case LogLevel::Level::name: \
-        return #name; \
+        return #name;           \
         break;
 
         XX(DEBUG)
@@ -266,8 +242,7 @@ const char* LogLevel::toString(LogLevel::Level level) {
     }
 }
 
-LogFormatter::FormatItem::~FormatItem() {
-}
+LogFormatter::FormatItem::~FormatItem() {}
 
 void LogFormatter::init() {
     std::vector<std::tuple<std::string, std::string, int>> vec;
@@ -291,15 +266,16 @@ void LogFormatter::init() {
         std::string fmt;
 
         while (n < m_pattern.size()) {
-            if (!fmt_status && (!isalpha(m_pattern[n]) && m_pattern[n] != '{'
-                && m_pattern[n] != '}')) {
+            if (!fmt_status &&
+                (!isalpha(m_pattern[n]) && m_pattern[n] != '{' &&
+                 m_pattern[n] != '}')) {
                 str = m_pattern.substr(i + 1, n - i - 1);
                 break;
             }
             if (fmt_status == 0) {
                 if (m_pattern[n] == '{') {
                     str        = m_pattern.substr(i + 1, n - i - 1);
-                    fmt_status = 1; //解析格式
+                    fmt_status = 1;  //解析格式
                     fmt_begin  = n;
                     ++n;
                     continue;
@@ -325,12 +301,12 @@ void LogFormatter::init() {
                 vec.emplace_back(nstr, "", 0);
                 nstr.clear();
             }
-            //str = m_pattern.substr(i + 1, n - i - 1);
+            // str = m_pattern.substr(i + 1, n - i - 1);
             vec.emplace_back(str, fmt, 1);
             i = n - 1;
         } else if (fmt_status == 1) {
-            std::cout << "pattern parse error: " << m_pattern << " - " <<
-                m_pattern.substr(i) << '\n';
+            std::cout << "pattern parse error: " << m_pattern << " - "
+                      << m_pattern.substr(i) << '\n';
             vec.emplace_back("<<pattern_error>>", fmt, 0);
         } else if (fmt_status == 2) {
             if (!nstr.empty()) {
@@ -345,24 +321,30 @@ void LogFormatter::init() {
         vec.emplace_back(nstr, "", 0);
     }
 
-    static std::unordered_map<std::string, std::function<FormatItem::ptr(
-                                  const std::string& str)>> s_format_items = {
-#define XX(str, C) \
-        {#str, [](const std::string& fmt) {return std::make_shared<C>(fmt);}}
+    static std::unordered_map<
+        std::string,
+        std::function<FormatItem::ptr(const std::string& str)>>
+        s_format_items = {
+#define XX(str, C)                           \
+    {                                        \
+#str, [](const std::string& fmt) {   \
+            return std::make_shared<C>(fmt); \
+        }                                    \
+    }
 
-        XX(m, MessageFormatItem),
-        XX(p, LevelFormatItem),
-        XX(r, ElapseFormatItem),
-        XX(c, NameFormatItem),
-        XX(t, ThreadIdFormatItem),
-        XX(n, NewLineFormatItem),
-        XX(d, DateTimeFormatItem),
-        XX(f, FilenameFormatItem),
-        XX(l, LineFormatItem),
-        XX(T, TabFormatItem),
-        XX(F, FiberIdFormatItem)
+            XX(m, MessageFormatItem),
+            XX(p, LevelFormatItem),
+            XX(r, ElapseFormatItem),
+            XX(c, NameFormatItem),
+            XX(t, ThreadIdFormatItem),
+            XX(n, NewLineFormatItem),
+            XX(d, DateTimeFormatItem),
+            XX(f, FilenameFormatItem),
+            XX(l, LineFormatItem),
+            XX(T, TabFormatItem),
+            XX(F, FiberIdFormatItem)
 #undef XX
-    };
+        };
 
     //%m 消息体
     //%p level
@@ -381,14 +363,14 @@ void LogFormatter::init() {
         } else {
             auto it = s_format_items.find(std::get<0>(i));
             if (it == s_format_items.end()) {
-                m_items.emplace_back(
-                    std::make_shared<StringFormatItem>(
-                        "<<error_format%" + std::get<0>(i) + ">>"));
+                m_items.emplace_back(std::make_shared<StringFormatItem>(
+                    "<<error_format%" + std::get<0>(i) + ">>"));
             } else {
                 m_items.emplace_back(it->second(std::get<1>(i)));
             }
         }
-        //     std::cout << std::get<0>(i) << " - " << std::get<1>(i) << " - " <<
+        //     std::cout << std::get<0>(i) << " - " << std::get<1>(i) << " - "
+        //     <<
         //         std::get<2>(i) << std::endl;
     }
 }
@@ -403,27 +385,27 @@ std::string LogFormatter::format(std::shared_ptr<Logger> logger,
     return ss.str();
 }
 
-LogFormatter::LogFormatter(const std::string& str)
-    : m_pattern{str} {
+LogFormatter::LogFormatter(const std::string& str) : m_pattern{str} {
     init();
 }
 
-LogAppender::~LogAppender() {
-}
+LogAppender::~LogAppender() {}
 
 Logger::Logger(const std::string& name)
-    : m_name{name},
-      m_level{LogLevel::Level::DEBUG} {
-    m_formatter.reset(
-        new LogFormatter(
-            "%d{%Y-%m-%d %H:%M:%S}%T%t%T%F%T[%p]%T[%c]%T<%f:%l>%T%m%n"));
+    : m_name{name}, m_level{LogLevel::Level::DEBUG} {
+    m_formatter.reset(new LogFormatter(
+        "%d{%Y-%m-%d %H:%M:%S}%T%t%T%F%T[%p]%T[%c]%T<%f:%l>%T%m%n"));
 }
 
 void Logger::log(LogLevel::Level level, LogEvent::ptr event) {
     if (level >= m_level) {
         auto self = shared_from_this();
-        for (auto& i : m_appenders) {
-            i->log(self, level, event);
+        if (m_appenders.empty()) {
+            for (auto& i : m_appenders) {
+                i->log(self, level, event);
+            }
+        } else {
+            m_root->log(level, event);
         }
     }
 }
@@ -464,9 +446,7 @@ void Logger::delAppender(LogAppender::ptr appender) {
     }
 }
 
-StdoutLogAppender::StdoutLogAppender() {
-
-}
+StdoutLogAppender::StdoutLogAppender() {}
 
 void StdoutLogAppender::log(std::shared_ptr<Logger> logger,
                             LogLevel::Level level,
@@ -501,14 +481,69 @@ LoggerManager::LoggerManager() {
     m_root = std::make_shared<Logger>("root");
 
     m_root->addAppender(std::make_shared<StdoutLogAppender>());
+    init();
 }
 
 Logger::ptr LoggerManager::getLogger(const std::string& name) {
     auto it = m_loggers.find(name);
-    return it == m_loggers.end() ? m_root : it->second;
+    if (it == m_loggers.end()) {
+        return it->second;
+    }
+
+    auto logger     = std::make_shared<Logger>(name);
+    logger->m_root  = m_root;
+    m_loggers[name] = logger;
+    return logger;
 }
 
+struct LogAppenderDefine
+{
+    enum class Type
+    {
+        Unknown,
+        File,
+        Stdout
+    };
+    Type type             = Type::Unknown;
+    LogLevel::Level level = LogLevel::Level::UNKNOW std::string formatter;
+    std::string file;
+
+    bool operator==(const LogAppenderDefine& oth) const {
+        return type == oth.type && level == oth.level &&
+            formatter == oth.formatter && file == oth.file;
+    }
+};
+
+struct LogDefine
+{
+    std::string name;
+    LogLevel::Level level = LogLevel::Level::UNKNOW;
+    std::string formatter;
+    std::vector<LogAppenderDefine> appenders;
+
+    bool operator==(const LogDefine& oth) const {
+        return name == oth.name && level == oth.level &&
+            formatter == oth.formatter && appenders == appenders;
+    }
+
+    bool operator<(const LogDefine& oth) const {
+        return name < oth.name;
+    } 
+};
+
+sylar::ConfigVar<std::set<LogDefine>>::ptr g_log_defines =
+    sylar::Config::loopUp("logs", std::set<LogDefine>(), "logs config");
+
+struct LogIniter
+{
+    LogIniter() {
+        g_log_defines->addListener(0xF1E231, [](const std::set<LogDefine>& old_value, const std::set<LogDefine>& new_value){});
+    }
+};
+
+static LogIniter ___log_init;
+
+void LoggerManager::init() {}
 
 
-
-}
+}  // namespace sylar

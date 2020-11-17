@@ -25,9 +25,11 @@
 #define SYLAR_LOG_FATAL(logger) SYLAR_LOG_LEVEL(logger, sylar::LogLevel::Level::FATAL )
 
 #define SYLAR_LOG_ROOT() sylar::LoggerMgr::getInstance()->getRoot()
+#define SYLAR_LOG_NAME(name) sylar::LoggerMgr::getInstance()->getLogger(name)
 
 namespace sylar {
 class Logger;
+class LoggerManager
 
 struct LogLevel
 {
@@ -227,6 +229,7 @@ protected:
  */
 class Logger : public std::enable_shared_from_this<Logger>
 {
+friend class LoggerManager;
 private:
     /* data */
 
@@ -255,6 +258,7 @@ private:
     LogLevel::Level m_level;
     std::list<LogAppender::ptr> m_appenders;
     LogFormatter::ptr m_formatter;
+    Logger::ptr m_root;
 };
 
 
