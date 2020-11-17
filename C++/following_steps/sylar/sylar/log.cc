@@ -537,7 +537,31 @@ sylar::ConfigVar<std::set<LogDefine>>::ptr g_log_defines =
 struct LogIniter
 {
     LogIniter() {
-        g_log_defines->addListener(0xF1E231, [](const std::set<LogDefine>& old_value, const std::set<LogDefine>& new_value){});
+        g_log_defines->addListener(0xF1E231, [](const std::set<LogDefine>& old_value, const std::set<LogDefine>& new_value)
+        {
+            //新增
+            for(auto& i : new_value) {
+                auto it = old_value.find(i);
+                if(it == old_value.end()) {
+                    // 新增logger
+
+                } else {
+                    if(i != *it) {
+                        // 修改的logger
+                    }
+                }
+            }
+
+            for(auto& i : old_value) {
+                auto it = new_value.find(i);
+                if(it == new_value.end()) {
+                    // 删除logger
+
+                }
+            }
+            //修改
+            //删除
+        });
     }
 };
 
