@@ -299,9 +299,30 @@ public:
         return m_val;
     }
     void setValue(const T& v) {
+        if(v == m_val) return;
+        for(auto& i : m_cbs) {
+            i.second(m_val, v);
+        }
         m_val = v;
     }
 
+
+    void addListener(uint64_t key, on_change_cb cb) {
+        m_cbs[key] = cb;
+    }
+
+    void delListener(uint64_t key) {
+        m_cbs.erase(key);
+    }
+
+    on_change_cb getListener(uint64_t key) {
+        auto it = m_cbs.find(key);
+        return it == m_cbs.end() ? nullptr : it->second;
+    }
+
+    void clearListener() {
+        m_cbs.clear();
+    }
 private:
     T m_val;
 
