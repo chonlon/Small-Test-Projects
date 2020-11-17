@@ -44,6 +44,23 @@ void Config::LoadFromYaml(const YAML::Node& root) {
     }
 }
 
+void Config::LoadFromYaml_2(const YAML::Node& root) {
+    std::list<std::pair<std::string, const YAML::Node>> all_nodes;
+    ListAllMember("", root, all_nodes);
+
+    for (auto& i : all_nodes) {
+        std::string key = i.first;
+        if (key.empty()) {
+            continue;
+        }
+        std::transform(key.begin(), key.end(), key.begin(), ::tolower);
+        ConfigVarBase::ptr var = LookupBase(key);
+        if (var) {
+            var->fromNode(i.second);
+        }
+    }
+}
+
 ConfigVarBase::ptr Config::LookupBase(const std::string& name) {
     auto it = s_datas.find(name);
     return it == s_datas.end() ? nullptr : it->second;
