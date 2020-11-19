@@ -65,10 +65,10 @@ void test_config() {
     }
 
     auto root = YAML::LoadFile("./log.yml");
-#if 0
-    sylar::Config::LoadFromYaml(root);
-#else
+#if USING_YAML_CPP_CONVERT
     sylar::Config::LoadFromYaml_2(root);
+#else
+    sylar::Config::LoadFromYaml(root);
 #endif
 
 

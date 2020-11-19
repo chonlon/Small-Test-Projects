@@ -29,7 +29,7 @@
 
 namespace sylar {
 class Logger;
-class LoggerManager
+class LoggerManager;
 
 struct LogLevel
 {
@@ -44,6 +44,7 @@ struct LogLevel
     };
 
     static const char* toString(LogLevel::Level level);
+    static Level FromString(const char* str);
 };
 
 
@@ -176,10 +177,14 @@ public:
     ~LogFormatter() {
     }
 
+    bool isError() const {return m_error;}
+
 private:
     /* data */
     std::string m_pattern;
     std::vector<FormatItem::ptr> m_items;
+
+    bool m_error = false;
 };
 
 
@@ -248,11 +253,16 @@ public:
 
     void addAppender(LogAppender::ptr appender);
     void delAppender(LogAppender::ptr appender);
+    void clearAppenders();
 
     LogLevel::Level getLevel() const { return m_level; }
     void setLevel(LogLevel::Level val) { m_level = val; }
 
     const std::string& getName() const { return m_name; }
+
+    void setFormatter(LogFormatter::ptr val);
+    void setFormatter(const std::string& val);
+    LogFormatter::ptr getFormatter();
 private:
     std::string m_name;
     LogLevel::Level m_level;
@@ -303,7 +313,7 @@ public:
 class LoggerManager
 {
 public:
-    LoggerManager();
+    LoggerManager(); 
 
     Logger::ptr getLogger(const std::string& name);
     void init();

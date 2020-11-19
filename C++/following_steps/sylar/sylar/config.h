@@ -15,6 +15,9 @@
 #include <vector>
 #include <yaml-cpp/yaml.h>
 
+// 这里其实冲突了, 为了不对每种自定义类型写两套偏特化, 所以目前不用yamlcpp方式(保持和视频同样方式)(yamlcpp convert对于stl的常用模板类做了特化, 所以没有自定义类型不用担心)
+#define USING_YAML_CPP_CONVERT false
+
 namespace sylar {
 class ConfigVarBase
 {
@@ -39,12 +42,14 @@ public:
 
     virtual std::string toString()                  = 0;
     virtual bool fromString(const std::string& str) = 0;
+#if USING_YAML_CPP_CONVERT
 
     // 这样的接口其实不好,
     // 可以使用模板的静态多态来做到统一接口(不依赖与具体库/具体配置类型[json/yaml/ini])...
     // 比如fromData(const typename Data& d),
     // 或者直接使用像std::any这样的保存数据的结构.
     virtual bool fromNode(const YAML::Node& node) = 0;
+#endif
 
 protected:
     std::string m_name;
@@ -297,7 +302,7 @@ public:
         }
         return false;
     }
-
+#if USING_YAML_CPP_CONVERT
     bool fromNode(const YAML::Node& node) override {
         try {
             m_val = node.as<T>();
@@ -308,6 +313,7 @@ public:
         }
         return false;
     }
+#endif
 
     const T& getValue() const {
         return m_val;
@@ -378,14 +384,14 @@ public:
             throw std::invalid_argument(name);
         }
         auto v = std::make_shared<ConfigVar<T>>(name, description, default_val);
-        s_datas[name] = v;
+        getDatas()[name] = v;
         return v;
     }
 
     template <typename T>
     static typename ConfigVar<T>::ptr loopUp(const std::string& name) {
-        auto it = s_datas.find(name);
-        if (it == s_datas.end()) {
+        auto it = getDatas().find(name);
+        if (it == getDatas().end()) {
             return nullptr;
         }
 
@@ -395,7 +401,7 @@ public:
 
     static void LoadFromYaml(const YAML::Node& root);
 
-
+#if USING_YAML_CPP_CONVERT
     /**
      * @brief 使用yaml-cpp提供的convert来做转换,
      * 并且它里面已经定义了stl常用类型的特化,
@@ -405,11 +411,18 @@ public:
      *
      */
     static void LoadFromYaml_2(const YAML::Node& root);
+#endif
+
 
     static ConfigVarBase::ptr LookupBase(const std::string& name);
 
 private:
-    static ConfigVarMap s_datas;
+    
+    static ConfigVarMap& getDatas() {
+        static ConfigVarMap s_datas;
+        return s_datas;
+    }
+    
 };
 
 

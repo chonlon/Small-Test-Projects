@@ -242,6 +242,23 @@ const char* LogLevel::toString(LogLevel::Level level) {
     }
 }
 
+LogLevel::Level LogLevel::FromString(const std::string& str) {
+#define XX(name)                      \
+    if (str == #name) {               \
+        return LogLevel::Level::name; \
+    }
+
+    XX(DEBUG)
+    XX(INFO)
+    XX(WARN)
+    XX(ERROR)
+    XX(FATAL)
+
+#undef XX()
+
+    return LogLevel::Level::UNKNOW;
+}
+
 LogFormatter::FormatItem::~FormatItem() {}
 
 void LogFormatter::init() {
@@ -308,12 +325,7 @@ void LogFormatter::init() {
             std::cout << "pattern parse error: " << m_pattern << " - "
                       << m_pattern.substr(i) << '\n';
             vec.emplace_back("<<pattern_error>>", fmt, 0);
-        } else if (fmt_status == 2) {
-            if (!nstr.empty()) {
-                vec.emplace_back(nstr, "", 0);
-            }
-            vec.emplace_back(str, fmt, 1);
-            i = n - 1;
+            m_error = true;
         }
     }
 
@@ -365,6 +377,7 @@ void LogFormatter::init() {
             if (it == s_format_items.end()) {
                 m_items.emplace_back(std::make_shared<StringFormatItem>(
                     "<<error_format%" + std::get<0>(i) + ">>"));
+                m_error = true;
             } else {
                 m_items.emplace_back(it->second(std::get<1>(i)));
             }
@@ -446,6 +459,28 @@ void Logger::delAppender(LogAppender::ptr appender) {
     }
 }
 
+void Logger::clearAppenders() {
+    m_appenders.clear();
+}
+
+void Logger::setFormatter(LogFormatter::ptr val) {
+    m_formatter = val;
+}
+
+void Logger::setFormatter(const std::string& val) {
+    LogFormatter::ptr new_val = std::make_shared<LogFormatter>(val);
+    if (new_val->isError()) {
+        std::cout << "Logger setFormatter name = " << m_name << " value=" << val
+                  << " invalaid formatter\n";
+        return;
+    }
+    m_formatter.reset(new sylar::LogFormatter(val));
+}
+
+LogFormatter::ptr Logger::getFormatter() {
+    return m_formatter;
+}
+
 StdoutLogAppender::StdoutLogAppender() {}
 
 void StdoutLogAppender::log(std::shared_ptr<Logger> logger,
@@ -505,7 +540,8 @@ struct LogAppenderDefine
         Stdout
     };
     Type type             = Type::Unknown;
-    LogLevel::Level level = LogLevel::Level::UNKNOW std::string formatter;
+    LogLevel::Level level = LogLevel::Level::UNKNOW;
+    std::string formatter;
     std::string file;
 
     bool operator==(const LogAppenderDefine& oth) const {
@@ -526,10 +562,77 @@ struct LogDefine
             formatter == oth.formatter && appenders == appenders;
     }
 
+    bool operator!=(const LogDefine& oth) const {
+        return operator==(oth);
+    }
+
     bool operator<(const LogDefine& oth) const {
         return name < oth.name;
-    } 
+    }
 };
+
+template <>
+class LexicalCast<std::string, std::set<LogDefine>>
+{
+public:
+    std::set<LogDefine> operator()(const std::string& v) {
+        YAML::Node node = YAML::Load(v);
+        std::set<LogDefine> log_defines;
+        for (size_t i = 0; i < node.size(); ++i) {
+            auto n = node[i];
+            if (!n["name"].IsDefined()) {
+                std::cout << "log config error: name is null" << n << '\n';
+                continue;
+            }
+
+            LogDefine ld;
+            if (n["name"].IsScalar())
+                ld.name = n["name"].as<std::string>();
+            ld.level = n["level"].IsDefined()
+                ? static_cast<LogLevel::Level>(n["level"].as<int>)
+                : LogLevel::Level::UNKNOW;
+            if (n["formatter"].IsDefined())
+                ld.formatter = n["formatter"].as<std::string>();
+            if (n["appenders"].IsDefined()) {
+                for (size_t x = 0; x < n["appenders"].size(); ++x) {
+                    auto a = n["appenders"][x];
+                    if (a["type"].IsDefined()) {
+                        std::cout << "log config error: appender type is null"
+                                  << n << '\n';
+                        continue;
+                    }
+                    std::string type = a["type"].as<std::string>();
+                    LogAppenderDefine lad;
+                    if (type == "FileLogAppender") {
+                        if(n["file"].IsDefined()) {
+                            std::cout << "log config error: file appender-file name is null" << n << '\n';
+                            continue;
+                        }
+                        lad.type = LogAppenderDefine::Type::File;
+                        lad.file = n["file"].as<std::string>();
+                        if(n["formatter"].IsDefined()) {
+                            lad.formatter = n["formatter"].as<std::string>();
+                        }
+                    } else if (type == "StdoutLogAppender") {
+                        lad.type = LogAppenderDefine::Type::Stdout;
+                    } else {
+                        std::cout << "log config error: appender type is invalid, " << n << '\n';
+                    }
+                    ld.appenders.push_back(lad);
+                }
+            }
+            log_defines.insert(ld);
+        }
+        return log_defines;
+    }
+};
+template <>
+class LexicalCast<std::set<LogDefine>, std::string>
+{
+public:
+    std::set<LogDefine> operator()() {}
+};
+
 
 sylar::ConfigVar<std::set<LogDefine>>::ptr g_log_defines =
     sylar::Config::loopUp("logs", std::set<LogDefine>(), "logs config");
@@ -537,31 +640,56 @@ sylar::ConfigVar<std::set<LogDefine>>::ptr g_log_defines =
 struct LogIniter
 {
     LogIniter() {
-        g_log_defines->addListener(0xF1E231, [](const std::set<LogDefine>& old_value, const std::set<LogDefine>& new_value)
-        {
-            //新增
-            for(auto& i : new_value) {
-                auto it = old_value.find(i);
-                if(it == old_value.end()) {
-                    // 新增logger
+        g_log_defines->addListener(
+            0xF1E231,
+            [](const std::set<LogDefine>& old_value,
+               const std::set<LogDefine>& new_value) {
+                SYLAR_LOG_INFO(SYLAR_LOG_ROOT()) << "on_logger_conf_changed";
+                //新增
+                for (auto& i : new_value) {
+                    auto it = old_value.find(i);
+                    Logger::ptr logger;
+                    if (it == old_value.end()) {
+                        // 新增logger
+                        logger = std::make_shared<Logger>(i.name);
 
-                } else {
-                    if(i != *it) {
-                        // 修改的logger
+                    } else {
+                        if (i != *it) {
+                            // 修改的logger
+                            logger = SYLAR_LOG_NAME(i.name);
+                        }
+                    }
+
+                    logger->setLevel(i.level);
+                    if (!i.formatter.empty()) {
+                        logger->setFormatter(i.formatter);
+                    }
+
+                    logger->clearAppenders();
+                    for (auto& a : i.appenders) {
+                        LogAppender::ptr ap;
+                        if (a.type == LogAppenderDefine::Type::File) {
+                            ap.reset(new FileLogAppender(a.file));
+                        } else if (a.type == LogAppenderDefine::Type::Stdout) {
+                            ap.reset(new StdoutLogAppender);
+                        }
+                        ap->setLevel(a.level);
+                        logger->addAppender(ap);
                     }
                 }
-            }
 
-            for(auto& i : old_value) {
-                auto it = new_value.find(i);
-                if(it == new_value.end()) {
-                    // 删除logger
-
+                for (auto& i : old_value) {
+                    auto it = new_value.find(i);
+                    if (it == new_value.end()) {
+                        // 删除logger
+                        auto logger = SYLAR_LOG_NAME(i.name);
+                        logger->setLevel(static_cast<LogLevel::Level>(100));
+                        // logger->delAppender()
+                    }
                 }
-            }
-            //修改
-            //删除
-        });
+                //修改
+                //删除
+            });
     }
 };
 
