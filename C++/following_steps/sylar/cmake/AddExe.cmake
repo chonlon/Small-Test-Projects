@@ -7,5 +7,6 @@ function(AddExeFromFilesWithLib Deps Libs Includes)
         target_link_libraries(${FILE_NAME} ${Libs})
         target_include_directories(${FILE_NAME} PRIVATE ${Includes})
 
+        force_redefine_file_macro_for_sources(${FILE_NAME}) 
     endforeach()
 endfunction()

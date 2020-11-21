@@ -10,12 +10,12 @@ find_package(yaml-cpp CONFIG REQUIRED)
     
 
 include(./cmake/AddExe.cmake)
+include(./cmake/utils.cmake)
 
 set(CMAKE_VERBOSE_MAKEFILE ON)
 set(CMAKE_CXX_STANDARD 11)
 
 set(CXX_FLAGS
-    -g
     # -DVALGRIND
     -DCHECK_PTHREAD_RETURN_VALUE
     -D_FILE_OFFSET_BITS=64
@@ -32,6 +32,8 @@ set(CXX_FLAGS
     -march=native
     # -MMD
     -rdynamic
+    #ignore
+    -Wno-builtin-macro-redefined
     )
 if(CMAKE_BUILD_BITS EQUAL 32)
   list(APPEND CXX_FLAGS "-m32")
@@ -45,7 +47,7 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
 endif()
 string(REPLACE ";" " " CMAKE_CXX_FLAGS "${CXX_FLAGS}")
 
-set(CMAKE_CXX_FLAGS_DEBUG "-O0")
+set(CMAKE_CXX_FLAGS_DEBUG "-O0 -g")
 set(CMAKE_CXX_FLAGS_RELEASE "-O3 -DNDEBUG")
 
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
@@ -54,6 +56,7 @@ set(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)
 message(STATUS "CXX_FLAGS = " ${CMAKE_CXX_FLAGS} " " ${CMAKE_CXX_FLAGS_${BUILD_TYPE}})
 
 add_library(sylar SHARED)
+force_redefine_file_macro_for_sources(sylar) #重定义__FILE__
 target_sources(sylar PRIVATE
     "sylar/log.cc"
     "sylar/util.cc"

@@ -368,11 +368,11 @@ public:
      * @return 返回一个配置节点数据指针
      */
     template <typename T>
-    static typename ConfigVar<T>::ptr loopUp(
+    static typename ConfigVar<T>::ptr lookUp(
         const std::string& name,
         const T& default_val,
         const std::string& description = "") {
-        auto tmp = loopUp<T>(name);
+        auto tmp = lookUp<T>(name);
         if (tmp) {
             SYLAR_LOG_INFO(SYLAR_LOG_ROOT())
                 << "Lookup name=" << name << " exits";
@@ -389,7 +389,7 @@ public:
     }
 
     template <typename T>
-    static typename ConfigVar<T>::ptr loopUp(const std::string& name) {
+    static typename ConfigVar<T>::ptr lookUp(const std::string& name) {
         auto it = getDatas().find(name);
         if (it == getDatas().end()) {
             return nullptr;
