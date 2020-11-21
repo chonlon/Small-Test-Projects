@@ -1,0 +1,1 @@
+一个简单的cmake下自动生成version的例子
