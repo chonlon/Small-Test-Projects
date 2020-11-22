@@ -2,10 +2,155 @@
 #include <functional>
 #include <memory>
 #include <pthread.h>
+#include <semaphore.h>
 #include <string>
 
-
 namespace sylar {
+
+class Semaphore
+{
+public:
+    Semaphore(uint32_t count = 0);
+    ~Semaphore();
+
+    void wait();
+    void notify();
+
+    Semaphore(const Semaphore&) = delete;
+    Semaphore(Semaphore&&)      = delete;
+    Semaphore& operator=(const Semaphore&) = delete;
+
+private:
+    sem_t m_semaphore;
+};
+
+template<typename  T>
+struct ScopedLockImpl
+{
+public:
+
+    explicit ScopedLockImpl(T& mutex)
+        : m_mutex{mutex} {
+        m_mutex.lock();
+        m_locked = true;
+    }
+
+    ~ScopedLockImpl() {
+        unlock();
+    }
+
+    void lock() {
+        if(!m_locked) {
+            m_mutex.lock();
+            m_locked = true;
+        }
+    }
+    void unlock() {
+        if(m_locked) {
+            m_mutex.unlock();
+        }
+    }
+private:
+    T& m_mutex;
+    bool m_locked = false;
+};
+
+template<typename  T>
+struct ReadScopedLockImpl
+{
+public:
+
+    explicit ReadScopedLockImpl(T& mutex)
+        : m_mutex{ mutex } {
+        m_mutex.rdlock();
+        m_locked = true;
+    }
+
+    ~ReadScopedLockImpl() {
+        unlock();
+    }
+
+    void lock() {
+        if (!m_locked) {
+            m_mutex.rdlock();
+            m_locked = true;
+        }
+    }
+    void unlock() {
+        if (m_locked) {
+            m_mutex.unlock();
+        }
+    }
+private:
+    T& m_mutex;
+    bool m_locked = false;
+};
+
+template<typename  T>
+struct WriteScopedLockImpl
+{
+public:
+
+    explicit WriteScopedLockImpl(T& mutex)
+        : m_mutex{ mutex } {
+        m_mutex.wrlock();
+        m_locked = true;
+    }
+
+    ~WriteScopedLockImpl() {
+        unlock();
+    }
+
+    void lock() {
+        if (!m_locked) {
+            m_mutex.wrlock();
+            m_locked = true;
+        }
+    }
+    void unlock() {
+        if (m_locked) {
+            m_mutex.unlock();
+        }
+    }
+private:
+    T& m_mutex;
+    bool m_locked = false;
+};
+
+class Mutex
+{
+public:
+private:
+    pthread_mutex_t m_mutex;
+};
+
+class RWMutex
+{
+public:
+    typedef ReadScopedLockImpl<RWMutex> ReadLock;
+    typedef WriteScopedLockImpl<RWMutex> WriteLock;
+    RWMutex() {
+        pthread_rwlock_init(&m_lock, nullptr);
+    }
+
+    ~RWMutex() {
+        pthread_rwlock_destroy(&m_lock);
+    }
+
+    void rdlock() {
+        pthread_rwlock_rdlock(&m_lock);
+    }
+
+    void wrlock() {
+        pthread_rwlock_wrlock(&m_lock);
+    }
+
+    void unlock() {
+        pthread_rwlock_unlock(&m_lock);
+    }
+private:
+    pthread_rwlock_t m_lock;
+};
 
 class Thread
 {
@@ -17,7 +162,7 @@ public:
     static void SetName(const std::string& name);
 
     Thread(const Thread& thread) = delete;
-    Thread(Thread&& thread) = delete;
+    Thread(Thread&& thread)      = delete;
     Thread& operator=(const Thread& thread) = delete;
 
     Thread(const std::function<void()>& cb, const std::string& name);
@@ -43,11 +188,12 @@ private:
     static void* run(void* arg);
 
 private:
-
-    pid_t m_tid = -1;
+    pid_t m_tid        = -1;
     pthread_t m_thread = 0;
     std::function<void()> m_cb;
     std::string m_name;
+
+    Semaphore m_semaphore;
 };
 
 }  // namespace sylar
