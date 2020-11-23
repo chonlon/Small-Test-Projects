@@ -344,6 +344,11 @@ struct StringLogAppender : public LogAppender
 {
     std::stringstream log_sstream;
 
+    ~StringLogAppender() = default;
+   
+
+    std::string toYamlString() { return "";}
+
     void log(std::shared_ptr<Logger> logger,
              LogLevel::Level level,
              LogEvent::ptr event) override {
