@@ -24,47 +24,50 @@ private:
     sem_t m_semaphore;
 };
 
-template<typename  T>
+template <typename T>
 struct ScopedLockImpl
 {
 public:
-
-    explicit ScopedLockImpl(T& mutex)
-        : m_mutex{mutex} {
+    explicit ScopedLockImpl(T& mutex) : m_mutex{mutex} {
         m_mutex.lock();
         m_locked = true;
     }
+
+    ScopedLockImpl(const ScopedLockImpl&) = delete;
+    ScopedLockImpl& operator=(const ScopedLockImpl&) = delete;
 
     ~ScopedLockImpl() {
         unlock();
     }
 
     void lock() {
-        if(!m_locked) {
+        if (!m_locked) {
             m_mutex.lock();
             m_locked = true;
         }
     }
     void unlock() {
-        if(m_locked) {
+        if (m_locked) {
             m_mutex.unlock();
         }
     }
+
 private:
     T& m_mutex;
     bool m_locked = false;
 };
 
-template<typename  T>
+template <typename T>
 struct ReadScopedLockImpl
 {
 public:
-
-    explicit ReadScopedLockImpl(T& mutex)
-        : m_mutex{ mutex } {
+    explicit ReadScopedLockImpl(T& mutex) : m_mutex{mutex} {
         m_mutex.rdlock();
         m_locked = true;
     }
+
+    ReadScopedLockImpl(const ReadScopedLockImpl&) = delete;
+    ReadScopedLockImpl& operator=(const ReadScopedLockImpl&) = delete;
 
     ~ReadScopedLockImpl() {
         unlock();
@@ -81,21 +84,24 @@ public:
             m_mutex.unlock();
         }
     }
+
 private:
     T& m_mutex;
     bool m_locked = false;
 };
 
-template<typename  T>
+template <typename T>
 struct WriteScopedLockImpl
 {
 public:
-
-    explicit WriteScopedLockImpl(T& mutex)
-        : m_mutex{ mutex } {
+    explicit WriteScopedLockImpl(T& mutex) : m_mutex{mutex} {
         m_mutex.wrlock();
         m_locked = true;
     }
+
+    WriteScopedLockImpl(const WriteScopedLockImpl&) = delete;
+    WriteScopedLockImpl& operator=(const WriteScopedLockImpl&) = delete;
+
 
     ~WriteScopedLockImpl() {
         unlock();
@@ -112,6 +118,7 @@ public:
             m_mutex.unlock();
         }
     }
+
 private:
     T& m_mutex;
     bool m_locked = false;
@@ -120,9 +127,51 @@ private:
 class Mutex
 {
 public:
+    typedef ScopedLockImpl<Mutex> Locker;
+
+    Mutex() {
+        pthread_mutex_init(&m_mutex, nullptr);
+    }
+
+    ~Mutex() {
+        pthread_mutex_destroy(&m_mutex);
+    }
+
+    void lock() {
+        pthread_mutex_lock(&m_mutex);
+    }
+
+    void unlock() {
+        pthread_mutex_unlock(&m_mutex);
+    }
+
 private:
     pthread_mutex_t m_mutex;
 };
+
+namespace detail {
+
+    struct NullMutex
+    {
+    public:
+        typedef ScopedLockImpl<NullMutex> Locker;
+
+        void lock() {}
+
+        void unlock() {}
+
+    };
+
+    struct NullRWMutex
+    {
+        typedef ReadScopedLockImpl<NullRWMutex> ReadLock;
+        typedef WriteScopedLockImpl<NullRWMutex> WriteLock;
+        void rdlock() {}
+        void wrlock() {}
+        void unlock() {}
+    };
+
+}
 
 class RWMutex
 {
@@ -148,6 +197,7 @@ public:
     void unlock() {
         pthread_rwlock_unlock(&m_lock);
     }
+
 private:
     pthread_rwlock_t m_lock;
 };

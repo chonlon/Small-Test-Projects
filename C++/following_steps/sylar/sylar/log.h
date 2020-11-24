@@ -11,6 +11,7 @@
 #include <unordered_map>
 #include "util.h"
 #include "singleton.h"
+#include "thread.h"
 
 #define SYLAR_LOG_LEVEL(logger, level) \
     if(logger->getLevel() <= level) \
@@ -28,6 +29,16 @@
 #define SYLAR_LOG_NAME(name) sylar::LoggerMgr::getInstance()->getLogger(name)
 
 namespace sylar {
+namespace detail {
+//#define SYLAR_USING_NULL_MUTEX
+#ifdef SYLAR_USING_NULL_MUTEX
+    typedef NullMutex MutexType;
+#else
+    typedef sylar::Mutex MutexType;
+#endif
+}
+
+
 class Logger;
 class LoggerManager;
 
@@ -136,7 +147,6 @@ private:
  */
 class LogFormatter
 {
-
 private:
     class FormatItem
     {
@@ -227,6 +237,7 @@ public:
 protected:
     LogLevel::Level m_level = LogLevel::Level::DEBUG;
     bool m_hasFormatter = false;
+    detail::MutexType m_mutex;
     LogFormatter::ptr m_formatter;
 };
 
@@ -271,6 +282,7 @@ public:
 private:
     std::string m_name;
     LogLevel::Level m_level;
+    detail::MutexType m_mutex;
     std::list<LogAppender::ptr> m_appenders;
     LogFormatter::ptr m_formatter;
     Logger::ptr m_root;
@@ -330,6 +342,7 @@ public:
     Logger::ptr getRoot() { return m_root; }
     std::string toYamlString();
 private:
+    detail::MutexType m_mutex;
     std::unordered_map<std::string, Logger::ptr> m_loggers;
     Logger::ptr m_root;
 };
