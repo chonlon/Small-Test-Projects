@@ -63,7 +63,10 @@ target_sources(sylar PRIVATE
     "sylar/util.h"
     "sylar/config.h"
     "sylar/config.cc"
-    "sylar/thread.cc")
+    "sylar/thread.cc"
+    "sylar/macro.h"
+    "sylar/fiber.h"
+    "sylar/fiber.cc")
 target_include_directories(sylar SYSTEM PUBLIC  ${Boost_INCLUDE_DIRS})
 
 target_link_libraries(sylar PUBLIC yaml-cpp pthread)
@@ -74,6 +77,7 @@ set(
     runner/runner_log.cc
     runner/runner_config.cc
     runner/runner_thread.cc
+    runner/runner_utils.cc
 )
 
 AddExeFromFilesWithLib("sylar" "sylar" "sylar/" ${Runners})
