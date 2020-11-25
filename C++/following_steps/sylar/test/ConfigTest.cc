@@ -1,26 +1,35 @@
-#include <gtest/gtest.h>
 #include <config.h>
+#include <gtest/gtest.h>
 #include <string>
 
 sylar::ConfigVar<int>::ptr int_value;
 sylar::ConfigVar<std::string>::ptr string_value;
 sylar::ConfigVar<std::vector<int>>::ptr vector_value;
 
+int origin_int_value            = 8080;
+std::string origin_string_value = "this is a test string";
+std::vector<int> origin_vector_value{{1, 2, 3}};
 
-TEST(ConfigTest, DefaultTest) {
-    int origin_int_value = 8080;
-    std::string origin_string_value = "this is a test string";
-    std::vector<int> origin_vector_value{{1, 2, 3}};
-
+void setup() {
+    static bool setup = false;
+    if (setup)
+        return;
     {
         int_value = sylar::Config::lookUp(
             "system.int", static_cast<int>(origin_int_value), "system int");
-        string_value = sylar::Config::lookUp(
-            "system.string", static_cast<std::string>(origin_string_value), "system string");
-        vector_value = sylar::Config::lookUp(
-            "system.int_vec", std::vector<int>(origin_vector_value), "system vec");
+        string_value =
+            sylar::Config::lookUp("system.string",
+                                  static_cast<std::string>(origin_string_value),
+                                  "system string");
+        vector_value =
+            sylar::Config::lookUp("system.int_vec",
+                                  std::vector<int>(origin_vector_value),
+                                  "system vec");
     }
+    setup = true;
+}
 
+TEST(ConfigTest, DefaultValue) {
     {
         EXPECT_EQ(int_value->getValue(), origin_int_value);
         EXPECT_STREQ(int_value->getDescription().c_str(), "system int");
@@ -32,6 +41,10 @@ TEST(ConfigTest, DefaultTest) {
 }
 
 TEST(ConfigTest, YamlLoad) {
+    // sylar::ConfigVar<int>::ptr int_value;
+    // sylar::ConfigVar<std::string>::ptr string_value;
+    // sylar::ConfigVar<std::vector<int>>::ptr vector_value;
+
     std::string test_yml = R"(
 system:
     int: 9900
@@ -51,4 +64,12 @@ system:
         EXPECT_EQ(string_value->getValue(), changed_string_value);
         EXPECT_EQ(vector_value->getValue(), changed_vector_value);
     }
+}
+
+int main(int argc, char* argv[]) {
+    ::testing::InitGoogleTest(&argc, argv);
+
+    setup();
+
+    return RUN_ALL_TESTS();
 }
