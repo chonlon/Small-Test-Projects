@@ -31,8 +31,14 @@
 namespace sylar {
 namespace detail {
 //#define SYLAR_USING_NULL_MUTEX
+#define SYLAR_USING_SPIN_LOCK
+//#define SYLAR_USING_CAS_LOCK
 #ifdef SYLAR_USING_NULL_MUTEX
     typedef NullMutex MutexType;
+#elif defined SYLAR_USING_SPIN_LOCK
+    typedef sylar::Spinlock MutexType;
+#elif defined SYLAR_USING_CAS_LOCK
+    typedef sylar::CASLock MutexType;
 #else
     typedef sylar::Mutex MutexType;
 #endif
@@ -314,6 +320,7 @@ private:
     /* data */
     std::string m_filename;
     std::ofstream m_filestream;
+    uint64_t m_lastTime;
 public:
     typedef std::shared_ptr<FileLogAppender> ptr;
 

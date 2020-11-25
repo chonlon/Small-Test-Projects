@@ -17,13 +17,13 @@ void func1() {
 
 void func2() {
     while(true)
-        SYLAR_LOG_INFO(g_logger) << "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx";
+        SYLAR_LOG_INFO(g_logger) << std::string(200, 'x');
     
 }
 
 void func3() {
     while(true)
-        SYLAR_LOG_INFO(g_logger) << "====================================================";
+        SYLAR_LOG_INFO(g_logger) << std::string(200, '=');
 }
 
 int main(int argc, char** argv) {
