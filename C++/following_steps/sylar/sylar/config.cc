@@ -62,7 +62,16 @@ void Config::LoadFromYaml_2(const YAML::Node& root) {
 }
 #endif
 ConfigVarBase::ptr Config::LookupBase(const std::string& name) {
+    RWMutexType::ReadLock locker(GetMutex());
     auto it = getDatas().find(name);
     return it == getDatas().end() ? nullptr : it->second;
+}
+
+void Config::Visit(std::function<void(ConfigVarBase::ptr)> cb) {
+    RWMutexType::ReadLock locker(GetMutex());
+    ConfigVarMap& m = getDatas();
+    for(auto it = m.begin(); it != m.end(); ++it) {
+        cb(it->second);
+    }
 }
 }  // namespace sylar

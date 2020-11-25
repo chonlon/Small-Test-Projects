@@ -41,9 +41,6 @@ TEST(ConfigTest, DefaultValue) {
 }
 
 TEST(ConfigTest, YamlLoad) {
-    // sylar::ConfigVar<int>::ptr int_value;
-    // sylar::ConfigVar<std::string>::ptr string_value;
-    // sylar::ConfigVar<std::vector<int>>::ptr vector_value;
 
     std::string test_yml = R"(
 system:

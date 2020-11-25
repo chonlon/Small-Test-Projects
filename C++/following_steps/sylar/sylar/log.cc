@@ -768,7 +768,6 @@ struct LogIniter
 {
     LogIniter() {
         g_log_defines->addListener(
-            0xF1E231,
             [](const std::set<LogDefine>& old_value,
                const std::set<LogDefine>& new_value) {
                 SYLAR_LOG_INFO(SYLAR_LOG_ROOT()) << "on_logger_conf_changed";
@@ -808,9 +807,9 @@ struct LogIniter
                                 ap->setFormatter(fmt);
                             else
                                 std::cout << "appender type = "
-                                          << static_cast<int>(a.type)
-                                          << " formatter= " << a.formatter
-                                          << " is invalid\n";
+                                    << static_cast<int>(a.type)
+                                    << " formatter= " << a.formatter
+                                    << " is invalid\n";
                         }
 
                         ap->setLevel(a.level);

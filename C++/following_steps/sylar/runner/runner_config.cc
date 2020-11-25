@@ -129,5 +129,12 @@ int main() {
 
 #endif
 
+    sylar::Config::Visit([](sylar::ConfigVarBase::ptr var) {
+        SYLAR_LOG_INFO(SYLAR_LOG_ROOT())
+            << "name=" << var->getName()
+            << " description=" << var->getDescription()
+            << " value=" << var->toString();
+    });
+
     return 0;
 }

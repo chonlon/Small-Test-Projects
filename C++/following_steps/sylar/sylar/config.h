@@ -1,5 +1,6 @@
 #pragma once
 #include "log.h"
+#include "thread.h"
 
 
 #include <boost/lexical_cast.hpp>
@@ -268,6 +269,7 @@ template <typename T,
 class ConfigVar : public ConfigVarBase
 {
 public:
+    typedef RWMutex RWMutexType;
     typedef std::shared_ptr<ConfigVar> ptr;
     typedef std::function<void(const T& old_value, const T& new_value)>
         on_change_cb;
@@ -281,6 +283,7 @@ public:
     std::string toString() override {
         try {
             // return boost::lexical_cast<std::string>(m_val);
+            RWMutexType::ReadLock locker(m_mutex);
             return ToStr()(m_val);
         } catch (std::exception& e) {
             SYLAR_LOG_ERROR(SYLAR_LOG_ROOT())
@@ -316,36 +319,53 @@ public:
 #endif
 
     const T& getValue() const {
+        RWMutexType::ReadLock locker(m_mutex);
         return m_val;
     }
     void setValue(const T& v) {
-        if (v == m_val)
-            return;
-        for (auto& i : m_cbs) {
-            i.second(m_val, v);
+        {
+            RWMutexType::ReadLock locker(m_mutex);
+            if (v == m_val)
+                return;
+            for (auto& i : m_cbs) {
+                i.second(m_val, v);
+            }
+
         }
-        m_val = v;
+        
+        {
+            RWMutexType::WriteLock locker(m_mutex);
+            m_val = v;
+        }
+        
     }
 
 
-    void addListener(uint64_t key, on_change_cb cb) {
-        m_cbs[key] = cb;
+    uint64_t addListener(on_change_cb cb) {
+        static uint64_t s_fun_id = 0;
+        RWMutexType::WriteLock locker(m_mutex);
+        m_cbs[s_fun_id] = cb;
+        return s_fun_id++;
     }
 
     void delListener(uint64_t key) {
+        RWMutexType::WriteLock locker(m_mutex);
         m_cbs.erase(key);
     }
 
     on_change_cb getListener(uint64_t key) {
+        RWMutexType::ReadLock locker(m_mutex);
         auto it = m_cbs.find(key);
         return it == m_cbs.end() ? nullptr : it->second;
     }
 
     void clearListener() {
+        RWMutexType::WriteLock locker(m_mutex);
         m_cbs.clear();
     }
 
 private:
+    mutable RWMutexType m_mutex;
     T m_val;
 
     //变更回调函数组
@@ -356,7 +376,7 @@ class Config
 {
 public:
     typedef std::map<std::string, ConfigVarBase::ptr> ConfigVarMap;
-
+    typedef RWMutex RWMutexType;
     /**
      * @brief 创建/查找给定key的数据, 如果查找失败, 使用默认值创建数据节点
      * @tparam T 节点数据类型
@@ -372,12 +392,14 @@ public:
         const std::string& name,
         const T& default_val,
         const std::string& description = "") {
+        
         auto tmp = lookUp<T>(name);
         if (tmp) {
             SYLAR_LOG_INFO(SYLAR_LOG_ROOT())
                 << "Lookup name=" << name << " exits";
             return tmp;
         }
+        RWMutexType::WriteLock locker(GetMutex());
         if (name.find_first_not_of("abcdefghikjlmnopqrstuvwxyz._012345678") !=
             std::string::npos) {
             SYLAR_LOG_ERROR(SYLAR_LOG_ROOT()) << "Lookup name invalid " << name;
@@ -390,6 +412,7 @@ public:
 
     template <typename T>
     static typename ConfigVar<T>::ptr lookUp(const std::string& name) {
+        RWMutexType::ReadLock locker(GetMutex());
         auto it = getDatas().find(name);
         if (it == getDatas().end()) {
             return nullptr;
@@ -416,13 +439,19 @@ public:
 
     static ConfigVarBase::ptr LookupBase(const std::string& name);
 
+    static void Visit(std::function<void(ConfigVarBase::ptr)> cb);
+
 private:
     
     static ConfigVarMap& getDatas() {
         static ConfigVarMap s_datas;
         return s_datas;
     }
-    
+
+    static RWMutexType& GetMutex() {
+        static RWMutexType s_mutex;
+        return s_mutex;
+    }
 };
 
 
