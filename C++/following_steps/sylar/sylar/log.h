@@ -16,7 +16,7 @@
 #define SYLAR_LOG_LEVEL(logger, level) \
     if(logger->getLevel() <= level) \
         sylar::LogEventWrapper(std::make_shared<sylar::LogEvent>(logger, level, __FILE__, __LINE__, 0, sylar::GetThreadId(), \
-                sylar::GetFiberId(), time(0))).getSS()
+                sylar::GetFiberId(), time(0), sylar::Thread::GetName())).getSS()
 
 
 #define SYLAR_LOG_DEBUG(logger) SYLAR_LOG_LEVEL(logger, sylar::LogLevel::Level::DEBUG)
@@ -79,6 +79,7 @@ private:
     uint32_t m_elapsedMs = 0;       // 程序启动经过时间
     uint32_t m_fiberid   = 0;       // 协程ID
     uint64_t m_time;                // 时间戳
+    std::string m_threadName;
     std::stringstream m_content_stream;
 
     std::shared_ptr<Logger> m_logger;
@@ -94,7 +95,8 @@ public:
              uint32_t elapsed_ms,
              uint32_t thread_id,
              uint32_t fiberid,
-             uint64_t time);
+             uint64_t time,
+             const std::string& thread_name);
 
     ~LogEvent() = default;
 
@@ -103,7 +105,7 @@ public:
     }
 
     auto getLine() const -> int32_t {
-        return m_line;
+        return m_line; 
     }
 
     auto getThreadId() const -> uint32_t {
@@ -132,6 +134,8 @@ public:
     auto getLevel() const -> LogLevel::Level {
         return m_level;
     }
+
+    auto getThreadName() -> std::string& { return m_threadName;};
 };
 
 class LogEventWrapper
@@ -174,6 +178,7 @@ private:
     friend struct ElapseFormatItem;
     friend struct NameFormatItem;
     friend struct ThreadIdFormatItem;
+    friend struct ThreadNameFormatItem;
     friend struct FiberIdFormatItem;
     friend struct DateTimeFormatItem;
     friend struct FilenameFormatItem;
@@ -378,6 +383,5 @@ struct StringLogAppender : public LogAppender
     }
 };
 }
-
 
 } // namespace sylar

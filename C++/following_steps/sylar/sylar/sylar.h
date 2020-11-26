@@ -6,3 +6,4 @@
 #include "util.h"
 #include "config.h"
 #include "singleton.h"
+#include "fiber.h"

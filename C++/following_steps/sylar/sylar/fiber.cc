@@ -147,6 +147,11 @@ void Fiber::MainFunc() {
         cur->m_state = State::EXCEPT;
         SYLAR_LOG_ERROR(g_logger) << "Fiber Except";
     }
+    auto raw_pointer = cur.get();
+    cur->reset(nullptr);
+    raw_pointer->swapOut();
+
+    SYLAR_ASSERT2(false, "never reach");
 }
 
 uint64_t Fiber::GetFiberId() {
