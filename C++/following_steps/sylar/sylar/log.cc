@@ -80,6 +80,20 @@ struct ThreadIdFormatItem : public LogFormatter::FormatItem
     }
 };
 
+struct ThreadNameFormatItem : public LogFormatter::FormatItem
+{
+    ThreadNameFormatItem(const std::string& str) : FormatItem{ str } {}
+
+    virtual ~ThreadNameFormatItem() = default;
+
+    void format(std::ostream& os,
+        std::shared_ptr<Logger> logger,
+        LogLevel::Level level,
+        LogEvent::ptr event) override {
+        os << event->getThreadName();
+    }
+};
+
 struct FiberIdFormatItem : public LogFormatter::FormatItem
 {
     FiberIdFormatItem(const std::string& str) : FormatItem{str} {}
@@ -203,13 +217,15 @@ LogEvent::LogEvent(std::shared_ptr<Logger> logger,
                    uint32_t elapsed_ms,
                    uint32_t thread_id,
                    uint32_t fiberid,
-                   uint64_t time)
+                   uint64_t time,
+                   const std::string& thread_name)
     : m_file{file},
       m_line{line},
       m_threadId{thread_id},
       m_elapsedMs{elapsed_ms},
       m_fiberid{fiberid},
       m_time{time},
+      m_threadName{thread_name},
       m_logger{logger},
       m_level{level} {}
 
@@ -352,12 +368,14 @@ void LogFormatter::init() {
             XX(r, ElapseFormatItem),
             XX(c, NameFormatItem),
             XX(t, ThreadIdFormatItem),
+            XX(N, ThreadNameFormatItem),
             XX(n, NewLineFormatItem),
             XX(d, DateTimeFormatItem),
             XX(f, FilenameFormatItem),
             XX(l, LineFormatItem),
             XX(T, TabFormatItem),
             XX(F, FiberIdFormatItem)
+
 #undef XX
         };
 
@@ -418,7 +436,7 @@ auto LogAppender::setFormatter(const LogFormatter::ptr& formatter) -> void {
 Logger::Logger(const std::string& name)
     : m_name{name}, m_level{LogLevel::Level::DEBUG} {
     m_formatter.reset(new LogFormatter(
-        "%d{%Y-%m-%d %H:%M:%S}%T%t%T%F%T[%p]%T[%c]%T<%f:%l>%T%m%n"));
+        "%d{%Y-%m-%d %H:%M:%S}%T%t%T%N%T%F%T[%p]%T[%c]%T<%f:%l>%T%m%n"));
 }
 
 void Logger::log(LogLevel::Level level, LogEvent::ptr event) {
