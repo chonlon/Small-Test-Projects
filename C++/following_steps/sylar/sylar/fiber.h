@@ -17,12 +17,13 @@ public:
         HOLD,
         EXEC,
         TERM,
-        READY
+        READY,
+        EXCEPT
     };
 
 
     /**
-     * \brief 构造协程
+     * \brief 构造协程, 非主协程
      * \param cb 协程函数
      * \param stack_size 栈空间大小
      */
@@ -45,6 +46,8 @@ public:
      * \brief 将当前协程切换到后台, 让出执行权.
      */
     void swapOut();
+
+    uint64_t getId() const {return m_id;}
 
 public:
 
@@ -79,6 +82,8 @@ public:
     static uint64_t TotalFibers();
 
     static void MainFunc();
+
+    static uint64_t GetFiberId();
 private:
     Fiber();
 private:

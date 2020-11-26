@@ -78,6 +78,7 @@ set(
     runner/runner_config.cc
     runner/runner_thread.cc
     runner/runner_utils.cc
+    runner/runner_fiber.cc
 )
 
 AddExeFromFilesWithLib("sylar" "sylar" "sylar/" ${Runners})

@@ -10,7 +10,7 @@
 
 namespace sylar {
     pid_t GetThreadId();
-    uint32_t GetFiberId();
+    uint64_t GetFiberId();
 
     void Backtrace(std::vector<std::string>& bt, int size, int skip = 1);
 
