@@ -372,7 +372,7 @@ struct StringLogAppender : public LogAppender
     ~StringLogAppender() = default;
    
 
-    std::string toYamlString() { return "";}
+    std::string toYamlString() override { return "";}
 
     void log(std::shared_ptr<Logger> logger,
              LogLevel::Level level,

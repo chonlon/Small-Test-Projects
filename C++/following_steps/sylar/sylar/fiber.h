@@ -49,6 +49,8 @@ public:
 
     uint64_t getId() const {return m_id;}
 
+    State getState() const;
+
 public:
 
     /**
