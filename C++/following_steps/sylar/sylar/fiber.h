@@ -49,7 +49,13 @@ public:
 
     uint64_t getId() const {return m_id;}
 
-    State getState() const;
+    void setState(State mState) {
+        m_state = mState;
+    }
+
+    State getState() const {
+        return m_state;
+    }
 
 public:
 

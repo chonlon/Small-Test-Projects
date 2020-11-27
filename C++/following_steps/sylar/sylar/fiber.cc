@@ -162,9 +162,5 @@ uint64_t Fiber::GetFiberId() {
     return 0;
 }
 
-Fiber::State Fiber::getState() const {
-    return m_state;
-}
-
 
 }  // namespace sylar

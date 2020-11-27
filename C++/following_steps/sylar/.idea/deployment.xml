@@ -19,7 +19,7 @@
       <paths name="ubuntuserver (ce2ed031-bbd0-4a4e-b52f-5844728797f1)">
         <serverdata>
           <mappings>
-            <mapping deploy="/tmp/tmp.Bl2y8BvEYz" local="$PROJECT_DIR$" />
+            <mapping deploy="/home/lon/code/clion_depo/sylar" local="$PROJECT_DIR$" />
           </mappings>
           <excludedPaths>
             <excludedPath local="true" path="$PROJECT_DIR$/cmake-build-debug-ubuntuserver" />
