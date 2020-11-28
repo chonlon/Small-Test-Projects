@@ -69,6 +69,8 @@ target_sources(sylar PRIVATE
         "sylar/fiber.cc"
         "sylar/scheduler.h"
         "sylar/scheduler.cc"
+        "sylar/iomanager.h"
+        "sylar/iomanager.cc"
 )
 target_include_directories(sylar SYSTEM PUBLIC  ${Boost_INCLUDE_DIRS})
 
