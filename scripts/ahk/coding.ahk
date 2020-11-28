@@ -19,6 +19,7 @@ GroupAdd,cn,ahk_exe DingTalk.exe
 ;新开窗口时，切换到英文输入法的分组
 GroupAdd,en,ahk_exe devenv.exe  ;Visual Studio
 GroupAdd,en,ahk_exe Code.exe  ;Visual Studio Code
+GroupAdd,en,ahk_exe clion64.exe  ;clion
 GroupAdd,en,ahk_class Notepad++
 GroupAdd,en,ahk_class Listary_WidgetWin_0
 ;窗口切换时，切换到中文输入法
@@ -29,14 +30,17 @@ GroupAdd,cn32772,ahk_exe chrome.exe	;谷歌浏览器
 GroupAdd,en32772,ahk_class Listary_WidgetWin_0
 GroupAdd,en32772,ahk_exe Code.exe  ;Visual Studio Code
 GroupAdd,en32772,ahk_exe devenv.exe  ;Visual Studio
+GroupAdd,en32772,ahk_exe clion64.exe  ;clion
 ;编辑器分组
 GroupAdd,editor,ahk_exe devenv.exe  ;Visual Studio
-GroupAdd,editor,ahk_exe Code.exe  ;Visual Studio
+GroupAdd,editor,ahk_exe clion64.exe  ;clion
+GroupAdd,editor,ahk_exe Code.exe  ;Visual Studio Code
 GroupAdd,editor,ahk_exe notepad.exe ;记事本
 GroupAdd,editor,ahk_class Notepad++
 ;单独分组是因为在下面会对两个编辑器应用不同快捷键.
 GroupAdd,visualstudio,ahk_exe devenv.exe
 GroupAdd,visualstudiocode,ahk_exe Code.exe
+GroupAdd,clion,ahk_exe clion64.exe  ;clion
 
 
 ;监控消息回调ShellMessage，并自动设置输入法
@@ -225,16 +229,32 @@ Numpad8::
 		SendInput, !o
 		return
 	}
+	IfWinActive,ahk_group clion
+	{
+		SendInput, {F10}
+		return
+	}
 return
 ;------------------------------------------------------------------------------
 
 ;使用和vscode一样的快捷键format文档.
 +!f::
+	dontNeedReplace := true
 	IfWinActive,ahk_group visualstudio
 	{
+		dontNeedReplace = false
 		SendInput, ^k
 		SendInput, ^d
 		return
+	}
+	IfWinActive,ahk_group clion
+	{
+		dontNeedReplace = false
+		SendInput, ^!l
+		return
+	}
+	if(dontNeedReplace) {
+		SendInput, +!f
 	}
 return
 	
