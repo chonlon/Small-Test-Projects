@@ -1,0 +1,7 @@
+#pragma once
+
+#cmakedefine GIT_BRANCH "@GIT_BRANCH@"
+#cmakedefine CURRENTTIME "@CURRENTTIME@"
+#cmakedefine GIT_COMMIT_HASH "@GIT_COMMIT_HASH@"
+#cmakedefine GIT_COMMIT_TIME "@GIT_COMMIT_TIME@"
+
