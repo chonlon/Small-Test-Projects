@@ -25,6 +25,7 @@
             <excludedPath local="true" path="$PROJECT_DIR$/cmake-build-debug-ubuntuserver" />
             <excludedPath local="true" path="$PROJECT_DIR$/build" />
             <excludedPath local="true" path="$PROJECT_DIR$/cmake-build-debug-ubuntuserver" />
+            <excludedPath local="true" path="$PROJECT_DIR$/cmake-build-debug-ubuntuserver-coverage" />
           </excludedPaths>
         </serverdata>
       </paths>

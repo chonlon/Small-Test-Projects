@@ -580,7 +580,7 @@ bool FileLogAppender::reopen() {
 void FileLogAppender::log(std::shared_ptr<Logger> logger,
                           LogLevel::Level level,
                           LogEvent::ptr event) {
-    const uint64_t now = static_cast<const uint64_t>(time(nullptr));
+    const uint64_t now = static_cast<uint64_t>(time(nullptr));
     if(now != m_lastTime) {
         reopen();
         m_lastTime = now;
