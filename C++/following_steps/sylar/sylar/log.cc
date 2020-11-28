@@ -123,7 +123,7 @@ struct DateTimeFormatItem : public LogFormatter::FormatItem
                 LogLevel::Level level,
                 LogEvent::ptr event) override {
         struct tm tm;
-        time_t time = event->getTime();
+        time_t time = static_cast<time_t>(event->getTime());
         localtime_r(&time, &tm);
         char buf[64];
         strftime(buf, sizeof(buf), m_format.c_str(), &tm);
@@ -403,9 +403,6 @@ void LogFormatter::init() {
                 m_items.emplace_back(it->second(std::get<1>(i)));
             }
         }
-        //     std::cout << std::get<0>(i) << " - " << std::get<1>(i) << " - "
-        //     <<
-        //         std::get<2>(i) << std::endl;
     }
 }
 
@@ -583,7 +580,7 @@ bool FileLogAppender::reopen() {
 void FileLogAppender::log(std::shared_ptr<Logger> logger,
                           LogLevel::Level level,
                           LogEvent::ptr event) {
-    const uint64_t now = time(nullptr);
+    const uint64_t now = static_cast<uint64_t>(time(nullptr));
     if(now != m_lastTime) {
         reopen();
         m_lastTime = now;

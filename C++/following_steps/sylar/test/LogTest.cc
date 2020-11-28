@@ -38,7 +38,8 @@ TEST(LogTest, LogOutTest) {
     uint32_t thread_id    = 0;
     uint32_t elapsed_ms   = 1;
     uint32_t fiber_id     = 2;
-    uint64_t _time        = time(0);
+    uint64_t _time        = static_cast<uint64_t>(time(nullptr));
+    const char* thread_name = "null";
     LogLevel::Level level = sylar::LogLevel::Level::DEBUG;
 
     sylar::LogEvent::ptr event(new sylar::LogEvent(
@@ -49,7 +50,7 @@ TEST(LogTest, LogOutTest) {
         elapsed_ms,
         thread_id,
         fiber_id,
-        _time));
+        _time, thread_name));
     event->getSS() << "log";
     logger->log(level, event);
 
@@ -61,7 +62,7 @@ TEST(LogTest, LogOutTest) {
     if (std::regex_match(string_log, result, pattern)) {
         // part1 for time fmt check
         struct tm tm;
-        time_t time = event->getTime();
+        time_t time = static_cast<time_t>(event->getTime());
         localtime_r(&time, &tm);
         char buf[64];
         strftime(buf, sizeof(buf), "%Y-%m-%d %H:%M:%S", &tm);
@@ -70,7 +71,8 @@ TEST(LogTest, LogOutTest) {
         // part2 for rest check
         auto part2 = result.str(2);
         std::stringstream str_result;
-        str_result << thread_id << '\t' << fiber_id << '\t'
+        str_result << thread_id << '\t' << thread_name << '\t'
+            << fiber_id << '\t'
             << '[' << LogLevel::toString(level) << ']'
             << '\t'
             << '[' << logger_name << ']' << '\t'

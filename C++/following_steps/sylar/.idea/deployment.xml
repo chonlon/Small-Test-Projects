@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" remoteFilesAllowedToDisappearOnAutoupload="false">
+  <component name="PublishConfigData" exclude=".svn;.cvs;.idea;.DS_Store;.git;.hg;*.hprof;*.pyc;.vs;build" remoteFilesAllowedToDisappearOnAutoupload="false">
     <serverData>
       <paths name="Remote Host (06f3ca98-fc86-4da1-b194-6f61f1ca4b50)">
         <serverdata>
@@ -16,37 +16,16 @@
           </mappings>
         </serverdata>
       </paths>
-      <paths name="aliyun">
+      <paths name="ubuntuserver (ce2ed031-bbd0-4a4e-b52f-5844728797f1)">
         <serverdata>
           <mappings>
-            <mapping local="$PROJECT_DIR$" web="/" />
-          </mappings>
-        </serverdata>
-      </paths>
-      <paths name="aliyun (dfe10033-51a4-4bde-9cad-573df6cf6a9a)">
-        <serverdata>
-          <mappings>
-            <mapping local="$PROJECT_DIR$" web="/" />
-          </mappings>
-        </serverdata>
-      </paths>
-      <paths name="myubuntu (bd54aab9-503a-47b6-8aab-d9a957307786)">
-        <serverdata>
-          <mappings>
-            <mapping local="$PROJECT_DIR$" web="/" />
-          </mappings>
-        </serverdata>
-      </paths>
-      <paths name="ubuntuserver (cb20a8dd-906a-4b69-a881-56a46a18f5c2)">
-        <serverdata>
-          <mappings>
-            <mapping deploy="/tmp/tmp.NCVe6e7iXI" local="$PROJECT_DIR$" />
+            <mapping deploy="/home/lon/code/clion_depo/sylar" local="$PROJECT_DIR$" />
           </mappings>
           <excludedPaths>
             <excludedPath local="true" path="$PROJECT_DIR$/cmake-build-debug-ubuntuserver" />
             <excludedPath local="true" path="$PROJECT_DIR$/build" />
             <excludedPath local="true" path="$PROJECT_DIR$/cmake-build-debug-ubuntuserver" />
-            <excludedPath local="true" path="$PROJECT_DIR$/cmake-build-release" />
+            <excludedPath local="true" path="$PROJECT_DIR$/cmake-build-debug-ubuntuserver-coverage" />
           </excludedPaths>
         </serverdata>
       </paths>

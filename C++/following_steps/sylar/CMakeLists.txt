@@ -58,15 +58,18 @@ message(STATUS "CXX_FLAGS = " ${CMAKE_CXX_FLAGS} " " ${CMAKE_CXX_FLAGS_${BUILD_T
 add_library(sylar SHARED)
 force_redefine_file_macro_for_sources(sylar) #重定义__FILE__
 target_sources(sylar PRIVATE
-    "sylar/log.cc"
-    "sylar/util.cc"
-    "sylar/util.h"
-    "sylar/config.h"
-    "sylar/config.cc"
-    "sylar/thread.cc"
-    "sylar/macro.h"
-    "sylar/fiber.h"
-    "sylar/fiber.cc")
+        "sylar/log.cc"
+        "sylar/util.cc"
+        "sylar/util.h"
+        "sylar/config.h"
+        "sylar/config.cc"
+        "sylar/thread.cc"
+        "sylar/macro.h"
+        "sylar/fiber.h"
+        "sylar/fiber.cc"
+        "sylar/scheduler.h"
+        "sylar/scheduler.cc"
+)
 target_include_directories(sylar SYSTEM PUBLIC  ${Boost_INCLUDE_DIRS})
 
 target_link_libraries(sylar PUBLIC yaml-cpp pthread)
@@ -79,6 +82,7 @@ set(
     runner/runner_thread.cc
     runner/runner_utils.cc
     runner/runner_fiber.cc
+    runner/runner_scheduler.cc
 )
 
 AddExeFromFilesWithLib("sylar" "sylar" "sylar/" ${Runners})
