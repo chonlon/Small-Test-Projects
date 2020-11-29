@@ -40,7 +40,9 @@ public:
 
     /**
      * 将一个可执行协程或者执行函数放入待执行队列, 可指定特定线程执行
-     * @tparam FiberOrCb Fiber的智能指针(或者智能指针的指针(..其实直接move就行了, 不过先保持和视频一致..))或者一个std::function
+     * @tparam FiberOrCb
+     * Fiber的智能指针(或者智能指针的指针(..其实直接move就行了,
+     * 不过先保持和视频一致..))或者一个std::function
      * @param fc 可执行函数或者协程
      * @param thread 指定线程执行的线程id
      */
@@ -83,6 +85,11 @@ protected:
     virtual void idle();
 
     void setThis();
+
+    bool hasIdleThreads() {
+        return m_idleThreadCount > 0;
+    }
+
 private:
     template <typename FiberOrCb>
     bool scheduleNoLock(FiberOrCb fc, int thread) {
@@ -133,11 +140,11 @@ private:
 
 protected:
     std::vector<int> m_threadIds{};
-    size_t m_threadCount       = 0;
+    size_t m_threadCount = 0;
     std::atomic<size_t> m_activeThreadCount{0};
     std::atomic<size_t> m_idleThreadCount{0};
-    bool m_stopping            = true;
-    bool m_autoStop            = false;
-    int m_rootThread           = 0;
+    bool m_stopping  = true;
+    bool m_autoStop  = false;
+    int m_rootThread = 0;
 };
 }  // namespace sylar

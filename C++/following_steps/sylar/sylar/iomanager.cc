@@ -4,27 +4,27 @@
 #include "sys/epoll.h"
 
 #include <cerrno>
-#include <fcntl.h>
 #include <cstring>
+#include <fcntl.h>
 #include <unistd.h>
 namespace sylar {
-static auto g_logger = SYLAR_LOG_NAME("system");
+static auto g_logger   = SYLAR_LOG_NAME("system");
 IOManager::IOManager() = default;
 
 IOManager::IOManager(size_t threads, bool user_caller, const std::string& name)
     : Scheduler(threads, user_caller, name) {
     m_ep_fd = epoll_create(5000);
-    SYLAR_ASSERT(m_ep_fd > 0);
+    SYLAR_ASSERT(m_ep_fd > 0)
     int rt = pipe(m_tickleFds);
-    SYLAR_ASSERT(rt);
+    SYLAR_ASSERT(rt)
     epoll_event event;
     memset(&event, 0, sizeof(epoll_event));
     event.events  = EPOLLIN | EPOLLET;
     event.data.fd = m_tickleFds[0];
     rt            = fcntl(m_tickleFds[0], F_SETFL, O_NONBLOCK);
-    SYLAR_ASSERT(rt);
+    SYLAR_ASSERT(rt)
     rt = epoll_ctl(m_ep_fd, EPOLL_CTL_ADD, m_tickleFds[0], &event);
-    SYLAR_ASSERT(rt);
+    SYLAR_ASSERT(rt)
 
     m_fdContexts.resize(64);
 
@@ -205,13 +205,101 @@ IOManager* IOManager::GetThis() {
 }
 
 void IOManager::tickle() {
-    return Scheduler::tickle();
+    if (hasIdleThreads()) {
+        return;
+    }
+
+    ssize_t rt = write(m_tickleFds[1], "T", 1);
+    SYLAR_ASSERT(rt == 1)
 }
 bool IOManager::stopping() {
-    return false;
+    return Scheduler::stopping() && m_pendingEventCount == 0;
 }
 void IOManager::idle() {
-    return Scheduler::idle();
+//奇怪的用法, 再者用unique_ptr也比这强吧.
+//    epoll_event* events = new epoll_event[64];
+//
+//    std::shared_ptr<epoll_event> shared_events(
+//        events, [](epoll_event* ptr) { delete[] ptr; });
+
+//    epoll_event* events = new epoll_event[64];
+//    std::unique_ptr<epoll_event[]> shared_events(events);
+
+    epoll_event events[64];
+
+    while (true) {
+        if (stopping()) {
+            SYLAR_LOG_INFO(g_logger)
+                << "name=" << m_name << " idle stopping exit";
+            break;
+        }
+        int rt = 0;
+        do {
+            constexpr int MAX_TIMEOUT = 5000;
+            rt = epoll_wait(m_ep_fd, events, 64, MAX_TIMEOUT);
+
+            if (rt < 0 && errno == EINTR) {
+
+            } else {
+                break;
+            }
+        } while (true);
+    }
+
+    for (int i = 0; i < rt; ++i) {
+        epoll_event& event = events[i];
+        if (event.data.fd == m_tickleFds[0]) {
+            uint8_t dummy;
+            while (read(m_tickleFds[0], &dummy, 1) == 1)
+                ;
+            continue;
+            // 这里是不是应该swapOut来处理其他事件, 不然的话, 切换不到Scheduler的run去执行调度吧.
+        }
+
+        FdContext* fd_context = static_cast<FdContext*>(events[i].data.ptr);
+        FdContext::MutexType::Locker locker(fd_context->mutex);
+        if (event.events & (EPOLLERR | EPOLLHUP)) {
+            event.events |= EPOLLIN | EPOLLOUT;
+        }
+        int real_events = NONE;
+        if (event.events & EPOLLIN) {
+            real_events |= READ;
+        }
+        if (event.events & EPOLLOUT) {
+            real_events |= WRITE;
+        }
+
+        if ((fd_context->events & real_events) == NONE) {
+            continue;
+        }
+
+        int left_events = (fd_context->events & ~real_events);
+        int op          = left_events ? EPOLL_CTL_MOD : EPOLL_CTL_DEL;
+        event.events    = EPOLLET | left_events;
+        int rt2         = epoll_ctl(m_ep_fd, op, fd_context->fd, &event);
+        if (rt2) {
+            SYLAR_LOG_ERROR(g_logger)
+                << "epoll_ctl(" << m_ep_fd << ", " << op << "," << fd_context
+                << "," << event.events << "): " << rt2 << " (" << errno << ")"
+                << " (" << strerror(errno) << ")";
+            continue;
+        }
+
+        if (real_events & READ) {
+            fd_context->triggerEvent(READ);
+            --m_pendingEventCount;
+        }
+        if (real_events & WRITE) {
+            fd_context->triggerEvent(WRITE);
+            --m_pendingEventCount;
+        }
+
+        Fiber::ptr cur = Fiber::GetThis();
+        auto raw_ptr = cur.get();
+        cur.reset();
+        raw_ptr->swapOut();
+    }
+    // idle不是应该不能结束吗, 不然在idle_fiber执行到这里以后state会变成TERM, 然后调度结束吗.
 }
 void IOManager::contextResize(size_t size) {
     m_fdContexts.resize(size);
@@ -232,7 +320,6 @@ void IOManager::FdContext::triggerEvent(Event event) {
         ctx.scheduler->schedule(&ctx.fiber);
     }
     ctx.scheduler = nullptr;
-    return;
 }
 IOManager::FdContext::EventContext& IOManager::FdContext::getContext(
     IOManager::Event event) {

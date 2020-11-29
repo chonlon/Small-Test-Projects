@@ -31,7 +31,7 @@ private:
         };
         void triggerEvent(Event event);
         EventContext& getContext(Event event);
-        void resetContext(EventContext& context);
+        static void resetContext(EventContext& context);
 
         int fd = 0;                  // 事件关联句柄
         EventContext read;           //读事件
