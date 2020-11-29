@@ -76,14 +76,14 @@ public:
         }
     }
 
-private:
+protected:
     virtual void tickle();
     void run();
     virtual bool stopping();
     virtual void idle();
 
     void setThis();
-
+private:
     template <typename FiberOrCb>
     bool scheduleNoLock(FiberOrCb fc, int thread) {
         bool need_tickle = m_fibers.empty();

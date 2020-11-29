@@ -10,7 +10,7 @@ public:
     typedef std::shared_ptr<IOManager> ptr;
     typedef RWMutex RWMutexType;
 
-    enum class Event
+    enum Event
     {
         NONE  = 0x0,
         READ  = 0x1,
@@ -18,19 +18,25 @@ public:
     };
 
 
-
 private:
-    struct FdContext{
+    struct FdContext
+    {
         typedef Mutex MutexType;
-        struct EventContext{
-            Scheduler* scheduler = nullptr; //事件执行的scheduler
-            std::shared_ptr<Fiber> fiber; // 事件的协程
-            std::function<void()> cb; // 事件的回调
+        struct EventContext
+        {
+            Scheduler* scheduler = nullptr;  //事件执行的scheduler
+            std::shared_ptr<Fiber> fiber;    // 事件的协程
+            std::function<void()> cb;        // 事件的回调
+
         };
-        int fd = 0; // 事件关联句柄
-        EventContext read; //读事件
-        EventContext write; //写事件
-        Event events = Event::NONE; //已经注册的事件
+        void triggerEvent(Event event);
+        EventContext& getContext(Event event);
+        void resetContext(EventContext& context);
+
+        int fd = 0;                  // 事件关联句柄
+        EventContext read;           //读事件
+        EventContext write;          //写事件
+        Event events = Event::NONE;  //已经注册的事件
         MutexType mutex;
     };
 
@@ -39,7 +45,7 @@ public:
     IOManager(size_t threads, bool user_caller, const std::string& name = "");
     virtual ~IOManager();
 
-    //1. success, 0 retry, -1 error
+    // 0. success, -1 error
     int addEvent(int fd, Event event, std::function<void()> = nullptr);
     bool delEvent(int fd, Event event);
     bool cancelEvent(int fd, Event event);
@@ -53,12 +59,12 @@ protected:
 
 private:
     void contextResize(size_t size);
+
 private:
     int m_ep_fd = 0;
     int m_tickleFds[2]{};
     std::atomic<size_t> m_pendingEventCount{0};
     RWMutexType m_mutex;
     std::vector<FdContext*> m_fdContexts;
-
 };
 }  // namespace sylar

@@ -7,6 +7,7 @@
 
 namespace sylar {
 class Scheduler;
+
 class Fiber : public std::enable_shared_from_this<Fiber>
 {
 friend class Scheduler;
