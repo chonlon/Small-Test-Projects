@@ -50,6 +50,7 @@ public:
     void unlock() {
         if (m_locked) {
             m_mutex.unlock();
+            m_locked = false;
         }
     }
 
@@ -83,6 +84,7 @@ public:
     void unlock() {
         if (m_locked) {
             m_mutex.unlock();
+            m_locked = false;
         }
     }
 
@@ -117,6 +119,7 @@ public:
     void unlock() {
         if (m_locked) {
             m_mutex.unlock();
+            m_locked = false;
         }
     }
 

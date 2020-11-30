@@ -7,10 +7,10 @@
 
 namespace sylar {
 class Scheduler;
-
 class Fiber : public std::enable_shared_from_this<Fiber>
 {
 friend class Scheduler;
+friend class IOManager;
 public:
     typedef std::shared_ptr<Fiber> ptr;
 
@@ -99,21 +99,26 @@ public:
      * @return 协程Id
      */
     static uint64_t GetFiberId();
+
+protected:
+    // 重载主要区分是否需要使用use_caller,任何值都可以.
+    // user_caller是指给scheduler重排协程执行顺序的时候需要构建的执行栈, 接下来的执行函数会和普通协程使用需求不同(分别对应MainFunc和CallerMainFunc())
+    Fiber(std::function<void()> cb, size_t stack_size, bool use_caller);
+
+    // 限制给友元使用(目前是scheduler)
+    void call();
+    void back();
 private:
     Fiber();
 
     // 为执行user_caller以及不执行use_caller的构造函数执行初始化动作
     void doInitFiber(size_t stack_size);
-    // 重载主要区分是否需要使用use_caller,任何值都可以.
-    // user_caller是指给scheduler重排协程执行顺序的时候需要构建的执行栈, 接下来的执行函数会和普通协程使用需求不同(分别对应MainFunc和CallerMainFunc())
-    Fiber(std::function<void()> cb, size_t stack_size, bool use_caller);
+
 
     static void MainFunc();
     static void CallerMainFunc();
 
-    // 限制给友元使用(目前是scheduler)
-    void call();
-    void back();
+
 private:
     uint64_t m_id = 0;
     size_t m_stackSize = 0;

@@ -85,6 +85,7 @@ set(
     runner/runner_utils.cc
     runner/runner_fiber.cc
     runner/runner_scheduler.cc
+    runner/runner_iomanager.cc
 )
 
 AddExeFromFilesWithLib("sylar" "sylar" "sylar/" ${Runners})

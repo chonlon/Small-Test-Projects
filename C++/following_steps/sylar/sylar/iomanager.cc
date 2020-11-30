@@ -9,24 +9,24 @@
 #include <unistd.h>
 namespace sylar {
 static auto g_logger   = SYLAR_LOG_NAME("system");
-IOManager::IOManager() = default;
+
 
 IOManager::IOManager(size_t threads, bool user_caller, const std::string& name)
     : Scheduler(threads, user_caller, name) {
     m_ep_fd = epoll_create(5000);
     SYLAR_ASSERT(m_ep_fd > 0)
     int rt = pipe(m_tickleFds);
-    SYLAR_ASSERT(rt)
+    SYLAR_ASSERT(rt == 0)
     epoll_event event;
     memset(&event, 0, sizeof(epoll_event));
     event.events  = EPOLLIN | EPOLLET;
     event.data.fd = m_tickleFds[0];
     rt            = fcntl(m_tickleFds[0], F_SETFL, O_NONBLOCK);
-    SYLAR_ASSERT(rt)
+    SYLAR_ASSERT(rt == 0)
     rt = epoll_ctl(m_ep_fd, EPOLL_CTL_ADD, m_tickleFds[0], &event);
-    SYLAR_ASSERT(rt)
+    SYLAR_ASSERT(rt == 0)
 
-    m_fdContexts.resize(64);
+    contextResize(32);
 
     start();
     // epoll_wait()
@@ -56,7 +56,7 @@ int IOManager::addEvent(int fd,
         locker.unlock();
         RWMutexType::WriteLock locker2(m_mutex);
         contextResize(static_cast<size_t>(
-            static_cast<double>(m_fdContexts.size()) * 1.5));
+            static_cast<double>(fd) * 1.5));
         fd_ctx = m_fdContexts[fd];
     }
     FdContext::MutexType::Locker locker2(fd_ctx->mutex);
@@ -230,7 +230,7 @@ void IOManager::idle() {
     while (true) {
         if (stopping()) {
             SYLAR_LOG_INFO(g_logger)
-                << "name=" << m_name << " idle stopping exit";
+                << "name=" << getName() << " idle stopping exit";
             break;
         }
         int rt = 0;
@@ -244,62 +244,63 @@ void IOManager::idle() {
                 break;
             }
         } while (true);
-    }
 
-    for (int i = 0; i < rt; ++i) {
-        epoll_event& event = events[i];
-        if (event.data.fd == m_tickleFds[0]) {
-            uint8_t dummy;
-            while (read(m_tickleFds[0], &dummy, 1) == 1)
-                ;
-            continue;
-            // 这里是不是应该swapOut来处理其他事件, 不然的话, 切换不到Scheduler的run去执行调度吧.
-        }
+        for (int i = 0; i < rt; ++i) {
+            epoll_event& event = events[i];
+            if (event.data.fd == m_tickleFds[0]) {
+                uint8_t dummy;
+                while (read(m_tickleFds[0], &dummy, 1) == 1)
+                    ;
+                continue;
+                // 这里是不是应该swapOut来处理其他事件, 不然的话, 切换不到Scheduler的run去执行调度吧.
+            }
 
-        FdContext* fd_context = static_cast<FdContext*>(events[i].data.ptr);
-        FdContext::MutexType::Locker locker(fd_context->mutex);
-        if (event.events & (EPOLLERR | EPOLLHUP)) {
-            event.events |= EPOLLIN | EPOLLOUT;
-        }
-        int real_events = NONE;
-        if (event.events & EPOLLIN) {
-            real_events |= READ;
-        }
-        if (event.events & EPOLLOUT) {
-            real_events |= WRITE;
-        }
+            FdContext* fd_context = static_cast<FdContext*>(events[i].data.ptr);
+            FdContext::MutexType::Locker locker(fd_context->mutex);
+            if (event.events & (EPOLLERR | EPOLLHUP)) {
+                event.events |= EPOLLIN | EPOLLOUT;
+            }
+            int real_events = NONE;
+            if (event.events & EPOLLIN) {
+                real_events |= READ;
+            }
+            if (event.events & EPOLLOUT) {
+                real_events |= WRITE;
+            }
 
-        if ((fd_context->events & real_events) == NONE) {
-            continue;
-        }
+            if ((fd_context->events & real_events) == NONE) {
+                continue;
+            }
 
-        int left_events = (fd_context->events & ~real_events);
-        int op          = left_events ? EPOLL_CTL_MOD : EPOLL_CTL_DEL;
-        event.events    = EPOLLET | left_events;
-        int rt2         = epoll_ctl(m_ep_fd, op, fd_context->fd, &event);
-        if (rt2) {
-            SYLAR_LOG_ERROR(g_logger)
-                << "epoll_ctl(" << m_ep_fd << ", " << op << "," << fd_context
-                << "," << event.events << "): " << rt2 << " (" << errno << ")"
-                << " (" << strerror(errno) << ")";
-            continue;
-        }
+            int left_events = (fd_context->events & ~real_events);
+            int op          = left_events ? EPOLL_CTL_MOD : EPOLL_CTL_DEL;
+            event.events    = EPOLLET | left_events;
+            int rt2         = epoll_ctl(m_ep_fd, op, fd_context->fd, &event);
+            if (rt2) {
+                SYLAR_LOG_ERROR(g_logger)
+                    << "epoll_ctl(" << m_ep_fd << ", " << op << "," << fd_context
+                    << "," << event.events << "): " << rt2 << " (" << errno << ")"
+                    << " (" << strerror(errno) << ")";
+                continue;
+            }
 
-        if (real_events & READ) {
-            fd_context->triggerEvent(READ);
-            --m_pendingEventCount;
-        }
-        if (real_events & WRITE) {
-            fd_context->triggerEvent(WRITE);
-            --m_pendingEventCount;
-        }
+            if (real_events & READ) {
+                fd_context->triggerEvent(READ);
+                --m_pendingEventCount;
+            }
+            if (real_events & WRITE) {
+                fd_context->triggerEvent(WRITE);
+                --m_pendingEventCount;
+            }
 
+        }
         Fiber::ptr cur = Fiber::GetThis();
         auto raw_ptr = cur.get();
         cur.reset();
         raw_ptr->swapOut();
     }
-    // idle不是应该不能结束吗, 不然在idle_fiber执行到这里以后state会变成TERM, 然后调度结束吗.
+
+
 }
 void IOManager::contextResize(size_t size) {
     m_fdContexts.resize(size);

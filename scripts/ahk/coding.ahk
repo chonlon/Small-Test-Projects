@@ -237,6 +237,7 @@ Numpad8::
 return
 ;------------------------------------------------------------------------------
 
+;-------------------------------------------
 ;使用和vscode一样的快捷键format文档.
 +!f::
 	dontNeedReplace := true
@@ -257,7 +258,25 @@ return
 		SendInput, +!f
 	}
 return
-	
+;--------------------------------------------
+
+;--------------------------------------------
+; editors back & forward
+!-::
+	IfWinActive,ahk_group clion
+	{
+		SendInput, ^!{Left}
+		return
+	}
+return
+!=::
+	IfWinActive,ahk_group clion
+	{
+		SendInput, ^!{Right}
+		return
+	}
+return
+;--------------------------------------------
 
 ;暂停脚本
 !^p::Suspend
