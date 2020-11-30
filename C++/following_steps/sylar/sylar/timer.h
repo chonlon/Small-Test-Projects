@@ -3,6 +3,7 @@
 #include "thread.h"
 #include <memory>
 #include <set>
+#include <vector>
 
 
 namespace sylar {
@@ -25,8 +26,12 @@ private:
           std::function<void()> cb,
           bool is_recurring,
           TimerManager* manager);
+    Timer(uint64_t m_next);
 
-private:
+
+    bool cancel();
+    bool refresh();
+    bool reset(uint64_t ms, bool from_now);
 private:
     bool m_recurring = false;  //是否循环定时
     uint64_t m_ms    = 0;      // 执行周期
@@ -53,10 +58,19 @@ public:
                                  std::weak_ptr<void> weak_cond,
                                  bool recurring = false);
 
+    uint64_t getNextTimer();
+    void listExpiredCb(std::vector<std::function<void()>>& cbs);
+
 protected:
     virtual void onTimerInsertedAtFront() = 0;
+    void addTimer(Timer::ptr val, RWMutexType::WriteLock& lock);
 private:
-    RWMutexType m_mutex;
+    bool detectClockRollOver(uint64_t now_ms);
+private:
+    mutable RWMutexType m_mutex ;
     std::set<Timer::ptr, Timer::Comparator> m_timers;
+    bool m_tickled = false;
+    uint64_t  m_previousTime = 0;
 };
+
 }  // namespace sylar
