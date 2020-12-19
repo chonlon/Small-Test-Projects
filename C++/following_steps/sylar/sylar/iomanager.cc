@@ -212,8 +212,18 @@ void IOManager::tickle() {
     ssize_t rt = write(m_tickleFds[1], "T", 1);
     SYLAR_ASSERT(rt == 1)
 }
+bool IOManager::stopping(int& timeout) {
+    timeout = static_cast<int>(getNextTimer());
+    return timeout == ~0
+           && m_pendingEventCount == 0
+           && Scheduler::stopping();
+
+}
+
+
 bool IOManager::stopping() {
-    return Scheduler::stopping() && m_pendingEventCount == 0;
+    int timeout = 0;
+    return  stopping(timeout);
 }
 void IOManager::idle() {
 //奇怪的用法, 再者用unique_ptr也比这强吧.
@@ -228,15 +238,26 @@ void IOManager::idle() {
     epoll_event events[64];
 
     while (true) {
-        if (stopping()) {
-            SYLAR_LOG_INFO(g_logger)
-                << "name=" << getName() << " idle stopping exit";
-            break;
+        int next_timeout = 0;
+
+        if (stopping(next_timeout)) {
+            if(next_timeout == ~0) {
+                SYLAR_LOG_INFO(g_logger)
+                    << "name=" << getName() << " idle stopping exit" << " time" << next_timeout;
+
+                break;
+            }
         }
+
         int rt = 0;
         do {
             constexpr int MAX_TIMEOUT = 5000;
-            rt = epoll_wait(m_ep_fd, events, 64, MAX_TIMEOUT);
+            if(next_timeout != ~0) {
+                next_timeout = std::min(MAX_TIMEOUT, next_timeout);
+            } else {
+                next_timeout = MAX_TIMEOUT;
+            }
+            rt = epoll_wait(m_ep_fd, events, 64, next_timeout);
 
             if (rt < 0 && errno == EINTR) {
 
@@ -244,6 +265,13 @@ void IOManager::idle() {
                 break;
             }
         } while (true);
+
+        std::vector<std::function<void()>> cbs;
+        listExpiredCb(cbs);
+        if(!cbs.empty()) {
+            schedule(cbs.begin(), cbs.end());
+            cbs.clear();
+        }
 
         for (int i = 0; i < rt; ++i) {
             epoll_event& event = events[i];
@@ -308,6 +336,9 @@ void IOManager::contextResize(size_t size) {
         m_fdContexts[i]     = new FdContext;
         m_fdContexts[i]->fd = static_cast<int>(i);
     }
+}
+void IOManager::onTimerInsertedAtFront() {
+    tickle();
 }
 
 

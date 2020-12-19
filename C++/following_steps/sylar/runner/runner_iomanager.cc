@@ -45,7 +45,7 @@ void test_fiber() {
 }
 
 void test1() {
-    sylar::IOManager io_manager;
+    sylar::IOManager io_manager(2, false);
     io_manager.schedule(&test_fiber);
 //    short port = 80;
 //    int sock_fd = socket(AF_INET, SOCK_STREAM, 0);
@@ -70,8 +70,37 @@ void test1() {
 
 }
 
+
+void testTimer() {
+    sylar::IOManager io_manager{2};
+
+
+    sylar::Timer::ptr timer{nullptr};
+    timer = io_manager.addTimer(
+        500,
+        [&timer]() {
+            static int i = 0;
+            SYLAR_LOG_INFO(g_logger) << "hello timer i :" << ++i;
+            if (i == 10) {
+                timer->cancel();
+            }
+        },
+        true);
+}
+
+class runner_iomanager {
+public:
+    runner_iomanager() = default;
+    ~runner_iomanager() = default;
+    runner_iomanager(const runner_iomanager&) = default;
+    runner_iomanager& operator=(const runner_iomanager&) = default;
+    runner_iomanager(runner_iomanager&&) = default;
+    runner_iomanager& operator=(runner_iomanager&&) = default;
+ };
+
 int main(int argc, char** argv) {
-    test1();
+    //test1();
+    testTimer();
     return 0;
 }
 

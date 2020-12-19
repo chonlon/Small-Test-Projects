@@ -1,10 +1,11 @@
 #pragma once
 
 #include "scheduler.h"
+#include "timer.h"
 #include <ostream>
 
 namespace sylar {
-class IOManager : public Scheduler
+class IOManager : public Scheduler, public TimerManager
 {
 public:
     typedef std::shared_ptr<IOManager> ptr;
@@ -55,7 +56,8 @@ protected:
     void tickle() override;
     bool stopping() override;
     void idle() override;
-
+    void onTimerInsertedAtFront() override;
+    bool stopping(int& timeout);
 private:
     void contextResize(size_t size);
 
