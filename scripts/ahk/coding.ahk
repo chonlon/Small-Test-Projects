@@ -22,6 +22,7 @@ GroupAdd,en,ahk_exe Code.exe  ;Visual Studio Code
 GroupAdd,en,ahk_exe clion64.exe  ;clion
 GroupAdd,en,ahk_class Notepad++
 GroupAdd,en,ahk_class Listary_WidgetWin_0
+GroupAdd,en,ahk_exe MobaXterm.exe ;terminal
 ;窗口切换时，切换到中文输入法
 GroupAdd,cn32772,ahk_exe TIM.exe  ;TIM
 GroupAdd,cn32772,ahk_exe DingTalk.exe  ;钉钉
@@ -31,6 +32,7 @@ GroupAdd,en32772,ahk_class Listary_WidgetWin_0
 GroupAdd,en32772,ahk_exe Code.exe  ;Visual Studio Code
 GroupAdd,en32772,ahk_exe devenv.exe  ;Visual Studio
 GroupAdd,en32772,ahk_exe clion64.exe  ;clion
+GroupAdd,en32772,ahk_exe MobaXterm.exe  ;terminal
 ;编辑器分组
 GroupAdd,editor,ahk_exe devenv.exe  ;Visual Studio
 GroupAdd,editor,ahk_exe clion64.exe  ;clion
@@ -209,7 +211,17 @@ Numpad8::
 	SendInput, ^u
 	return
 #IfWinActive
-;------------------------------------------------------------------------------------------------------------------
+
+#IfWinActive,ahk_group clion
+!-::
+	SendInput, ^!{Left}
+	return
+return
+!=::
+	SendInput, ^!{Right}
+	return
+return
+;------------------------------------------------------------------------
 
 
 
@@ -262,20 +274,7 @@ return
 
 ;--------------------------------------------
 ; editors back & forward
-!-::
-	IfWinActive,ahk_group clion
-	{
-		SendInput, ^!{Left}
-		return
-	}
-return
-!=::
-	IfWinActive,ahk_group clion
-	{
-		SendInput, ^!{Right}
-		return
-	}
-return
+
 ;--------------------------------------------
 
 ;暂停脚本
