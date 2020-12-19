@@ -19,7 +19,7 @@ int main(int argc, char* argv[]) {
         exit(-1);
     }
 
-    if(pthread_join(tid) != 0) {
+    if(pthread_join(tid, nullptr) != 0) {
         perror("pthread_join");
         exit(-1);
     }

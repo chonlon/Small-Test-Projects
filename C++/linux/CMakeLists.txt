@@ -8,3 +8,5 @@ include_directories(${CMAKE_CURRENT_LIST_DIR}/../header)
 
 add_subdirectory(FileIO)
 add_subdirectory(File)
+add_subdirectory(signal)
+add_subdirectory(thread)

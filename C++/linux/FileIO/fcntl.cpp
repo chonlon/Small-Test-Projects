@@ -2,7 +2,7 @@
 #include <iostream>
 #include <cstring>
 
-
+#include <memory>
 
 
 int main(int argc, char** argv) {
@@ -57,3 +57,43 @@ void setFileFl(int fd, int flags) {
         std::cerr << "fcntl F_SETFL error";
     }
 }
+
+// file lock example
+class FileLocker {
+public:
+static bool RdLock(int fd) {
+    return setInner(fd, F_RDLCK);
+}
+
+static bool WrLock(int fd) {
+    return setInner(fd, F_WRLCK);
+}
+
+static bool UnLock(int fd) {
+    return setInner(fd, F_UNLCK);
+}
+
+static std::unique_ptr<::flock> GetFileLock(int fd) {
+    auto _flock = std::make_unique<::flock>();
+
+    if((fcntl(fd, F_GETLK, _flock.get())) < 0) {
+        return nullptr;
+    }
+    return _flock;
+}
+
+private:
+
+static bool setInner(int fd, decltype(::flock::l_type) type) {
+    struct flock _flock;
+    _flock.l_type = type;
+    _flock.l_whence = SEEK_SET;
+    _flock.l_len  = 0;
+    
+    if ((fcntl(fd, F_SETLK, &_flock)) < 0) {
+        return false;
+    }
+    return true;
+}
+
+};
