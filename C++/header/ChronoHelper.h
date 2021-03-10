@@ -74,7 +74,7 @@ template <typename F, typename... Args>
 milliseconds::rep invokeAndMeasure(F func, Args&&... args) {
     int result;
     {
-        GetTimeSpan span(&result);
+        GetTimeSpan<> span(&result);
         func(std::forward<Args>(args)...);
     }
     return result;
