@@ -118,111 +118,6 @@ ShellMessage( wParam,lParam ) {
 	}
 }
 
-;在所有编辑器中注释时自动切换中文输入法
-#IfWinActive,ahk_group editor
-:*://  ::
-	;//加空格 时 切换到中文输入法
-	sendbyclip("// ")
-	setChineseLayout()
-return
-:Z*:/// ::
-	;///注释时 切换到中文输入法（也可以输入///加空格）
-	sendbyclip("//")
-	SendInput /
-	setChineseLayout()
-return
-; :*:" ::
-; 	;引号加空格 时 切换到中文输入法
-; 	SendInput "
-; 	setChineseLayout()
-; return
-#IfWinActive
-;------------------------------------------------------------------------------------------------------------------
-
-
-;------------------------------------------------------------|
-;======================编辑器中的小键盘改成调试功能=============|
-;------------------------------------------------------------|
-;0:开始调试/停止/继续                                          |
-;1:step in                                                   |
-;2:step over                                                 |
-;3:step out                                                  |
-;------------------------------------------------------------|
-#IfWinActive,ahk_group visualstudio
-Numpad0::
-	SendInput, {F5}
-	return
-Numpad1::
-	SendInput, {F11}
-	return
-Numpad2::
-	SendInput, {F10}
-	return
-;step out
-Numpad3::
-	SendInput, +{F11}
-	return
-Numpad6::
-	SendInput, !g
-	return
-;断点
-Numpad9::
-	SendInput, {F9}
-	return
-;注释
-Numpad7::
-	SendInput, ^k
-	SendInput, ^c
-	return
-;取消注释
-Numpad8::
-	SendInput, ^k
-	SendInput, ^u
-	return
-#IfWinActive
-#IfWinActive,ahk_group visualstudiocode
-Numpad0::
-	SendInput, {F5}
-	return
-Numpad1::
-	SendInput, {F11}
-	return
-Numpad2::
-	SendInput, {F10}
-	return
-;step out
-Numpad3::
-	SendInput, +{F11}
-	return
-Numpad6::
-	SendInput, !g
-	return
-;断点
-Numpad9::
-	SendInput, {F9}
-	return
-;注释
-Numpad7::
-	SendInput, ^k
-	SendInput, ^c
-	return
-Numpad8::
-	SendInput, ^k
-	SendInput, ^u
-	return
-#IfWinActive
-
-#IfWinActive,ahk_group clion
-!-::
-	SendInput, ^!{Left}
-	return
-return
-!=::
-	SendInput, ^!{Right}
-	return
-return
-;------------------------------------------------------------------------
-
 
 
 ;----------------------------------------------------------------------------
@@ -251,22 +146,20 @@ return
 
 ;-------------------------------------------
 ;使用和vscode一样的快捷键format文档.
-+!f::
-	dontNeedReplace := true
+^+f::
 	IfWinActive,ahk_group visualstudio
 	{
-		dontNeedReplace = false
 		SendInput, ^k
 		SendInput, ^d
 		return
 	}
 	IfWinActive,ahk_group clion
 	{
-		dontNeedReplace = false
 		SendInput, ^!l
 		return
 	}
-	if(dontNeedReplace) {
+	IfWinActive,ahk_group visualstudiocode
+	{
 		SendInput, +!f
 	}
 return
@@ -385,3 +278,109 @@ IME_GET(WinTitle="")
     DetectHiddenWindows,%DetectSave%
     Return ErrorLevel
 }
+
+;在所有编辑器中注释时自动切换中文输入法
+#IfWinActive,ahk_group editor
+:*://  ::
+	;//加空格 时 切换到中文输入法
+	sendbyclip("// ")
+	setChineseLayout()
+return
+:Z*:/// ::
+	;///注释时 切换到中文输入法（也可以输入///加空格）
+	sendbyclip("//")
+	SendInput /
+	setChineseLayout()
+return
+; :*:" ::
+; 	;引号加空格 时 切换到中文输入法
+; 	SendInput "
+; 	setChineseLayout()
+; return
+#IfWinActive
+;------------------------------------------------------------------------------------------------------------------
+
+
+;------------------------------------------------------------|
+;======================编辑器中的小键盘改成调试功能=============|
+;------------------------------------------------------------|
+;0:开始调试/停止/继续                                          |
+;1:step in                                                   |
+;2:step over                                                 |
+;3:step out                                                  |
+;------------------------------------------------------------|
+#IfWinActive,ahk_group visualstudio
+Numpad0::
+	SendInput, {F5}
+	return
+Numpad1::
+	SendInput, {F11}
+	return
+Numpad2::
+	SendInput, {F10}
+	return
+;step out
+Numpad3::
+	SendInput, +{F11}
+	return
+Numpad6::
+	SendInput, !g
+	return
+;断点
+Numpad9::
+	SendInput, {F9}
+	return
+;注释
+Numpad7::
+	SendInput, ^k
+	SendInput, ^c
+	return
+;取消注释
+Numpad8::
+	SendInput, ^k
+	SendInput, ^u
+	return
+#IfWinActive
+#IfWinActive,ahk_group visualstudiocode
+Numpad0::
+	SendInput, {F5}
+	return
+Numpad1::
+	SendInput, {F11}
+	return
+Numpad2::
+	SendInput, {F10}
+	return
+;step out
+Numpad3::
+	SendInput, +{F11}
+	return
+Numpad6::
+	SendInput, !g
+	return
+;断点
+Numpad9::
+	SendInput, {F9}
+	return
+;注释
+Numpad7::
+	SendInput, ^k
+	SendInput, ^c
+	return
+Numpad8::
+	SendInput, ^k
+	SendInput, ^u
+	return
+#IfWinActive
+
+#IfWinActive,ahk_group clion
+!-::
+	SendInput, ^!{Left}
+	return
+return
+!=::
+	SendInput, ^!{Right}
+	return
+return
+;------------------------------------------------------------------------
+
