@@ -27,7 +27,7 @@ namespace lon {
 template <typename T>
 struct IsCoutable
     : std::conditional_t<std::is_scalar<T>::value ||
-                             std::is_same<std::string, T>::value,
+                             std::is_same<std::string, std::decay_t<T>>::value,
                          std::true_type,
                          std::false_type>
 {};
@@ -43,7 +43,7 @@ struct IsCoutable<std::pair<FirstType, SecondType>>
 
 namespace print_container {
 template <typename T, typename = std::enable_if_t<lon::IsCoutable<T>::value>>
-auto operator<<(std::ostream& lhs, const std::vector<T>& is) -> std::ostream& {
+inline auto operator<<(std::ostream& lhs, const std::vector<T>& is) -> std::ostream& {
     for (const auto& i : is) {
         lhs << i << '\n';
     }
@@ -53,7 +53,7 @@ template <typename F,
           typename S,
           typename = std::enable_if_t<lon::IsCoutable<F>::value &&
                                       lon::IsCoutable<S>::value>>
-auto operator<<(std::ostream& lhs, const std::pair<F, S>& is) -> std::ostream& {
+inline auto operator<<(std::ostream& lhs, const std::pair<F, S>& is) -> std::ostream& {
     lhs << '[' << is.first << ',' << is.second << ']'
         << ' ';  // pair 就先不支持嵌套类型吧...
     return lhs;
@@ -92,23 +92,43 @@ template <
     typename Type,
     typename = std::enable_if_t<lon::IsCoutable<std::decay_t<Type>>::value>>
 inline void doPrint(Type&& v) {
+    using namespace lon::print_container;
     std::cout << v;
 }
 
 template <typename ContainerType, typename = typename ContainerType::value_type>
-inline void doPrint(const ContainerType& v) {
-    for (const auto& i : v) {
-        doPrint(i);
-        std::cout << ' ';
-        // 还是不满意... 怎么针对多层使用不同的分隔符呢
+inline void doPrint(const ContainerType &v)
+{
+    std::cout << '{';
+    if(!v.empty()) {
+        auto end_it  = v.end();
+        --end_it;
+        auto i = v.begin();
+        for(; i != end_it; ++i)
+        {
+            doPrint(*i);
+            std::cout << ',';
+        }
+        doPrint(*i);
     }
-    std::cout << '\n';
+
+    std::cout << '}';
 }
-// 勉强做到多层嵌套打印, 就是有点不美观
+
+// template <typename ContainerType, typename = typename ContainerType::value_type>
+// inline void doPrint(const ContainerType& v) {
+//     for (const auto& i : v) {
+//         doPrint(i);
+//         std::cout << ' ';
+//         // 还是不满意... 怎么针对多层使用不同的分隔符呢
+//     }
+//     std::cout << '\n';
+// }
+
 template <typename ContainerType, typename = typename ContainerType::value_type>
 inline void doPrintContainer(const ContainerType& v) {
-    std::cout << ' ';
     doPrint(v);
+    std::cout << '\n';
 }
 }  // namespace lon
 
