@@ -6,6 +6,8 @@ set(CMAKE_CXX_STANDARD 14)
 
 project ("ttcp")
 
+find_package(Boost COMPONENTS program_options system REQUIRED)
+
 # 包含子项目。
 add_subdirectory ("blocing")
 add_subdirectory ("asio")
