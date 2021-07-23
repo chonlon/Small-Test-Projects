@@ -146,7 +146,7 @@ return
 
 ;-------------------------------------------
 ;使用和vscode一样的快捷键format文档.
-^+f::
+^!l::
 	IfWinActive,ahk_group visualstudio
 	{
 		SendInput, ^k
