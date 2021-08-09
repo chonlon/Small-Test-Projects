@@ -32,18 +32,12 @@ int main(int argc, char** argv) {
 
     std::string input_file_name = program.get<std::string>("-i");
     std::string output_file_name;
+    std::ostream* out = nullptr;
     try {
       output_file_name = program.get<std::string>("-o");
-    } catch (...) {
-    }
-
-    std::ostream* out = nullptr;
-
-
-    if(output_file_name.empty()) {
-      out = &std::cout;
-    } else {
       out = new std::ofstream (output_file_name, std::ios::app | std::ios::binary);
+    } catch (...) {
+      out = &std::cout;
     }
 
     std::regex regStp(".+\\.ste?pz?$", std::regex_constants::icase);

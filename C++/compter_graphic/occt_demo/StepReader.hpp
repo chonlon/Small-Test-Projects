@@ -11,6 +11,7 @@ auto dumpLabelName (const TDF_Label& label, std::ostream& os,std::string attribu
   os << attribute;
   labelName->Dump(os);
   os << '\n';
+  return os;
 };
 
 class StepReader {
@@ -57,12 +58,12 @@ public:
         {
           TDF_LabelSequence free_labels;
           shape_tool->GetFreeShapes(free_labels);
-          int count = 0;
+          auto size = free_labels.Size();
+
           for(TDF_LabelSequence::Iterator it(free_labels); it.More(); it.Next()) {
-            os << ++count << "---\n";
             TDF_Label child_free_label = it.Value();
             TopoDS_Shape sub_shape = shape_tool->GetShape(child_free_label);
-            if(!sub_shape.IsNull())
+            if(sub_shape.IsNull())
               continue;
             dfsTrSubLabel(child_free_label, os, shape_tool);
           }
@@ -75,10 +76,14 @@ public:
     void dfsTrSubLabel(const TDF_Label& label, std::ostream& os, Handle(XCAFDoc_ShapeTool)& shape_tool ) const {
       dumpLabelName(label, os,"free label:");
       if(label.HasChild()) {
-        dfsTrSubLabel(label, os, shape_tool);
+        for(TDF_ChildIterator it(label); it.More(); it.Next()) {
+          dfsTrSubLabel(it.Value(), os, shape_tool);
+        }
+
       } else {
         TopoDS_Shape sub_shape = shape_tool->GetShape(label);
         sub_shape.DumpJson(os);
+        os<< '\n';
       }
     }
     bool parse() {
