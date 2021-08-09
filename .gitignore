@@ -83,3 +83,6 @@ ui*.h
 
 #ignore node_models
 *node_modules*
+
+#enable config subdir
+!config/**
