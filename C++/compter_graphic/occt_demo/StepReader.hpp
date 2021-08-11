@@ -5,8 +5,8 @@
 #ifndef MINE_OCCT_DEMO_STEPREADER_HPP
 #define MINE_OCCT_DEMO_STEPREADER_HPP
 
-auto dumpLabelName (const TDF_Label& label, std::ostream& os,std::string attribute) -> std::ostream& {
-  Handle(TDataStd_Name)  labelName;
+auto dumpLabelName(const TDF_Label &label, std::ostream &os, std::string attribute) -> std::ostream & {
+  Handle(TDataStd_Name) labelName;
   label.FindAttribute(TDataStd_Name::GetID(), labelName);
   os << attribute;
   labelName->Dump(os);
@@ -20,32 +20,31 @@ public:
 
     }
 
-    std::ostream &print(std::ostream& os) const {
+    std::ostream &print(std::ostream &os) const {
       auto root_label = doc_handle_->Main();
       auto shape_tool = XCAFDoc_DocumentTool::ShapeTool(root_label);
       auto color_tool = XCAFDoc_DocumentTool::ColorTool(root_label);
 
 
-
       os << "\n\n===========dumping object: " << file_name_ << "==================\n";
-      if(print_base_)  {
+      if (print_base_) {
         auto base_label = shape_tool->BaseLabel();
 
         os << "\n\n-------------dumping base label---------------\n";
         {// base label name
-          dumpLabelName(base_label, os,"base label name : ");
+          dumpLabelName(base_label, os, "base label name : ");
         }
 
         {// base label children
           int count = 0;
-          for(TDF_ChildIterator it{base_label}; it.More(); it.Next()) {
+          for (TDF_ChildIterator it{base_label}; it.More(); it.Next()) {
             ++count;
             TDF_Label child_label = it.Value();
             TopoDS_Shape sub_shape = shape_tool->GetShape(child_label);
 
-            if(!sub_shape.IsNull()) {
+            if (!sub_shape.IsNull()) {
               os << "\nsub shape:\n\t";
-              dumpLabelName(child_label, os,"sub label name: ");
+              dumpLabelName(child_label, os, "sub label name: ");
               os << "\tshape json:\n\t\t";
               sub_shape.DumpJson(os);
               os << '\n';
@@ -55,15 +54,27 @@ public:
         }
 
         os << "\n\n--------------dumping free labels------------\n";
-        {
+        {// free labels and its children
           TDF_LabelSequence free_labels;
           shape_tool->GetFreeShapes(free_labels);
           auto size = free_labels.Size();
 
-          for(TDF_LabelSequence::Iterator it(free_labels); it.More(); it.Next()) {
+          TDF_LabelSequence  shapes;
+          shape_tool->GetFreeShapes(shapes);
+          auto size2 = shapes.Size();
+
+          for (TDF_LabelSequence::Iterator it(free_labels); it.More(); it.Next()) {
             TDF_Label child_free_label = it.Value();
             TopoDS_Shape sub_shape = shape_tool->GetShape(child_free_label);
-            if(sub_shape.IsNull())
+            if (sub_shape.IsNull())
+              continue;
+            dfsTrSubLabel(child_free_label, os, shape_tool);
+          }
+
+          for (TDF_LabelSequence::Iterator it(shapes); it.More(); it.Next()) {
+            TDF_Label child_free_label = it.Value();
+            TopoDS_Shape sub_shape = shape_tool->GetShape(child_free_label);
+            if (sub_shape.IsNull())
               continue;
             dfsTrSubLabel(child_free_label, os, shape_tool);
           }
@@ -73,19 +84,20 @@ public:
       return os;
     }
 
-    void dfsTrSubLabel(const TDF_Label& label, std::ostream& os, Handle(XCAFDoc_ShapeTool)& shape_tool ) const {
-      dumpLabelName(label, os,"free label:");
-      if(label.HasChild()) {
-        for(TDF_ChildIterator it(label); it.More(); it.Next()) {
+    void dfsTrSubLabel(const TDF_Label &label, std::ostream &os, Handle(XCAFDoc_ShapeTool) &shape_tool) const {
+      dumpLabelName(label, os, "free label:");
+      if (label.HasChild()) {
+        for (TDF_ChildIterator it(label); it.More(); it.Next()) {
           dfsTrSubLabel(it.Value(), os, shape_tool);
         }
 
       } else {
         TopoDS_Shape sub_shape = shape_tool->GetShape(label);
         sub_shape.DumpJson(os);
-        os<< '\n';
+        os << '\n';
       }
     }
+
     bool parse() {
       STEPCAFControl_Reader reader;
 
@@ -94,7 +106,7 @@ public:
       reader.SetLayerMode(Standard_True);
 
       IFSelect_ReturnStatus status = reader.ReadFile(file_name_.data());
-      if(status != IFSelect_RetDone) {
+      if (status != IFSelect_RetDone) {
         std::cout << "read file failed! which: " << file_name_;
         return false;
       }
@@ -104,6 +116,7 @@ public:
       reader.Transfer(doc_handle_);
       return true;
     }
+
 private:
 
 
@@ -114,7 +127,8 @@ private:
     std::string_view file_name_;
     Handle(TDocStd_Document) doc_handle_;
 };
-std::ostream &operator<<(std::ostream& os, StepReader& reader){
+
+std::ostream &operator<<(std::ostream &os, StepReader &reader) {
   return reader.print(os);
 }
 
