@@ -34,14 +34,14 @@ int main() {
         l += 5, 6, 7, 8;
         push_front(l)(0)(-1);
         push_back(l)(9)(10);
-        lon::printList(l, ' ');
+        lon::printContainer(l, ' ');
         cout << '\n';
     }
     {
         CaseMarker c("map");
         map<int, string> m{{1, "hello"},{2, "world"}};
         insert(m)(3, "!")(4, "!")(5, "!");
-        lon::printMap(m);
+        lon::printContainer(m);
     }
 
     return 0;
