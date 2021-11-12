@@ -1,6 +1,9 @@
 [user]
         email = changlong.xu@everxyz.com
         name = Xu Changlong
+#[user]
+#        email = lonelycooler.xcl@gmail.com
+#        name = chonlon
 [core]
         editor = vim
 

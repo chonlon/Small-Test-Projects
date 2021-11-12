@@ -4,7 +4,7 @@ import sys
 dir_mytest = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(dir_mytest)
 
-import network.TCP.ListenFuncs
+import ListenFuncs
 
 import socket
 import threading
@@ -31,5 +31,5 @@ while True:
 
     print("[*] Acception connection from %s:%d" % (addr[0], addr[1]))
 
-    client_handler = threading.Thread(target=network.TCP.sendC3Forever, args=(client,))
+    client_handler = threading.Thread(target=ListenFuncs.sendC3Forever, args=(client,))
     client_handler.start()
