@@ -4,7 +4,6 @@
 !*/
 !/.gitignore
 !/**/.vscode/**
-!/**/.idea/**
 #enable doc
 !/**/readme
 !*.md
