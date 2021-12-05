@@ -1,3 +1,5 @@
+### 说明
+  此路径下主要是C++语言相关以及基础库(比如folly, gtest, boost,std)相关的小项目.
 ### 库依赖
 
 - 项目中使用的cmake脚本如有find_package失败, 需要注意库是否安装, 一般来说常规安装(使cmake能找到库, 包括不限于apt install/ cmake install/自定义find脚本等)就能使用
