@@ -78,11 +78,11 @@ void main() {
   auto fragment_shader = R"(
 #version 330 core
 
-in vec3 vertex_color;
-out vec4 o_vertex_color;
+in vec3 o_triangle_vertex_color;
+out vec4 vertex_color;
 
 void main() {
-  o_vertex_color = vec4(vertex_color.xyz, 1.0);
+  vertex_color = vec4(o_triangle_vertex_color, 1.0);
 //  o_vertex_color = vec4(1.0, 0, 0, 1.0);
 }
 )";
