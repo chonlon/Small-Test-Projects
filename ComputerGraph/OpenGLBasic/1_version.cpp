@@ -7,6 +7,15 @@
 
 #include <iostream>
 
+void processKeyEvent(GLFWwindow* window) {
+  if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
+    glfwSetWindowShouldClose(window, true);
+  }
+}
+
+void processMouseEvent(GLFWwindow* window) {
+}
+
 int main() {
   // init glfw window ...
   glfwInit();
@@ -40,10 +49,15 @@ int main() {
   glfwSetFramebufferSizeCallback(window, framebuffer_resize_cb);
 
   while(!glfwWindowShouldClose(window)) {
+    processKeyEvent(window);
+    processMouseEvent(window);
+
     // 一般都需要swap buffer, 那么是程序框架做好了framebuffer, 来保证双缓冲吗?
     glfwSwapBuffers(window);
     glfwPollEvents();
   }
+
+  glfwTerminate();
 
   return 0;
 }
