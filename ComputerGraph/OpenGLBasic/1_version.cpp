@@ -48,9 +48,15 @@ int main() {
   };
   glfwSetFramebufferSizeCallback(window, framebuffer_resize_cb);
 
+
+  // set clear color
+  glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
+
   while(!glfwWindowShouldClose(window)) {
     processKeyEvent(window);
     processMouseEvent(window);
+
+    glClear(GL_COLOR_BUFFER_BIT);
 
     // 一般都需要swap buffer, 那么是程序框架做好了framebuffer, 来保证双缓冲吗?
     glfwSwapBuffers(window);
