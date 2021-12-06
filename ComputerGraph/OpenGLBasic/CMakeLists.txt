@@ -9,3 +9,4 @@ INCLUDE_DIRECTORIES(include)
 LINK_LIBRARIES(dl glfw)
 
 add_executable(1_version 1_version.cpp src/glad.c)
+add_executable(2_triangle 2_triangle.cpp src/glad.c)
