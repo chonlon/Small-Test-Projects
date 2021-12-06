@@ -16,6 +16,10 @@ void processKeyEvent(GLFWwindow* window) {
 void processMouseEvent(GLFWwindow* window) {
 }
 
+void printInfo() {
+  std::cout << "version: " << glGetString(GL_VERSION) << "\n";
+  std::cout << "shader version: " << glGetString(GL_SHADING_LANGUAGE_VERSION) << '\n';
+}
 int main() {
   // init glfw window ...
   glfwInit();
@@ -38,6 +42,8 @@ int main() {
     glfwTerminate();
     return -1;
   }
+
+  printInfo();
 
   // equal frame buffer size?
   glViewport(0, 0, 800, 600);
