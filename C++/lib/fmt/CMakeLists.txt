@@ -11,6 +11,7 @@ AddFilesTo(
     Fmt
     basic.cpp
     num.cpp
+    range.cpp
 )
 set(
     LinkLibs
