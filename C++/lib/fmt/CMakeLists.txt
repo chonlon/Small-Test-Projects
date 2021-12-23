@@ -9,7 +9,8 @@ include(../../cmake/AddSingleExeFile.cmake)
 
 AddFilesTo(
     Fmt
-    "basic.cpp"
+    basic.cpp
+    num.cpp
 )
 set(
     LinkLibs
@@ -19,7 +20,5 @@ set(
 if(RapidJSON_FOUND)
 
 endif()
-
-message("--------------- ${Fmt_FILES} -----------------")
 
 AddExeFromFiles("${LinkLibs}" ${Fmt_FILES})
