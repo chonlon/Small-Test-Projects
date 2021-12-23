@@ -21,7 +21,10 @@ set(
 )
 
 if(RapidJSON_FOUND)
-
+    AddFilesTo(
+        Fmt
+        json.cpp
+    )
 endif()
 
 AddExeFromFiles("${LinkLibs}" ${Fmt_FILES})
