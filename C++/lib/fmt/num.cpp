@@ -25,7 +25,7 @@ int main() {
         print("'a': {:x}\n", 'a');
     }
 
-        {
+    {
         print("============ binary ==============\n");
         print("0x7fffffff: {:b}\n", 0x7fffffff);
         print("0xffffffff: {:b}\n", 0xffffffff);
