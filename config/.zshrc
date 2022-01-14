@@ -113,5 +113,6 @@ alias clion="clion 1>>/dev/null 2>>/dev/null &"
 alias goland="goland 1>>/dev/null 2>>/dev/null &"
 alias pycharm="pycharm 1>>/dev/null 2>>/dev/null &"
 alias webstorm="webstorm 1>>/dev/null 2>>/dev/null &"
+alias kate="kate 1>>/dev/null 2>>/dev/null"
 alias setproxy="export http_proxy='http://localhost:7890' && export https_proxy='http://localhost:7890'"
 source <(/usr/bin/starship init zsh --print-full-init)
