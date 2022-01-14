@@ -6,8 +6,8 @@ RUN echo 'deb http://mirrors.163.com/ubuntu/ bionic main restricted universe mul
     && apt update && apt upgrade -y
 
 RUN DEBIAN_FRONTEND=noninteractive apt install -y -f \
-    build-essential \
     g++ \
+    build-essential \
     cmake \
     python3 \
     wget \
@@ -17,48 +17,4 @@ RUN DEBIAN_FRONTEND=noninteractive apt install -y -f \
     gdb \
     dstat \
     make \
-    iputils-ping
-
-RUN apt install -y \
-    libboost-all-dev \
-    libevent-dev \
-    libdouble-conversion-dev \
-    libgoogle-glog-dev \
-    libgflags-dev \
-    libiberty-dev \
-    liblz4-dev \
-    liblzma-dev \
-    libsnappy-dev \
-    zlib1g-dev \
-    binutils-dev \
-    libjemalloc-dev \
-    libssl-dev \
-    pkg-config \
-    libunwind-dev \
-    libpcre3 libpcre3-dev
-
-
-FROM ubuntu_base_env AS ubuntu_build_env
-# replace github.com with mirro [hub.fastgit.org] to speed up.
-#gtest
-RUN mkdir -p /root/libs/ 
-RUN cd /root/libs/ && \
-    wget https://hub.fastgit.org/google/googletest/archive/release-1.8.0.tar.gz && \
-    tar zxf release-1.8.0.tar.gz && \
-    rm -f release-1.8.0.tar.gz && \
-    cd googletest-release-1.8.0 && \
-    cmake . && \
-    make && \
-    make install
-
-#fmt
-RUN cd /root/libs/ && \
-    git clone https://hub.fastgit.org/fmtlib/fmt.git && cd fmt && \
-    mkdir _build && cd _build && \
-    cmake .. && \
-    make -j$(nproc) && \
-    make install
-
-#not remove cache
-#RUN rm -rf /root/libs
-#RUN rm -rf /var/lib/apt/lists/*
+    iputils-ping \
