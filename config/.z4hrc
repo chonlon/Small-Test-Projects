@@ -74,6 +74,11 @@ z4h load   ohmyzsh/ohmyzsh/plugins/extract
 z4h load   ohmyzsh/ohmyzsh/plugins/z
 z4h load   ohmyzsh/ohmyzsh/plugins/wd
 
+# z4h load   zsh-autosuggestions
+# z4h load   zsh-completions
+# z4h load   zsh-syntax-highlighting
+z4h load   zsh-history-substring-search
+
 
 # Define key bindings.
 z4h bindkey z4h-backward-kill-word  Ctrl+Backspace     Ctrl+H
@@ -103,6 +108,12 @@ alias tree='tree -a -I .git'
 # Add flags to existing aliases.
 alias ls="exa"
 alias vi="vim"
+alias grep="rg"
+alias gc="git checkout"
+alias cat="bat --style=plain"
+alias du="dust"
+alias grep="rg"
+alias find="fd"
 alias clion="clion 1>>/dev/null 2>>/dev/null &"
 alias goland="goland 1>>/dev/null 2>>/dev/null &"
 alias pycharm="pycharm 1>>/dev/null 2>>/dev/null &"
@@ -168,3 +179,8 @@ export EDITOR="code --wait"
 # Set shell options: http://zsh.sourceforge.net/Doc/Release/Options.html.
 setopt glob_dots     # no special treatment for file names with a leading dot
 setopt no_auto_menu  # require an extra TAB press to open the completion menu
+export QT_SCREEN_SCALE_FACTORS=2
+
+# Set shell options: http://zsh.sourceforge.net/Doc/Release/Options.html.
+# setopt glob_dots     # no special treatment for file names with a leading dot
+# setopt no_auto_menu  # require an extra TAB press to open the completion menu
