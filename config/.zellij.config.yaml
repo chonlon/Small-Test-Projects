@@ -26,8 +26,6 @@ keybinds:
           key: [Ctrl: 'b',]
         - action: [Quit,]
           key: [Ctrl: 'q',]
-        - action: [NewPane: ]
-          key: [ Alt: 'n',]
         - action: [MoveFocusOrTab: Left,]
           key: [ Alt: 'j', Alt: Left]
         - action: [MoveFocusOrTab: Right,]
@@ -42,6 +40,10 @@ keybinds:
           key: [ Alt: '+']
         - action: [Resize: Decrease,]
           key: [ Alt: '-']
+        - action: [NewPane: Down, SwitchToMode: Normal,]
+          key: [ Alt: 'm']
+        - action: [NewPane: Right, SwitchToMode: Normal,]
+          key: [ Alt: 'n',]
     locked:
         - action: [SwitchToMode: Normal,]
           key: [Ctrl: 'g',]
@@ -551,6 +553,8 @@ themes:
     - 250
     - 227
     - 176
+
+pane-frames: false
 
 # Choose the mode that zellij uses when starting up.
 # Default: normal
