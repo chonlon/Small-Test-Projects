@@ -108,6 +108,7 @@ alias goland="goland 1>>/dev/null 2>>/dev/null &"
 alias pycharm="pycharm 1>>/dev/null 2>>/dev/null &"
 alias webstorm="webstorm 1>>/dev/null 2>>/dev/null &"
 alias kate="kate 1>>/dev/null 2>>/dev/null"
+alias ra="ranger"
 
 # find files in home
 alias findhome="echo \"\$(fd --type d  . \"$HOME\" |fzf --preview 'bat --color=always {}' --select-1 --exit-0)\""
@@ -123,6 +124,7 @@ function fdho() {
 }
 bindkey -s "^J" 'fdho\n'
 
+# fzf wd directory
 function fdwd() {
     local dirnamev="$(wd list | sed '1d' | fzf | awk '{print $3}')"
     local command=$(echo 'code\nranger\ndolhin'|fzf)
@@ -135,9 +137,6 @@ function fdwd() {
     eval "${command} ${dirnamev}"
 }
 bindkey -s "^K" 'fdwd\n'
-
-# vim file in current directory
-alias fdv="echo \"\$(fd --type f --hidden --exclude .git . "./" |fzf --preview 'bat --color=always {}' --select-1 --exit-0)\" | xargs vim"
 
 # find files in current directory
 alias findcurrent="echo \"\$(fd --type f --hidden --exclude .git . "./" |fzf --preview 'bat --color=always {}' --select-1 --exit-0)\""
@@ -153,7 +152,16 @@ function fdc() {
 
     ${command} "${filenamev}"
 }
-bindkey -s "^F" 'fdc\n'
+
+# vim file in current directory
+function fdv() {
+    local filenamev="$(findcurrent)"
+    if [[ -z "${filenamev}" ]]; then
+        return 0
+    fi
+    
+    vim "${filenamev}"
+}
 
 export EDITOR="code --wait"
 
