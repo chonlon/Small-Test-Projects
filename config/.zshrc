@@ -102,6 +102,13 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 #
+md () {
+        [[ $# == 1 ]] && mkdir -p -- "$1" && cd -- "$1"
+}
+
+cdalias () {
+        [[$# == 1]] && cd -- "$1" && colorls -- "$1"
+}
 
 export PATH=/home/lon/go/bin:$PATH
 
