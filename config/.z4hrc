@@ -121,12 +121,12 @@ alias cat="bat --style=plain"
 alias du="dust"
 alias grep="rg"
 alias find="fd"
-alias clion="clion 1>>/dev/null 2>>/dev/null &"
-alias goland="goland 1>>/dev/null 2>>/dev/null &"
-alias pycharm="pycharm 1>>/dev/null 2>>/dev/null &"
-alias webstorm="webstorm 1>>/dev/null 2>>/dev/null &"                                                                                                        
-alias kate="kate 1>>/dev/null 2>>/dev/null"
 alias ra="ranger"
+alias clion='f(){ clion $1  1>>/dev/null 2>>/dev/null & }; f'
+alias goland='f() { goland $@ 1>>/dev/null 2>>/dev/null & }; f'
+alias pycharm='f() { pycharm $1 1>>/dev/null 2>>/dev/null & }; f'
+alias webstorm='f() { webstorm $@ 1>>/dev/null 2>>/dev/null & }; f'
+alias kate='f() {kate $@ 1>>/dev/null 2>>/dev/null }; f'
 
 # find files in home
 alias findhome="echo \"\$(fd --type d  . \"$HOME\" |fzf --preview 'bat --color=always {}' --select-1 --exit-0)\""
@@ -180,6 +180,20 @@ function fdv() {
     
     vim "${filenamev}"
 }
+
+alias f=fzf-open
+alias fhd='fzf-open "$HOME" -t d'
+alias fh='fzf-open "$HOME"'
+alias fcd='fzf-open -t d'
+function fwdd() {
+    local dirnamev="$(wd list | sed '1d' | fzf | awk '{print $3}')"
+    eval 'fzf-open ${dirnamev} -t d $@'
+}
+function fwd() {
+    local dirnamev="$(wd list | sed '1d' | fzf | awk '{print $3}')"
+    eval 'fzf-open ${dirnamev} $@'
+}
+
 
 export EDITOR="code --wait"
 
