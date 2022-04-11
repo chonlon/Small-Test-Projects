@@ -8,7 +8,7 @@ ls_app = 'logo-ls'
 cat_app = 'bat'
 
 # define editor apps will be used
-editor_apps = ['vim', 'code', 'kate', 'clion', 'pycharm']
+editor_apps = ['vim', 'code', 'ranger','kate', 'clion', 'pycharm']
 
 # define directory open apps
 dir_apps = ['code', 'ranger', 'clion', 'pycharm', 'dolphin',]

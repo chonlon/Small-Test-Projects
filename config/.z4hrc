@@ -111,8 +111,7 @@ compdef _directories md
 # Define aliases.
 alias tree='tree -a -I .git'
 alias lls='logo-ls'
-
-# Add flags to existing aliases.
+alias cd=cdl
 alias ls="exa"
 alias vi="vim"
 alias grep="rg"
@@ -127,61 +126,7 @@ alias goland='f() { goland $@ 1>>/dev/null 2>>/dev/null & }; f'
 alias pycharm='f() { pycharm $1 1>>/dev/null 2>>/dev/null & }; f'
 alias webstorm='f() { webstorm $@ 1>>/dev/null 2>>/dev/null & }; f'
 alias kate='f() {kate $@ 1>>/dev/null 2>>/dev/null }; f'
-
-# find files in home
-alias findhome="echo \"\$(fd --type d  . \"$HOME\" |fzf --preview 'bat --color=always {}' --select-1 --exit-0)\""
-
-function fdho() {
-    local filenamev="$(findhome)"
-
-    if [[ -z "${filenamev}" ]]; then 
-        return 0
-    fi
-    local command=$(echo 'code\nranger\ndolhin'|fzf)
-    eval "${command} ${filenamev}"
-}
-bindkey -s "^J" 'fdho\n'
-
-# fzf wd directory
-function fdwd() {
-    local dirnamev="$(wd list | sed '1d' | fzf | awk '{print $3}')"
-    local command=$(echo 'code\nranger\ndolhin'|fzf)
-    if [[ -z "${dirnamev}" ]]; then 
-        return 0
-    fi
-    echo ${command}
-    echo ${dirnamev}
-
-    eval "${command} ${dirnamev}"
-}
-bindkey -s "^K" 'fdwd\n'
-
-# find files in current directory
-alias findcurrent="echo \"\$(fd --type f --hidden --exclude .git . "./" |fzf --preview 'bat --color=always {}' --select-1 --exit-0)\""
-
-# find files in current directory and open it with selected editor
-function fdc() {
-    local filenamev="$(findcurrent)"
-    if [[ -z "${filenamev}" ]]; then
-        return 0
-    fi
-    #edit editors here
-    local command=$(echo 'code\nvim\nkate'|fzf)
-
-    ${command} "${filenamev}"
-}
-
-# vim file in current directory
-function fdv() {
-    local filenamev="$(findcurrent)"
-    if [[ -z "${filenamev}" ]]; then
-        return 0
-    fi
-    
-    vim "${filenamev}"
-}
-
-alias f=fzf-open
+alias fc=fzf-open
 alias fhd='fzf-open "$HOME" -t d'
 alias fh='fzf-open "$HOME"'
 alias fcd='fzf-open -t d'
@@ -202,9 +147,7 @@ setopt glob_dots     # no special treatment for file names with a leading dot
 setopt no_auto_menu  # require an extra TAB press to open the completion menu
 export QT_SCREEN_SCALE_FACTORS=2
 
-# Add flags to existing aliases.
-alias ls="exa"
-alias cd=cdl
+
 # Set shell options: http://zsh.sourceforge.net/Doc/Release/Options.html.
 setopt glob_dots     # no special treatment for file names with a leading dot
 setopt no_auto_menu  # require an extra TAB press to open the completion menu
