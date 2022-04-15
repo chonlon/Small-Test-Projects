@@ -3,15 +3,16 @@ import argparse
 
 # define preview cli apps will be used
 import subprocess
+import sys
 
 ls_app = 'logo-ls'
 cat_app = 'bat'
 
 # define editor apps will be used
-editor_apps = ['vim', 'code', 'ranger','kate', 'clion', 'pycharm']
+editor_apps = ['vim', 'code', 'ranger', 'kate', 'clion', 'pycharm']
 
 # define directory open apps
-dir_apps = ['code', 'ranger', 'clion', 'pycharm', 'dolphin',]
+dir_apps = ['cd', 'code', 'ranger', 'clion', 'pycharm', 'dolphin',]
 
 
 # check if the cli app is installed
@@ -28,10 +29,12 @@ def check_clis_installed():
 
 def check_cli_installed(app):
     try:
-        subprocess.check_call(['which', app], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        subprocess.check_call(
+            ['which', app], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
     except subprocess.CalledProcessError:
-        print('{} is not installed'.format(app))
-        exit(1)
+        if app != 'cd':
+            print('{} is not installed'.format(app), file=sys.stderr)
+            exit(1)
 
 
 if __name__ == "__main__":
@@ -44,11 +47,16 @@ if __name__ == "__main__":
     # get if type is file or directory, default is file, not required, can be file or directory
     argparser.add_argument('-t', '--type', default='f', choices=['f', 'd'])
     # get pattern from command line
-    argparser.add_argument('-p', "--pattern", default='', help="pattern to search")
+    argparser.add_argument('-p', "--pattern", default='.',
+                           help="pattern to search")
     # get if search hidden files
-    argparser.add_argument("-a", "--all", help="search hidden files", default=False, action="store_true")    
+    argparser.add_argument(
+        "-a", "--all", help="search hidden files", default=False, action="store_true")
     # get open cli app
     argparser.add_argument("-o", "--open", help="open cli app")
+    # get if execute command
+    argparser.add_argument("-x", "--exec", help="execute command",
+                          default=False, action="store_true")
 
     args = argparser.parse_args()
 
@@ -57,24 +65,29 @@ if __name__ == "__main__":
     pattern = args.pattern
     search_all = args.all
     open_cli = args.open
+    if_exec = args.exec
 
     # fd in path and fzf select item and pipe to fzf
-    command = 'fd --type {} --exclude=.git {} {} . {}'.format(file_type, '-H --ignore' if search_all else '', pattern,
-                                                              path)
+    command = 'fd --type {file_type} --exclude=.git {ignore} {pattern}  {path}'.\
+        format(file_type=file_type,
+               ignore='-H --ignore' if search_all else '',
+               pattern=pattern,
+               path=path)
 
     command += '|'
-    command += 'fzf --preview "{} {}" --select-1'.format(cat_app if file_type == 'f' else ls_app, '{}')
+    command += 'fzf --preview "{} {}" --select-1'.format(
+        cat_app if file_type == 'f' else ls_app, '{}')
     # get command output
     try:
         output = subprocess.check_output(command, shell=True)
     except:
         # got nothing select from fzf
-        exit(0)
+        exit(-1)
     # decode output to string
     output = output.decode('utf-8')
 
     if len(output) == 0:
-        exit(0)
+        exit(-1)
 
     # open file with
     if not open_cli:
@@ -85,13 +98,21 @@ if __name__ == "__main__":
 
         # get fzf selected item
         try:
-            cli = subprocess.check_output('echo "{}" | fzf'.format(apps), shell=True)
+            cli = subprocess.check_output(
+                'echo "{}" | fzf'.format(apps), shell=True)
         except:
-            exit(0)
+            exit(-1)
         cli = cli.decode('utf-8')
     else:
         check_cli_installed(open_cli)
         cli = open_cli
 
+    command = '{} {}'.format(cli, output).replace('\n', ' ')
     # open file
-    subprocess.run('{} {}'.format(cli, output).replace('\n', ' '), shell=True)
+    if if_exec:
+        if cli == 'cd':
+            print('[Warning] cd is not working in python')
+        subprocess.run(command, shell=True)
+    else:
+        print(command)
+

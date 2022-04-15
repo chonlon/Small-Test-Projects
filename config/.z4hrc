@@ -69,14 +69,17 @@ z4h source ~/.env.zsh
 # This is just an example that you should delete. It does nothing useful.
 z4h source ohmyzsh/ohmyzsh/lib/diagnostics.zsh  # source an individual file
 z4h load   ohmyzsh/ohmyzsh/plugins/emoji-clock  # load a plugin
-z4h load   ohmyzsh/ohmyzsh/plugins/zsh-proxy
+# z4h load   ohmyzsh/ohmyzsh/plugins/zsh-proxy
 z4h load   ohmyzsh/ohmyzsh/plugins/extract
 z4h load   ohmyzsh/ohmyzsh/plugins/z
 z4h load   ohmyzsh/ohmyzsh/plugins/wd
+z4h load   ohmyzsh/ohmyzsh/plugins/shell-proxy
+z4h load   ohmyzsh/ohmyzsh/custom/plugins/git-open
 
-# z4h load   zsh-autosuggestions
-# z4h load   zsh-completions
-# z4h load   zsh-syntax-highlighting
+
+z4h load   zsh-autosuggestions
+z4h load   zsh-completions
+z4h load   zsh-syntax-highlighting
 z4h load   zsh-history-substring-search
 
 # Define key bindings.
@@ -125,18 +128,26 @@ alias clion='f(){ clion $1  1>>/dev/null 2>>/dev/null & }; f'
 alias goland='f() { goland $@ 1>>/dev/null 2>>/dev/null & }; f'
 alias pycharm='f() { pycharm $1 1>>/dev/null 2>>/dev/null & }; f'
 alias webstorm='f() { webstorm $@ 1>>/dev/null 2>>/dev/null & }; f'
-alias kate='f() {kate $@ 1>>/dev/null 2>>/dev/null }; f'
-alias fc=fzf-open
-alias fhd='fzf-open "$HOME" -t d'
-alias fh='fzf-open "$HOME"'
-alias fcd='fzf-open -t d'
-function fwdd() {
-    local dirnamev="$(wd list | sed '1d' | fzf | awk '{print $3}')"
-    eval 'fzf-open ${dirnamev} -t d $@'
-}
+alias kate='f() { kate $@ 1>>/dev/null 2>>/dev/null }; f'
+alias dolphin='f() { dolphin $@ 1>>/dev/null 2>>/dev/null }; f'
+alias fzf-open-alias='f() {eval "$(fzf-open $@)"}; f'
+alias fhd='fzf-open-alias "$HOME" -t d'
+alias fh='fzf-open-alias "$HOME"'
+alias fcd='fzf-open-alias -t d'
 function fwd() {
-    local dirnamev="$(wd list | sed '1d' | fzf | awk '{print $3}')"
-    eval 'fzf-open ${dirnamev} $@'
+    local dirnamev="$(wd list | sed '1d' | fzf | awk '{print $3}' | tr '\n' ' ')"
+
+    if [[ -z "${dirnamev}" ]]; then
+        return 0
+    fi
+    eval 'fzf-open-alias ${dirnamev} $@ -t d'
+}
+function fw() {
+    local dirnamev="$(wd list | sed '1d' | fzf | awk '{print $3}' | tr '\n' ' ')"
+    if [[ -z "${dirnamev}" ]]; then
+        return 0
+    fi
+    eval 'fzf-open-alias ${dirnamev} $@'
 }
 
 
