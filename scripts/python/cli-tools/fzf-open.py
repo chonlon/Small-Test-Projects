@@ -85,7 +85,6 @@ if __name__ == "__main__":
                ignore='-H --ignore' if search_all else '',
                pattern=pattern,
                path= ' '.join(paths))
-    print(command)
 
     if content_filter and file_type == 'f':
         command = '{command} | xargs rga {content_filter} --files-with-matches '.\
