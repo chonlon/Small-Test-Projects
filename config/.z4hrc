@@ -143,7 +143,14 @@ alias fhc='f() {eval "$(fzf-open -c $@ $HOME)"}; f'
 alias fcc='f() {eval "$(fzf-open -c $@)"}; f'
 alias fcf='fzf-open-alias'
 alias fcd='fzf-open-alias -t d'
-alias fzfh='fzf-open $HOME -t d'
+function fcp() {
+    local dirnamev="$(fzf-open $@ | awk '{print $2}')"
+    if [[ -z "${dirnamev}" ]]; then
+        return 0
+    fi
+    copyq add ${dirnamev}
+}
+
 function fwd() {
     local dirnamev="$(wd list | sed '1d' | awk '{print $3}' | tr '\n' ' ')"
 
