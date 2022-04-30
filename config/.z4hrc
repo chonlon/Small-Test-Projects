@@ -69,7 +69,7 @@ z4h source ~/.env.zsh
 # This is just an example that you should delete. It does nothing useful.
 z4h source ohmyzsh/ohmyzsh/lib/diagnostics.zsh  # source an individual file
 z4h load   ohmyzsh/ohmyzsh/plugins/emoji-clock  # load a plugin
-z4h load   ohmyzsh/ohmyzsh/custom/plugins/zsh-proxy
+z4h load   ohmyzsh/ohmyzsh/plugins/zsh-proxy
 z4h load   ohmyzsh/ohmyzsh/plugins/extract
 # z4h load   ohmyzsh/ohmyzsh/plugins/z
 z4h load   ohmyzsh/ohmyzsh/plugins/wd
@@ -101,7 +101,7 @@ autoload -Uz zmv
 function md() { [[ $# == 1 ]] && mkdir -p -- "$1" && cd -- "$1" }
 function cdl() { 
   if [[ $# == 0 ]]; then
-    z $HOME && logo-ls -- "$HOME"
+    cd $HOME && logo-ls -- "$HOME"
   else
     z "$1" && logo-ls -- "$PWD" 
   fi
@@ -119,6 +119,7 @@ alias cd=cdl
 alias tree='tree -a -I .git'
 alias gc='gitmoji -c'
 alias dr='docker run --rm -it -v share_data:/root/data/'
+compdef dr='docker'
 alias db='docker build'
 alias lls='logo-ls'
 alias ls="exa"
@@ -137,8 +138,10 @@ alias kate='f() { kate $@ 1>>/dev/null 2>>/dev/null }; f'
 alias dolphin='f() { dolphin $@ 1>>/dev/null 2>>/dev/null }; f'
 alias fzf-open-alias='f() {eval "$(fzf-open $@)"}; f'
 alias fhd='fzf-open-alias "$HOME" -t d'
-alias fh='fzf-open-alias "$HOME"'
-alias fc='fzf-open-alias'
+alias fhf='fzf-open-alias "$HOME"'
+alias fhc='f() {eval "$(fzf-open -c $@ $HOME)"}; f'
+alias fcc='f() {eval "$(fzf-open -c $@)"}; f'
+alias fcf='fzf-open-alias'
 alias fcd='fzf-open-alias -t d'
 alias fzfh='fzf-open $HOME -t d'
 function fwd() {
@@ -148,6 +151,13 @@ function fwd() {
         return 0
     fi
     eval 'fzf-open-alias ${dirnamev} $@ -t d'
+}
+function fwc() {
+    local dirnamev="$(wd list | sed '1d' | awk '{print $3}' | tr '\n' ' ')"
+    if [[ -z "${dirnamev}" ]]; then
+        return 0
+    fi
+    eval 'fzf-open-alias ${dirnamev} -c $@'
 }
 function fwf() {
     local dirnamev="$(wd list | sed '1d' | awk '{print $3}' | tr '\n' ' ')"
@@ -182,6 +192,6 @@ export QT_SCREEN_SCALE_FACTORS="1"
 
 
 eval "$(zoxide init zsh)"
-eval $(thefuck --alias fu)
+#eval $(thefuck --alias fu)
 
-eval $(thefuck --alias)
+#eval $(thefuck --alias)

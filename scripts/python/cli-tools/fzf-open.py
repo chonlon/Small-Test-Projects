@@ -7,7 +7,7 @@ import sys
 
 ls_app = 'logo-ls'
 cat_app = 'bat'
-rg_app = 'rga'
+rg_app = 'rg'
 
 # define editor apps will be used
 editor_apps = ['vim', 'code', 'ranger', 'kate', 'clion', 'pycharm']
@@ -87,8 +87,8 @@ if __name__ == "__main__":
                path= ' '.join(paths))
 
     if content_filter and file_type == 'f':
-        command = '{command} | xargs rga {content_filter} --files-with-matches '.\
-            format(command=command, content_filter=content_filter)
+        command = '{command} | xargs -d "\n" {rg_app} {content_filter} --files-with-matches '.\
+            format(command=command, rg_app=rg_app,content_filter=content_filter)
 
     command += '|'
     command += 'fzf --sort --preview "{} {}" --select-1'.format(
