@@ -1,0 +1,33 @@
+version: '2.0'
+
+services:
+  nginx:
+    restart: always
+    image: nginx:latest
+    ports:
+      - 22223:80
+    volumes:
+      - nginx-conf:/etc/nginx
+    networks:
+      my-network-name:
+        aliases:
+          - nginx-proxy
+
+  fastapi:
+    restart: always
+    image: fast-api:local
+    # port:
+    #   - 22224:8080
+    volumes: 
+      - bin:/root/bin
+    networks:
+      my-network-name:
+        aliases:
+          - fastapi-backend
+
+networks:
+    my-network-name:
+
+volumes:
+  bin:
+  nginx-conf:
