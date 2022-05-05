@@ -1,0 +1,88 @@
+#ignore all files expect which meet the rule below
+*
+
+!*/
+!/.gitignore
+!/**/.vscode/**
+#enable doc
+!/**/readme
+!*.md
+
+
+#enable cpp files
+!*.cc
+!*.hpp
+!*.cpp
+!*.h
+!*.cxx
+!*.h.in
+!*.c
+
+#enable docker files
+![Dd]ocker[Ff]ile
+
+#enable web fils
+!*.js
+!*.css
+!*.html
+!*[Rr]obots.txt
+
+#enable go files
+!*.go
+
+#enable python files
+!*.py
+
+#enable scipt files
+!*.ahk
+!*.bat
+!*.sh
+
+#enable res files
+!*.jpg
+!*.png
+!*.ico
+
+#enable qt files
+!*.ui
+!*.qrc
+!*.qss
+
+#enable doc files
+!*.md
+
+#enable project files
+!*Makefile
+!*makefile
+!*.pro
+!*.pri
+!*.sln
+!*.vcxproj
+!*.vcxproj.filter
+!*.cmake
+!*CMakeLists.txt
+
+#enable vscode config files
+!*.json
+
+#igore qt generate files
+ui*.h
+*moc*.h
+*qrc*.cpp
+
+#ignore build dirs
+**/*[Dd]ebug/**
+**/*[Rr]elease/**
+**/*[Bb]uild/**
+
+#ignore vs dir
+**/.vs/**
+
+#ignore clion build dir
+**/cmake-build*/**
+
+#ignore node_models
+*node_modules*
+
+#enable config subdir
+!config/**
