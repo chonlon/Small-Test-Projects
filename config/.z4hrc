@@ -199,6 +199,6 @@ export QT_SCREEN_SCALE_FACTORS="1"
 
 
 eval "$(zoxide init zsh)"
-#eval $(thefuck --alias fu)
+eval $(thefuck --alias cor)
 
-#eval $(thefuck --alias)
+# eval $(thefuck --alias)
