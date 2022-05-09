@@ -1,5 +1,11 @@
-use prost_build::compile_protos;
+use prost_build::Config;
 
 fn main() {
-  compile_protos(&["Person.proto"], &["."]).unwrap();
+  println!("cargo:rerun-if-changed=build.rs");
+  println!("cargo:rerun-if-changed=Person.proto");
+
+  Config::new()
+  .out_dir("src/proto")
+  .compile_protos(&["Person.proto"], &["."])
+  .unwrap();
 }
