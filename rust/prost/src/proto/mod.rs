@@ -1,15 +1,15 @@
 mod person;
 
-pub use person::*;
 pub use person::person::*;
-
+pub use person::*;
 
 impl Person {
     pub fn new(
         name: impl Into<String>,
         email: impl Into<String>,
         id: i32,
-        phones: impl Into<Vec<PhoneNumber>>) -> Self {
+        phones: impl Into<Vec<PhoneNumber>>,
+    ) -> Self {
         Person {
             name: name.into(),
             email: email.into(),

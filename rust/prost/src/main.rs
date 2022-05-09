@@ -1,18 +1,13 @@
 mod proto;
 use bytes::{Buf, BufMut};
-use proto::Person;
 use prost::Message;
-
+use proto::Person;
 
 fn main() {
     // proto::Person;
 
-    let person = Person::new(
-        "John Doe".to_string(),
-        "kkk".to_string(),
-        0,
-    vec![]);
-    
+    let person = Person::new("John Doe".to_string(), "kkk".to_string(), 0, vec![]);
+
     let v1 = person.encode_length_delimited_to_vec();
 
     let v2 = person.encode_to_vec();
@@ -29,9 +24,6 @@ fn main() {
         let v1: &[u8] = v1.as_ref();
     }
 
-
-    let de_person = Person::decode(
-        v2.as_slice()
-    ).unwrap();
+    let de_person = Person::decode(v2.as_slice()).unwrap();
     println!("{de_person:?}");
 }
