@@ -1,19 +1,54 @@
 use std::fmt::Debug;
 use std::net::SocketAddr;
 use std::sync::{Arc, Mutex, RwLock};
+use std::sync::atomic::{AtomicU32, Ordering};
 use serde::{Deserialize, Serialize};
 
 use axum::{routing::{get, post}, Router, Server, Json, async_trait, TypedHeader, Extension};
+use axum::body::{Body, boxed, Full};
 use axum::extract::{FromRequest, RequestParts};
 use axum::headers::Authorization;
 use axum::headers::authorization::Bearer;
-use axum::http::StatusCode;
-use axum::response::Html;
+use axum::http::{StatusCode, Uri};
+use axum::response::{Html, IntoResponse, Response};
 
 use jsonwebtoken as jwt;
 use serde::de::DeserializeOwned;
 
+use rust_embed::RustEmbed;
+
 const SECRET: &[u8] = b"secret";
+static TODO_ID: AtomicU32 = AtomicU32::new(3);
+
+#[derive(RustEmbed)]
+#[folder = "./my-app/build/"]
+struct AssetsEmbed;
+
+struct Asset<T> where T: Into<String> {
+    pub path: T,
+}
+
+impl<T> IntoResponse for Asset<T>
+    where T: Into<String>
+{
+    fn into_response(self) -> Response {
+        let path = self.path.into();
+
+
+        match AssetsEmbed::get(&path) {
+            Some(content) => {
+                let data = content.data;
+                let mime = mime_guess::from_path(&path).first_or_octet_stream();
+                Response::builder().status(StatusCode::OK).body(boxed(Full::from(data))).unwrap()
+            }
+            None => Response::builder()
+                .status(StatusCode::NOT_FOUND)
+                .body(boxed(Full::from(format!("Asset not found: {}", path))))
+                .unwrap()
+        }
+        // Response::default()
+    }
+}
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
 struct Todo {
@@ -110,17 +145,30 @@ async fn main() {
     };
     let router = Router::new()
         .route("/", get(index_handler))
+        .route("/hello", get(hello_handler))
         .route("/todos", get(todo_handler).post(create_todo_handler).layer(Extension(state.clone())))
         .route("/login", post(login_handler))
-        .route("/test", post(test_handler));
+        .route("/test", post(test_handler))
+        .fallback(get(get_static_file));
+
 
     let addr = SocketAddr::from(([127, 0, 0, 1], 8080));
     println!("Listening on {}", addr);
     Server::bind(&addr).serve(router.into_make_service()).await.unwrap();
 }
 
-async fn index_handler() -> Html<String> {
+async fn index_handler() -> impl IntoResponse {
+    get_static_file("/index.html".parse().unwrap()).await
+}
+
+async fn hello_handler() -> Html<String> {
     Html("<h1>Hello, world!</h1>".to_string())
+}
+
+async fn get_static_file(uri: Uri) -> impl IntoResponse {
+    println!("get {:?}", uri);
+    let path = uri.path().trim_start_matches("/");
+    Asset{path}.into_response()
 }
 
 async fn todo_handler(Extension(todo_store): Extension<TodoStore>) -> Json<Vec<Todo>> {
@@ -133,7 +181,7 @@ async fn create_todo_handler(ClaimsWrapper { claim }: ClaimsWrapper<Claim>, Json
 
     todo_store.todos.write().unwrap().push(
         Todo {
-            id: 3, // assume id is auto increment
+            id: get_next_id(),
             user_id: claim.id,
             title: create_todo.title,
             completed: false,
@@ -169,4 +217,11 @@ fn get_epoch() -> u64 {
     let now = std::time::SystemTime::now();
     let since_epoch = now.duration_since(std::time::UNIX_EPOCH).unwrap();
     since_epoch.as_secs()
+}
+
+fn get_next_id() -> u32 {
+    // multiple threads may call this function at the same time,
+    // using Relaxed ordering is not fine.
+    // but it's ok for this example.
+    TODO_ID.fetch_add(1, Ordering::Relaxed)
 }
