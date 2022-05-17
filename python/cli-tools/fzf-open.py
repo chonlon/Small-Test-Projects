@@ -13,7 +13,7 @@ rg_app = 'rg'
 editor_apps = ['vim', 'code', 'ranger', 'kate', 'clion', 'pycharm']
 
 # define directory open apps
-dir_apps = ['cd', 'code', 'ranger', 'clion', 'pycharm', 'dolphin',]
+dir_apps = ['cd', 'code', 'ranger', 'clion', 'pycharm', 'dolphin', ]
 
 
 # check if the cli app is installed
@@ -57,10 +57,11 @@ if __name__ == "__main__":
     argparser.add_argument("-o", "--open", help="open cli app")
     # get if execute command
     argparser.add_argument("-x", "--exec", help="execute command",
-                          default=False, action="store_true")
+                           default=False, action="store_true")
 
     # get file filter by content
-    argparser.add_argument("-c", "--content", help="filter file by content provided")
+    argparser.add_argument(
+        "-c", "--content", help="filter file by content provided")
 
     args = argparser.parse_args()
 
@@ -77,18 +78,17 @@ if __name__ == "__main__":
         cat_app = '{rg_app} --pretty --context 5 {content_filter} {{}}'\
             .format(rg_app=rg_app, content_filter=content_filter)
 
-
-
     # fd in path and fzf select item and pipe to fzf
-    command = 'fd --type {file_type} --exclude=.git {ignore} {pattern}  {path}'.\
+    command = 'fd --type {file_type} --exclude=.git {ignore} "{pattern}"  {path}'.\
         format(file_type=file_type,
                ignore='-H --ignore' if search_all else '',
                pattern=pattern,
-               path= ' '.join(paths))
+               path=' '.join(paths))
 
     if content_filter and file_type == 'f':
         command = '{command} | xargs -d "\n" {rg_app} {content_filter} --files-with-matches '.\
-            format(command=command, rg_app=rg_app,content_filter=content_filter)
+            format(command=command, rg_app=rg_app,
+                   content_filter=content_filter)
 
     command += '|'
     command += 'fzf --sort --preview "{} {}" --select-1'.format(
@@ -132,4 +132,3 @@ if __name__ == "__main__":
         subprocess.run(command, shell=True)
     else:
         print(command)
-
