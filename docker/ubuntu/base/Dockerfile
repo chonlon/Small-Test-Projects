@@ -11,6 +11,7 @@ RUN sed -i 's/archive.ubuntu.com/mirrors.ustc.edu.cn/g' /etc/apt/sources.list \
     net-tools \
     curl \
     dstat \
+    htop \
     make \
     git \
 && pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
