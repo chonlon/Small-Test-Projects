@@ -119,6 +119,7 @@ static const Rule rules[] = {
     {"xdman-Main", NULL, NULL, 0, 1, -1},
     {"Nitrogen", NULL, NULL, 0, 1, -1},
     {"lxappearance", NULL, NULL, 0, 1, -1},
+    {"copyq", NULL, NULL, 0, 1, -1},
 };
 
 /* layout(s) */
