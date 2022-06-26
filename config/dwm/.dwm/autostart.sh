@@ -3,14 +3,26 @@
 sh ~/.fehbg
 wmname compiz
 
-arr=("copyq" "fcitx" "dunst" "clipmenud" "cfw" "nutstore")
-
-for value in ${arr[@]}; do
-    if [[ ! $(pgrep ${value}) ]]; then
-        exec "$value" &
-    fi
-done
-
 if [[ ! $(pgrep "xob") ]]; then
-    exec sxob
+	exec sxob
 fi
+
+start() {
+	if ! pgrep -f $1; then
+		exec $@ &
+	fi
+}
+
+nitrogen --restore
+
+# start copyq
+start cfw
+start dunst
+
+start xrdb "$HOME/.Xresources"
+start /usr/lib/polkit-kde-authentication-agent-1
+
+dex --autostart --environment autostart
+dex --autostart --environment awesome
+
+# dex --autostart --environment awesome

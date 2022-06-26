@@ -3,9 +3,9 @@
 /* See LICENSE file for copyright and license details. */
 
 /* appearance */
-static const unsigned int borderpx = 2;     /* border pixel of windows */
-static const unsigned int gappx = 5;        /* gaps between windows */
-static const unsigned int snap = 32;        /* snap pixel */
+static const unsigned int borderpx = 6;     /* border pixel of windows */
+static const unsigned int gappx = 1;        /* gaps between windows */
+static const unsigned int snap = 5;         /* snap pixel */
 static const int showbar = 1;               /* 0 means no bar */
 static const int topbar = 1;                /* 0 means bottom bar */
 static const int usealtbar = 1;             /* 1 means use non-dwm status bar */
@@ -99,6 +99,7 @@ static const Rule rules[] = {
     {"yesplaymusic", NULL, NULL, 1 << 3, 0, -1},
     {"Netease-cloud-music-gtk", NULL, NULL, 1 << 3, 0, -1},
     {"netease-cloud-music", NULL, NULL, 1 << 3, 0, -1},
+    {"Code", NULL, NULL, 1 << 3, 0, -1},
 
     {"VirtualBox Machine", NULL, NULL, 1 << 4, 0, -1},
     {"VirtualBox Manager", NULL, NULL, 1 << 4, 0, -1},
@@ -112,9 +113,9 @@ static const Rule rules[] = {
     {"TelegramDesktop", NULL, NULL, 1 << 6, 0, -1},
 
     {"qv2ray", NULL, NULL, 1 << 7, 0, -1},
+    {"cfw", NULL, NULL, 1 << 7, 0, -1},
     {"qBittorrent", NULL, NULL, 1 << 7, 0, -1},
     {"glrnvim", NULL, NULL, 1 << 7, 0, -1},
-
 
     {"xdman-Main", NULL, NULL, 0, 1, -1},
     {"Nitrogen", NULL, NULL, 0, 1, -1},
@@ -160,10 +161,11 @@ static const Layout layouts[] = {
 /* commands */
 static char dmenumon[2] =
     "0"; /* component of dmenucmd, manipulated in spawn() */
-static const char *termcmd[] = {"kitty", "-e", "--single-instance", NULL};
+// static const char *termcmd[] = {"kitty", "-e", "--single-instance", NULL};
+static const char *termcmd[] = {"alacritty", "-e", "zellij", NULL};
 static const char scratchpadname[] = "scratchpad";
-static const char *scratchpadcmd[] = {"st", "-t",     scratchpadname,
-                                      "-g", "48x12", "-e", "cava", NULL};
+static const char *scratchpadcmd[] = {"st",    "-t", scratchpadname, "-g",
+                                      "48x12", "-e", "cava",         NULL};
 
 static const char *rofidruncmd[] = {"rofi", "-show", "drun", NULL};
 static const char *windowswitchcmd[] = {"rofi", "-show", "window", NULL};
@@ -205,7 +207,7 @@ static Key keys[] = {
 
     {MODKEY, XK_minus, setmfact, {.f = -0.05}}, // 主窗口变大
     {MODKEY, XK_equal, setmfact, {.f = +0.05}}, // 主窗口变小
-    {MODKEY, XK_Return, zoom, {0}}, // 放到主窗口
+    {MODKEY, XK_Return, zoom, {0}},             // 放到主窗口
 
     {MODKEY, XK_Tab, view, {0}},
     {MODKEY, XK_q, killclient, {0}}, // 退出窗口
@@ -235,7 +237,7 @@ static Key keys[] = {
     {MODKEY | ShiftMask, XK_q, spawn, CMD("xkill")},
     {MODKEY | ShiftMask, XK_s, spawn, CMD("flameshot gui")},
     {MODKEY | ShiftMask, XK_n, spawn, CMD("nemo")},
-    
+
     {MODKEY | ShiftMask, XK_h, spawn, CMD("alacritty --class htop -e htop")},
 
     {Mod1Mask | ControlMask, XK_BackSpace, spawn, CMD("betterlockscreen -l")},
@@ -261,7 +263,7 @@ static Key keys[] = {
         TAGKEYS(XK_5, 4) TAGKEYS(XK_6, 5) TAGKEYS(XK_7, 6) TAGKEYS(XK_8, 7)
             TAGKEYS(XK_9, 8){MODKEY | ShiftMask, XK_Escape, quit, {0}},
     TAGKEYS(XK_j, 0) TAGKEYS(XK_k, 1) TAGKEYS(XK_l, 2)
-    {MODKEY | ShiftMask, XK_r, quit, {1}},
+        TAGKEYS(XK_semicolon, 3){MODKEY | ShiftMask, XK_r, quit, {1}},
 };
 
 /* button definitions */
