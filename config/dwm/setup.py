@@ -1,7 +1,7 @@
 import subprocess
 
 
-dwm_apps = "dex xob polybar-dwm-module rofi dmenu dunst i3lock-color xautolock xsettingsd conky"
+dwm_apps = "dex xob polybar-dwm-module rofi dmenu dunst i3lock-color xautolock xsettingsd conky picom-ibhagwan-git"
 
 user_apps = "clash-for-windows-bin copyq utools google-chrome fzf btop htop rg alacritty zellij kitty neovim zsh fish"
 

@@ -1,38 +1,45 @@
 #################################
+#          Animations           #
+#################################
+# requires https://github.com/jonaburg/picom
+# (These are also the default values)
+transition-length = 150
+transition-pow-x = 0.2
+transition-pow-y = 0.2
+transition-pow-w = 0.2
+transition-pow-h = 0.2
+size-transition = true#
+
+#################################
 #             Corners           #
 #################################
-# requires: https://github.com/sdhand/compton
-# corner-radius = 25.0;
-# rounded-corners-exclude = [
-  #"window_type = 'normal'",
-  #"class_g = 'awesome'",
-  #"class_g = 'URxvt'",
-  #"class_g = 'XTerm'",
-  #"class_g = 'kitty'",
-  #"class_g = 'Alacritty'",
-  #"class_g = 'Polybar'",
-  #"class_g = 'code-oss'",
-  #"class_g = 'firefox'",
-  #"class_g = 'Thunderbird'"
-#];
-#round-borders = 1;
-#round-borders-exclude = [
-  #"class_g = 'TelegramDesktop'",
-#];
-
-# Specify a list of border width rules, in the format `PIXELS:PATTERN`, 
-# Note we don't make any guarantee about possible conflicts with the
-# border_width set by the window manager.
-#
-# example:
-#    round-borders-rule = [ "2:class_g = 'URxvt'" ];
-#
-round-borders-rule = [
-  "3:class_g      = 'XTerm'",
-  "3:class_g      = 'URxvt'",
-  "10:class_g     = 'Alacritty'",
-  "15:class_g     = 'Signal'"
-];
+# requires: https://github.com/sdhand/compton or https://github.com/jonaburg/picom
+corner-radius = 0.0;
+rounded-corners-exclude = [
+#"window_type = 'normal'",
+  "class_g = 'Dunst'",
+  "class_g = 'awesome'",
+  "class_g = 'URxvt'",
+  "class_g = 'Emacs'",
+  "class_g = 'XTerm'",
+  "class_g = 'kitty'",
+  "class_g = 'Alacritty'",
+  "class_g = 'Polybar'",
+  "class_g = 'code-oss'",
+  "class_g = 'Code'",
+  "class_g = 'Fcitx5'",
+  "class_g = 'Wpp'",
+  "class_g = 'Wps'",
+  "class_g = 'Nightly'",
+  "class_g = 'TelegramDesktop'",
+  "class_g = 'firefox'",
+  "class_g = 'Google-chrome'",
+  "class_g = 'Thunderbird'",
+  "class_g = 'dwm'",
+  "class_g = 'Firefox'",
+  "class_g = 'Microsoft-edge-dev'",
+  ];
+round-borders = 1;
 
 #################################
 #             Shadows           #
@@ -44,11 +51,11 @@ round-borders-rule = [
 # unless explicitly requested using the wintypes option.
 #
 # shadow = false
-shadow = false;
+shadow = true;
 
 # The blur radius for shadows, in pixels. (defaults to 12)
-# shadow-radius = 12
-shadow-radius = 7;
+shadow-radius = 12
+# shadow-radius = 7;
 
 # The opacity of shadows. (0.0 - 1.0, defaults to 0.75)
 # shadow-opacity = .75
@@ -61,6 +68,16 @@ shadow-offset-x = -7;
 # shadow-offset-y = -15
 shadow-offset-y = -7;
 
+# Avoid drawing shadows on dock/panel windows. This option is deprecated,
+# you should use the *wintypes* option in your config file instead.
+#
+# no-dock-shadow = false
+
+# Don't draw shadows on drag-and-drop windows. This option is deprecated,
+# you should use the *wintypes* option in your config file instead.
+#
+# no-dnd-shadow = false
+
 # Red color value of shadow (0.0 - 1.0, defaults to 0).
 # shadow-red = 0
 
@@ -70,8 +87,16 @@ shadow-offset-y = -7;
 # Blue color value of shadow (0.0 - 1.0, defaults to 0).
 # shadow-blue = 0
 
-# Hex string color value of shadow (#000000 - #FFFFFF, defaults to #000000). This option will override options set shadow-(red/green/blue)
-# shadow-color = "#000000"
+# Do not paint shadows on shaped windows. Note shaped windows
+# here means windows setting its shape through X Shape extension.
+# Those using ARGB background is beyond our control.
+# Deprecated, use
+#   shadow-exclude = 'bounding_shaped'
+# or
+#   shadow-exclude = 'bounding_shaped && !rounded_corners'
+# instead.
+#
+# shadow-ignore-shaped = ''
 
 # Specify a list of conditions of windows that should have no shadow.
 #
@@ -85,8 +110,8 @@ shadow-exclude = [
   "class_g ?= 'Notify-osd'",
   "class_g = 'Cairo-clock'",
   "class_g = 'slop'",
-  "class_g = 'Polybar'",
-  "_GTK_FRAME_EXTENTS@:c"
+  "_GTK_FRAME_EXTENTS@:c",
+  "class_g = 'Firefox'",
 ];
 
 # Specify a X geometry that describes the region in which shadow should not
@@ -107,16 +132,16 @@ shadow-exclude = [
 
 # Fade windows in/out when opening/closing and when opacity changes,
 #  unless no-fading-openclose is used.
-# fading = false
+#fading = false
 fading = true;
 
 # Opacity change between steps while fading in. (0.01 - 1.0, defaults to 0.028)
-# fade-in-step = 0.028
-fade-in-step = 0.03;
+fade-in-step = 0.10;
+# fade-in-step = 0.05;
 
 # Opacity change between steps while fading out. (0.01 - 1.0, defaults to 0.03)
-# fade-out-step = 0.03
-fade-out-step = 0.03;
+fade-out-step = 0.10;
+# fade-out-step = 0.05;
 
 # The time between steps in fade step, in milliseconds. (> 0, defaults to 10)
 # fade-delta = 10
@@ -139,13 +164,23 @@ fade-exclude = [
 #################################
 
 
+opacity = 1.0;
 # Opacity of inactive windows. (0.1 - 1.0, defaults to 1.0)
-# inactive-opacity = 1
-inactive-opacity = 0.8;
+inactive-opacity = 1
+#inactive-opacity = 0.8;
 
 # Opacity of window titlebars and borders. (0.1 - 1.0, disabled by default)
-# frame-opacity = 1.0
-frame-opacity = 0.7;
+frame-opacity = 1.0
+# frame-opacity = 0.7;
+
+# Default opacity for dropdown menus and popup menus. (0.0 - 1.0, defaults to 1.0)
+# menu-opacity = 1.0
+# menu-opacity is depreciated use dropdown-menu and popup-menu instead.
+
+#If using these 2 below change their values in line 510 & 511 aswell
+popup_menu = { opacity = 1.0; }
+dropdown_menu = { opacity = 1.0; }
+
 
 # Let inactive opacity set by -i override the '_NET_WM_OPACITY' values of windows.
 # inactive-opacity-override = true
@@ -161,8 +196,8 @@ active-opacity = 1.0;
 # focus-exclude = []
 focus-exclude = [
   "class_g = 'Cairo-clock'",
-  "class_g = 'Bar'",                    # lemonbar
-  "class_g = 'slop'"                    # maim
+  "class_g = 'slop'",                    # maim
+  "class_g = 'Fcitx5'",
 ];
 
 # Use fixed inactive dim value, instead of adjusting according to window opacity.
@@ -177,17 +212,20 @@ focus-exclude = [
 #
 # opacity-rule = []
 opacity-rule = [
-  "80:class_g     = 'Bar'",             # lemonbar
   "100:class_g    = 'slop'",            # maim
   "100:class_g    = 'XTerm'",
   "100:class_g    = 'URxvt'",
+  "100:class_g    = 'Fcitx5'",
   "100:class_g    = 'kitty'",
-  "100:class_g    = 'Alacritty'",
-  "80:class_g     = 'Polybar'",
+  "100:class_g    = 'st-256color'",
+  "100:class_g    = 'Zathura'",
+  "100:class_g     = 'Alacritty'",
+  "100:class_g     = 'Rofi'",
+  "100:class_g     = 'Emacs'",
   "100:class_g    = 'code-oss'",
   "100:class_g    = 'Meld'",
-  "70:class_g     = 'TelegramDesktop'",
-  "90:class_g     = 'Joplin'",
+  "100:class_g     = 'TelegramDesktop'",
+  "100:class_g     = 'Joplin'",
   "100:class_g    = 'firefox'",
   "100:class_g    = 'Thunderbird'"
 ];
@@ -203,8 +241,6 @@ opacity-rule = [
 # blur-size = 12
 #
 # blur-deviation = false
-#
-# blur-strength = 5
 
 # Blur background of semi-transparent / ARGB windows.
 # Bad in performance, with driver-dependent behavior.
@@ -228,35 +264,35 @@ opacity-rule = [
 # example:
 #   blur-kern = "5,5,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1";
 #
-# blur-kern = ""
-blur-kern = "3x3box";
-
+# blur-kern = ''
+# blur-kern = "3x3box";
 
 blur: {
-  # requires: https://github.com/ibhagwan/picom
-  method = "kawase";
-  #method = "kernel";
-  strength = 7;
-  # deviation = 1.0;
-  # kernel = "11x11gaussian";
-  background = false;
-  background-frame = false;
-  background-fixed = false;
-  kern = "3x3box";
-}
+# requires: https://github.com/ibhagwan/picom
+        method = "dual_kawase";
+#method = "kernel";
+        strength = 5;
+        background = false;
+        background-frame = false;
+        background-fixed = false;
+        kern = "3x3box";
+      }
 
 # Exclude conditions for background blur.
 blur-background-exclude = [
-  #"window_type = 'dock'",
-  #"window_type = 'desktop'",
-  #"class_g = 'URxvt'",
-  #
-  # prevents picom from blurring the background
-  # when taking selection screenshot with `main`
-  # https://github.com/naelstrof/maim/issues/130
+#"window_type = 'dock'",
+#"window_type = 'desktop'",
+#"class_g = 'URxvt'",
+#
+# prevents picom from blurring the background
+# when taking selection screenshot with `main`
+# https://github.com/naelstrof/maim/issues/130
+  "class_g = 'Polybar'",
   "class_g = 'slop'",
+  "class_g = 'Firefox'",
   "_GTK_FRAME_EXTENTS@:c"
 ];
+
 
 #################################
 #       General Settings        #
@@ -275,7 +311,7 @@ backend = "glx";
 
 # Enable/disable VSync.
 # vsync = false
-vsync = true;
+vsync = true
 
 # Enable remote control via D-Bus. See the *D-BUS API* section below for more details.
 # dbus = false
@@ -293,32 +329,40 @@ mark-ovredir-focused = true;
 # Try to detect windows with rounded corners and don't consider them
 # shaped windows. The accuracy is not very high, unfortunately.
 #
-# detect-rounded-corners = false
-detect-rounded-corners = true;
+detect-rounded-corners = false
+# detect-rounded-corners = true;
 
 # Detect '_NET_WM_OPACITY' on client windows, useful for window managers
 # not passing '_NET_WM_OPACITY' of client windows to frame windows.
 #
-# detect-client-opacity = false
-detect-client-opacity = true;
+detect-client-opacity = false
+#detect-client-opacity = true;
 
 # Specify refresh rate of the screen. If not specified or 0, picom will
 # try detecting this with X RandR extension.
 #
 # refresh-rate = 60
-refresh-rate = 0;
+refresh-rate = 0
+
+# Limit picom to repaint at most once every 1 / 'refresh_rate' second to
+# boost performance. This should not be used with
+#   vsync drm/opengl/opengl-oml
+# as they essentially does sw-opti's job already,
+# unless you wish to specify a lower refresh rate than the actual value.
+#
+# sw-opti =
 
 # Use EWMH '_NET_ACTIVE_WINDOW' to determine currently focused window,
 # rather than listening to 'FocusIn'/'FocusOut' event. Might have more accuracy,
 # provided that the WM supports it.
 #
-# use-ewmh-active-win = false
+use-ewmh-active-win = false
 
 # Unredirect all windows if a full-screen opaque window is detected,
 # to maximize performance for full-screen windows. Known to cause flickering
-# when redirecting/unredirecting windows.
+# when redirecting/unredirecting windows. paint-on-overlay may make the flickering less obvious.
 #
-unredir-if-possible = true
+# unredir-if-possible = false
 
 # Delay before unredirecting the window, in milliseconds. Defaults to 0.
 # unredir-if-possible-delay = 0
@@ -330,14 +374,14 @@ unredir-if-possible = true
 # in the same group focused at the same time.
 #
 # detect-transient = false
-detect-transient = true;
+detect-transient = true
 
 # Use 'WM_CLIENT_LEADER' to group windows, and consider windows in the same
 # group focused at the same time. 'WM_TRANSIENT_FOR' has higher priority if
 # detect-transient is enabled, too.
 #
-# detect-client-leader = false
-detect-client-leader = true;
+#detect-client-leader = false
+detect-client-leader = true
 
 # Resize damaged region by a specific number of pixels.
 # A positive value enlarges it while a negative one shrinks it.
@@ -377,7 +421,9 @@ detect-client-leader = true;
 # The opposing option is use-damage
 #
 # no-use-damage = false
-use-damage = true;
+#use-damage = true (Causing Weird Black semi opaque rectangles when terminal is opened)
+#Changing use-damage to false fixes the problem
+use-damage = false
 
 # Use X Sync fence to sync clients' draw calls, to make sure all draw
 # calls are finished before picom starts drawing. Needed on nvidia-drivers
@@ -389,7 +435,7 @@ use-damage = true;
 # See `compton-default-fshader-win.glsl` and `compton-fake-transparency-fshader-win.glsl`
 # in the source tree for examples.
 #
-# glx-fshader-win = ""
+# glx-fshader-win = ''
 
 # Force all windows to be painted with blending. Useful if you
 # have a glx-fshader-win that could turn opaque pixels transparent.
@@ -428,13 +474,13 @@ log-level = "info";
 # logs might still be written to the stderr.
 # When setting this option from the config file, it is recommended to use an absolute path.
 #
-# log-file = "/path/to/your/log/file"
+# log-file = '/path/to/your/log/file'
 
 # Show all X errors (for debugging)
 # show-all-xerrors = false
 
 # Write process ID to a file.
-# write-pid-path = "/path/to/your/log/file"
+# write-pid-path = '/path/to/your/log/file'
 
 # Window type settings
 #
@@ -468,10 +514,9 @@ log-level = "info";
 #
 wintypes:
 {
-  normal = { fade = false; shadow = false; }
   tooltip = { fade = true; shadow = true; opacity = 0.75; focus = true; full-shadow = false; };
-  dock = { shadow = false; }
-  dnd = { shadow = false; }
-  popup_menu = { opacity = 0.8; }
-  dropdown_menu = { opacity = 0.8; }
+  dock = { shadow = true; clip-shadow-above = true; }
+  dnd = { shadow = true; }
+  popup_menu = { opacity = 1.0; }
+  dropdown_menu = { opacity = 1.0; }
 };
