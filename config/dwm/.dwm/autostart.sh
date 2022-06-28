@@ -1,11 +1,10 @@
 #!/bin/bash
 
-sh ~/.fehbg
 wmname compiz
 
-if [[ ! $(pgrep "xob") ]]; then
-	exec sxob
-fi
+#if [[ ! $(pgrep "xob") ]]; then
+#exec sxob
+#fi
 
 start() {
 	if ! pgrep -f $1; then
