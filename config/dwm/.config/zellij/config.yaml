@@ -21,7 +21,7 @@ keybinds:
         - action: [SwitchToMode: Session,]
           key: [Ctrl: 'o',]
         - action: [SwitchToMode: Move,]
-          key: [Ctrl: 'h',]
+          key: [Ctrl: 'm',]
         - action: [SwitchToMode: Tmux,]
           key: [Ctrl: 'b',]
         - action: [Quit,]
@@ -471,8 +471,8 @@ keybinds:
 plugins:
     - path: tab-bar
       tag: tab-bar
-    - path: status-bar
-      tag: status-bar
+        #- path: status-bar
+        #tag: status-bar
     - path: strider
       tag: strider
 
@@ -497,7 +497,7 @@ plugins:
 # Options:
 #   - true (default)
 #   - false
-#pane_frames: true
+pane_frames: false
 
 # Choose the theme that is specified in the themes section.
 # Default: default

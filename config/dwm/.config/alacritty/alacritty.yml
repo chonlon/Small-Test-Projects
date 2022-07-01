@@ -13,6 +13,7 @@ env:
   TERM: xterm-256color
 
 window:
+  opacity: 0.65
   # Window dimensions (changes require restart)
   #
   # Specified in number of columns/lines, not pixels.
@@ -99,7 +100,7 @@ font:
     # If the bold family is not specified, it will fall back to the
     # value specified for the normal font.
     family: FiraCode Nerd Font
-    # RobotoMono
+    # Rec Mono Linear
     # The `style` can be specified to pick a specific face.
     style: Bold
 
@@ -110,12 +111,12 @@ font:
     # If the italic family is not specified, it will fall back to the
     # value specified for the normal font.
     family: FiraCode Nerd Font
-    # RobotoMono
+    # Rec Mono Linear
     # The `style` can be specified to pick a specific face.
     style: Italic
 
   # Point size
-  size: 12.0
+  size: 14.0
 
   # Offset is the extra space around each character. `offset.y` can be thought of
   # as modifying the line spacing, and `offset.x` as modifying the letter spacing.
@@ -152,44 +153,47 @@ font:
     # Keep the log file after quitting Alacritty.
     persistent_logging: false
 
-# Colors (Nord)
+# Catppuccin!
 colors:
   # Default colors
   primary:
-    background: "#2E3440"
-    foreground: "#D8DEE9"
+    background: "0x1E1D2F"
+    foreground: "0xD9E0EE"
+
+  # Colors the cursor will use if `custom_cursor_colors` is true
+  cursor:
+    text: "0x1E1D2F"
+    cursor: "0xF5E0DC"
 
   # Normal colors
   normal:
-    black: "#3B4252"
-    red: "#BF616A"
-    green: "#A3BE8C"
-    yellow: "#EBCB8B"
-    blue: "#81A1C1"
-    magenta: "#B48EAD"
-    cyan: "#88C0D0"
-    white: "#E5E9F0"
+    black: "0x6E6C7E"
+    red: "0xF28FAD"
+    green: "0xABE9B3"
+    yellow: "0xFAE3B0"
+    blue: "0x96CDFB"
+    magenta: "0xF5C2E7"
+    cyan: "0x89DCEB"
+    white: "0xD9E0EE"
 
   # Bright colors
   bright:
-    black: "#4C566A"
-    red: "#BF616A"
-    green: "#A3BE8C"
-    yellow: "#EBCB8B"
-    blue: "#81A1C1"
-    magenta: "#B48EAD"
-    cyan: "#8FBCBB"
-    white: "#ECEFF4"
+    black: "0x988BA2"
+    red: "0xF28FAD"
+    green: "0xABE9B3"
+    yellow: "0xFAE3B0"
+    blue: "0x96CDFB"
+    magenta: "0xF5C2E7"
+    cyan: "0x89DCEB"
+    white: "0xD9E0EE"
+
+  indexed_colors:
+    - { index: 16, color: "0xF8BD96" }
+    - { index: 17, color: "0xF5E0DC" }
 
 bell:
   animation: EaseOutExpo
   duration: 0
-
-  # Background opacity
-  #
-  # Window opacity as a floating point number from `0.0` to `1.0`.
-  # The value `0.0` is completely transparent and `1.0` is opaque.
-background_opacity: 0.85
 
 # Mouse bindings
 #
@@ -279,9 +283,10 @@ live_config_reload: true
 #   - (Linux/macOS) /bin/bash --login
 #   - (Windows) powershell
 #shell:
-#  program: /bin/bash
-#  args:
-#    - --login
+# program: /usr/local/bin/zsh
+# args:
+#   - -c
+#   - exec zellij
 # Windows 10 ConPTY backend (Windows only)
 #
 # This will enable better color support and may resolve other issues,

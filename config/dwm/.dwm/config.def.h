@@ -111,11 +111,14 @@ static const Rule rules[] = {
     {"Postman", "postman", NULL, 1 << 5, 0, -1},
 
     {"TelegramDesktop", NULL, NULL, 1 << 6, 0, -1},
+    {"Feishu", NULL, NULL, 1 << 6, 0, -1},
 
     {"qv2ray", NULL, NULL, 1 << 7, 0, -1},
-    {"cfw", NULL, NULL, 1 << 7, 0, -1},
+    {"Clash For Windows", NULL, NULL, 1 << 7, 0, -1},
+
     {"qBittorrent", NULL, NULL, 1 << 7, 0, -1},
     {"glrnvim", NULL, NULL, 1 << 7, 0, -1},
+    {"obsidian", NULL, NULL, 1 << 7, 0, -1},
 
     {"xdman-Main", NULL, NULL, 0, 1, -1},
     {"Nitrogen", NULL, NULL, 0, 1, -1},
@@ -233,7 +236,8 @@ static Key keys[] = {
     {MODKEY, XK_F5, xrdb, {.v = NULL}},
 
     /* My Own App Start Ways */
-    {MODKEY, XK_e, spawn, CMD("google-chrome-stable")},
+    {MODKEY, XK_e, spawn, CMD("google-chrome-stable --possword-store=gnome")},
+    {MODKEY | ShiftMask, XK_p, spawn, CMD("alacritty -e ipython")},
 
     {MODKEY | ShiftMask, XK_q, spawn, CMD("xkill")},
     {MODKEY | ShiftMask, XK_s, spawn, CMD("flameshot gui")},
@@ -247,11 +251,6 @@ static Key keys[] = {
 
     {Mod1Mask, XK_c, spawn, CMD("clion")},
     {Mod1Mask, XK_p, spawn, CMD("pycharm")},
-
-    /* Switch nord and light */
-    {MODKEY | ControlMask, XK_n, spawn, CMD("sh ~/.local/bin/switch n")},
-    {MODKEY | ControlMask, XK_l, spawn, CMD("sh ~/.local/bin/switch l")},
-    {MODKEY | ControlMask, XK_s, spawn, CMD("sh ~/.local/bin/switch-dwm")},
 
     /* XF86Keys */
     {0, XF86XK_AudioMute, spawn, {.v = mutevol}},

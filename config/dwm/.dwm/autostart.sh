@@ -13,15 +13,13 @@ start() {
 }
 
 nitrogen --restore
+start dunst
 
 # start copyq
-start cfw
-start dunst
 
 start xrdb "$HOME/.Xresources"
 start /usr/lib/polkit-kde-authentication-agent-1
 
 dex --autostart --environment autostart
-# dex --autostart --environment awesome
-
+start feishu
 # dex --autostart --environment awesome

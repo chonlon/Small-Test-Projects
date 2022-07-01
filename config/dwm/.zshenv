@@ -47,3 +47,4 @@ setopt rcs
 export t='/home/lon/test'
 export s=$HOME/3_lon/Small-Test-Projects/
 export PATH=$PATH:$HOME/go/bin/
+export cadex=/mnt/APP/cadexchanger_3.10.1_build14874_lin64/bin/Exchanger

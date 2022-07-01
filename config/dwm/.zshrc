@@ -83,6 +83,9 @@ z4h load   zsh-syntax-highlighting
 z4h load   zsh-history-substring-search
 
 # Define key bindings.
+z4h bindkey z4h-backward-word Ctrl+Left
+z4h bindkey z4h-forward-word Ctrl+Right
+
 z4h bindkey z4h-backward-kill-word  Ctrl+Backspace     Ctrl+H
 z4h bindkey z4h-backward-kill-zword Ctrl+Alt+Backspace
 
@@ -137,6 +140,7 @@ alias goland='f() { goland $@ 1>>/dev/null 2>>/dev/null & }; f'
 alias pycharm='f() { pycharm $1 1>>/dev/null 2>>/dev/null & }; f'
 alias webstorm='f() { webstorm $@ 1>>/dev/null 2>>/dev/null & }; f'
 alias kate='f() { kate $@ 1>>/dev/null 2>>/dev/null }; f'
+alias ze='f() { zellij -l compact $@ }; f'
 alias dolphin='f() { dolphin $@ 1>>/dev/null 2>>/dev/null }; f'
 alias fzf-open-alias='f() {eval "$(fzf-open $@)"}; f'
 alias fhd='fzf-open-alias "$HOME" -t d'
@@ -145,13 +149,8 @@ alias fhc='f() {eval "$(fzf-open -c $@ $HOME)"}; f'
 alias fcc='f() {eval "$(fzf-open -c $@)"}; f'
 alias fcf='fzf-open-alias'
 alias fcd='fzf-open-alias -t d'
-function fcp() {
-    local dirnamev="$(fzf-open $@ | awk '{print $2}')"
-    if [[ -z "${dirnamev}" ]]; then
-        return 0
-    fi
-    copyq add ${dirnamev}
-}
+
+
 
 function fwd() {
     local dirnamev="$(wd list | sed '1d' | awk '{print $3}' | tr '\n' ' ')"
@@ -175,6 +174,25 @@ function fwf() {
     fi
     eval 'fzf-open-alias ${dirnamev} $@'
 }
+function gw() {
+    local dirnamev="$(git worktree list | awk '{print $1}' | fzf)"
+    if [[ -z "${dirnamev}" ]]; then
+        return 0
+    fi
+    cd ${dirnamev}
+}
+
+function copy() {
+    local dirn
+    if [[ -z "$@" ]]; then
+        dirn="$(pwd)"
+    else
+        dirn="$(readlink -f $1)"
+    fi
+    copyq add ${dirn}
+    echo ${dirn}
+}
+
 
 function rga-fzf() {
 	RG_PREFIX="rga --files-with-matches"

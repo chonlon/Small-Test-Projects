@@ -1,6 +1,6 @@
 [colors]
-	frame_color = "#96CDFB"
-	separator_color= frame
+	background = "#eceff4"
+    frame = "#d8dee9"
 
 [global]
     ### Display ###
@@ -18,15 +18,16 @@
     separator_height = 2
     padding = 20
     horizontal_padding = 20
-    frame_width = 2
+    frame_width = 0
     corner_radius = 10
 
+    #frame_color =
     separator_color = auto
     sort = yes
     idle_threshold = 120
 
     ### Text ###
-    font = Liga SFMono Nerd Font, Font Awesome 5 Free Solid 9, Sarasa UI SC
+    font = FiraCode Nerd Font, Font Awesome 5 Free Solid 9
     line_height = 0
 
     markup = full
@@ -54,7 +55,7 @@
     ### Icons ###
     icon_position = left
     max_icon_size = 64
-    icon_path = /usr/share/icons/Papirus/48x48/status/:/usr/share/icons/Nord-Icon/48x48/devices/:/usr/share/icons/Nord-Icon/48x48/apps
+    icon_path = /usr/share/icons/Nord-Icon/48x48/status/:/usr/share/icons/Nord-Icon/48x48/devices/:/usr/share/icons/Nord-Icon/48x48/apps
 
     ### History ###
     sticky_history = yes
@@ -76,19 +77,21 @@
     history = ctrl+backspace
 
 [urgency_low]
-	background = "#1E1E2E"
-	foreground = "#D9E0EE"
+    background = colors.background
+    foreground = "#5e81ac"
+    frame_color = colors.frame
+    timeout = 5
 
 [urgency_normal]
-	background = "#1E1E2E"
-	foreground = "#D9E0EE"
+    background = colors.background
+    foreground = "#2e3440"
+    frame_color = colors.frame
+    timeout = 5
 
 [urgency_critical]
-	background = "#1E1E2E"
-	foreground = "#D9E0EE"
-	frame_color = "#F8BD96"
-
-
+    background = colors.background
+    foreground = "#bf616a"
+    frame_color = colors.frame
+    timeout = 0
 
 # vim: ft=conf
-
