@@ -83,6 +83,9 @@ z4h load   zsh-syntax-highlighting
 z4h load   zsh-history-substring-search
 
 # Define key bindings.
+z4h bindkey z4h-backward-word Ctrl+Left
+z4h bindkey z4h-forward-word Ctrl+Right
+
 z4h bindkey z4h-backward-kill-word  Ctrl+Backspace     Ctrl+H
 z4h bindkey z4h-backward-kill-zword Ctrl+Alt+Backspace
 
@@ -101,9 +104,9 @@ autoload -Uz zmv
 function md() { [[ $# == 1 ]] && mkdir -p -- "$1" && cd -- "$1" }
 function cdl() { 
   if [[ $# == 0 ]]; then
-    cd $HOME && logo-ls -- "$HOME"
+    cd $HOME && lsd -- "$HOME"
   else
-    z "$1" && logo-ls -- "$PWD" 
+    z "$1" && lsd -- "$PWD" 
   fi
 }
 compdef _directories md
@@ -123,13 +126,15 @@ compdef dr='docker'
 alias db='docker build'
 alias lls='logo-ls'
 alias ls="exa"
-alias vi="vim"
+alias vi="nvim"
+alias vim="nvim"
 alias grep="rg"
 alias cat="bat --style=plain"
 alias du="dust"
 alias grep="rg"
 alias find="fd"
 alias ra="ranger"
+alias rv="EDITOR=vim ranger"
 alias clion='f(){ clion $1  1>>/dev/null 2>>/dev/null & }; f'
 alias goland='f() { goland $@ 1>>/dev/null 2>>/dev/null & }; f'
 alias pycharm='f() { pycharm $1 1>>/dev/null 2>>/dev/null & }; f'
@@ -143,13 +148,8 @@ alias fhc='f() {eval "$(fzf-open -c $@ $HOME)"}; f'
 alias fcc='f() {eval "$(fzf-open -c $@)"}; f'
 alias fcf='fzf-open-alias'
 alias fcd='fzf-open-alias -t d'
-function fcp() {
-    local dirnamev="$(fzf-open $@ | awk '{print $2}')"
-    if [[ -z "${dirnamev}" ]]; then
-        return 0
-    fi
-    copyq add ${dirnamev}
-}
+
+
 
 function fwd() {
     local dirnamev="$(wd list | sed '1d' | awk '{print $3}' | tr '\n' ' ')"
@@ -173,6 +173,25 @@ function fwf() {
     fi
     eval 'fzf-open-alias ${dirnamev} $@'
 }
+function gw() {
+    local dirnamev="$(git worktree list | awk '{print $1}' | fzf)"
+    if [[ -z "${dirnamev}" ]]; then
+        return 0
+    fi
+    cd ${dirnamev}
+}
+
+function copy() {
+    local dirn
+    if [[ -z "$@" ]]; then
+        dirn="$(pwd)"
+    else
+        dirn="$(readlink -f $1)"
+    fi
+    copyq add ${dirn}
+    echo ${dirn}
+}
+
 
 function rga-fzf() {
 	RG_PREFIX="rga --files-with-matches"
@@ -189,16 +208,16 @@ function rga-fzf() {
 }
 
 
-export EDITOR="code --wait"
+export EDITOR="nvim"
 
 # Set shell options: http://zsh.sourceforge.net/Doc/Release/Options.html.
 setopt glob_dots     # no special treatment for file names with a leading dot
 setopt no_auto_menu  # require an extra TAB press to open the completion menu
 export QT_AUTO_SCREEN_SCALE_FACTOR=1
-export QT_SCREEN_SCALE_FACTORS="1"
+export QT_SCREEN_SCALE_FACTORS="1.5"
 
 
 eval "$(zoxide init zsh)"
-eval $(thefuck --alias cor)
+#eval $(thefuck --alias fu)
 
-# eval $(thefuck --alias)
+#eval $(thefuck --alias)

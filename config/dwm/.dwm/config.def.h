@@ -4,8 +4,8 @@
 
 /* appearance */
 static const unsigned int borderpx = 6;     /* border pixel of windows */
-static const unsigned int gappx = 1;        /* gaps between windows */
-static const unsigned int snap = 5;         /* snap pixel */
+static const unsigned int gappx = 3;        /* gaps between windows */
+static const unsigned int snap = 10;        /* snap pixel */
 static const int showbar = 1;               /* 0 means no bar */
 static const int topbar = 1;                /* 0 means bottom bar */
 static const int usealtbar = 1;             /* 1 means use non-dwm status bar */
@@ -17,10 +17,10 @@ static const char *altbarcmd =
 /*  monocle mode in the presence of several windows.                        */
 /*  Modes after showtab_nmodes are disabled.                                */
 enum showtab_modes {
-  showtab_never,
-  showtab_auto,
-  showtab_nmodes,
-  showtab_always
+    showtab_never,
+    showtab_auto,
+    showtab_nmodes,
+    showtab_always
 };
 static const int showtab = showtab_auto; /* Default tab bar show mode */
 static const int toptab = False;         /* False means bottom tab bar */
@@ -144,20 +144,20 @@ static const Layout layouts[] = {
 /* key definitions */
 #define MODKEY Mod4Mask
 #define TAGKEYS(KEY, TAG)                                                      \
-  {MODKEY, KEY, view, {.ui = 1 << TAG}},                                       \
-      {MODKEY | ControlMask, KEY, toggleview, {.ui = 1 << TAG}},               \
-      {MODKEY | ShiftMask, KEY, tag, {.ui = 1 << TAG}},                        \
-      {MODKEY | ControlMask | ShiftMask, KEY, toggletag, {.ui = 1 << TAG}},
+    {MODKEY, KEY, view, {.ui = 1 << TAG}},                                     \
+        {MODKEY | ControlMask, KEY, toggleview, {.ui = 1 << TAG}},             \
+        {MODKEY | ShiftMask, KEY, tag, {.ui = 1 << TAG}},                      \
+        {MODKEY | ControlMask | ShiftMask, KEY, toggletag, {.ui = 1 << TAG}},
 
 /* helper for spawning shell commands in the pre dwm-5.0 fashion */
 #define SHCMD(cmd)                                                             \
-  {                                                                            \
-    .v = (const char *[]) { "/bin/sh", "-c", cmd, NULL }                       \
-  }
+    {                                                                          \
+        .v = (const char *[]) { "/bin/sh", "-c", cmd, NULL }                   \
+    }
 #define CMD(cmd)                                                               \
-  {                                                                            \
-    .v = (const char *[]) { "/bin/sh", "-c", cmd, NULL }                       \
-  }
+    {                                                                          \
+        .v = (const char *[]) { "/bin/sh", "-c", cmd, NULL }                   \
+    }
 
 /* commands */
 static char dmenumon[2] =

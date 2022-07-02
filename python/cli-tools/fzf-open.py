@@ -5,7 +5,7 @@ import argparse
 import subprocess
 import sys
 
-ls_app = 'logo-ls'
+ls_app = 'lsd'
 cat_app = 'bat'
 rg_app = 'rg'
 
