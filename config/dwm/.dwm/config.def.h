@@ -121,6 +121,7 @@ static const Rule rules[] = {
     {"Nitrogen", NULL, NULL, 0, 1, -1},
     {"lxappearance", NULL, NULL, 0, 1, -1},
     {"copyq", NULL, NULL, 0, 1, -1},
+    //{"uTools", "utools", NULL, 0, 1, -1},
 };
 
 /* layout(s) */
@@ -162,7 +163,7 @@ static const Layout layouts[] = {
 static char dmenumon[2] =
     "0"; /* component of dmenucmd, manipulated in spawn() */
 // static const char *termcmd[] = {"kitty", "-e", "--single-instance", NULL};
-static const char *termcmd[] = {"alacritty", "-e", "zellij", NULL};
+static const char *termcmd[] = {"alacritty", NULL};
 static const char scratchpadname[] = "scratchpad";
 static const char *scratchpadcmd[] = {"st",    "-t", scratchpadname, "-g",
                                       "48x12", "-e", "cava",         NULL};

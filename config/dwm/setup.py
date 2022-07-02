@@ -7,7 +7,7 @@ user_apps = "clash-for-windows-bin copyq utools google-chrome fzf btop htop rg a
 
 lang_apps = "clang gcc python node gdb cmake rustup jetbrains-toolbox "
 
-fonts = "nerd-fonts-ibm-plex-mono nerd-fonts-fira-code nerd-fonts-jetbrains-mono ttf-sarasa-gothic"
+fonts = "nerd-fonts-ibm-plex-mono nerd-fonts-fira-code nerd-fonts-jetbrains-mono ttf-sarasa-gothic nerd-fonts-dejavu-sans-mono"
 
 print("=============== Installing Apps ===============")
 

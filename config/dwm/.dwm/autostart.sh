@@ -1,11 +1,10 @@
 #!/bin/bash
 
-sh ~/.fehbg
 wmname compiz
 
-if [[ ! $(pgrep "xob") ]]; then
-	exec sxob
-fi
+#if [[ ! $(pgrep "xob") ]]; then
+#	exec sxob
+#fi
 
 start() {
 	if ! pgrep -f $1; then
@@ -23,6 +22,6 @@ start xrdb "$HOME/.Xresources"
 start /usr/lib/polkit-kde-authentication-agent-1
 
 dex --autostart --environment autostart
-dex --autostart --environment awesome
+# dex --autostart --environment awesome
 
 # dex --autostart --environment awesome
