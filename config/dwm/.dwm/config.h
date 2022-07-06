@@ -66,58 +66,61 @@ static char *colors[][3] = {
 
 /* tagging */
 // static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
-static const char *tags[] = {"", "", "", "", "", "", "", ""};
+static const char *tags[] = {"", "", "", "", "", "", "", "", "", "ﳴ"};
 
 static const Rule rules[] = {
     /* xprop(1):
      *	WM_CLASS(STRING) = instance, class
      *	WM_NAME(STRING) = title
      */
-    /* class                            instance                    title tags
-       mask     isfloating   monitor */
-    {"jetbrains-*", "JetBrains Toolbox", NULL, 1 << 1, 1, -1},
-    {"jetbrains-*", "sun-awt-X11-XFramePeer", NULL, 1 << 1, 0, -1},
-    {"jetbrains-*", "jetbrains-*", "win0", 1 << 1, 1, -1},
-    {"jetbrains-*", NULL, "Welcome to*", 1 << 1, 1, -1},
-    {"jetbrains-*", NULL, "Welcome to*", 1 << 1, 1, -1},
-    {"jetbrains-idea", NULL, NULL, 1 << 1, 0, -1},
-    {"jetbrains-clion", NULL, NULL, 1 << 1, 0, -1},
-    {"jetbrains-pycharm", NULL, NULL, 1 << 1, 0, -1},
+    /* -1 means auto */
+    /* class  instance  title  tags  mask  isfloating  monitor */
 
-    {"Google-chrome", "google-chrome", NULL, 1 << 2, 0, -1},
-    {"Firefox", NULL, NULL, 1 << 2, 0, -1},
-    {"Typora", NULL, NULL, 1 << 2, 0, -1},
-    {"Firefox", "Toolkit", NULL, 1 << 2, 1, -1},
-    {"Microsoft-edge-dev", NULL, NULL, 1 << 2, 0, -1},
-    {"Microsoft-edge-beta", NULL, NULL, 1 << 2, 0, -1},
-    {"crx__ikhdkkncnoglghljlkmcimlnlhkeamad", NULL, NULL, 1 << 2, 1, -1},
+    {"Google-chrome", "google-chrome", NULL, 1 << 1, 0, -1},
+    {"Firefox", NULL, NULL, 1 << 1, 0, -1},
+    {"Typora", NULL, NULL, 1 << 1, 0, -1},
+    {"Firefox", "Toolkit", NULL, 1 << 1, 1, -1},
+    {"Microsoft-edge-dev", NULL, NULL, 1 << 1, 0, -1},
+    {"Microsoft-edge-beta", NULL, NULL, 1 << 1, 0, -1},
+    {"crx__ikhdkkncnoglghljlkmcimlnlhkeamad", NULL, NULL, 1 << 1, 1, -1},
 
-    {NULL, "music", NULL, 1 << 3, 0, -1},
-    {NULL, "SoundConverter", NULL, 1 << 3, 0, -1},
-    {"qqmusic", NULL, NULL, 1 << 3, 0, -1},
-    {"Spotify", "spotify", NULL, 1 << 3, 0, -1},
-    {"yesplaymusic", NULL, NULL, 1 << 3, 0, -1},
-    {"Netease-cloud-music-gtk", NULL, NULL, 1 << 3, 0, -1},
-    {"netease-cloud-music", NULL, NULL, 1 << 3, 0, -1},
-    {"Code", NULL, NULL, 1 << 3, 0, -1},
+    {"jetbrains-*", "JetBrains Toolbox", NULL, 1 << 2, 1, -1},
+    {"jetbrains-*", "sun-awt-X11-XFramePeer", NULL, 1 << 2, 0, -1},
+    {"jetbrains-*", "jetbrains-*", "win0", 1 << 2, 1, -1},
+    {"jetbrains-*", NULL, "Welcome to*", 1 << 2, 1, -1},
+    {"jetbrains-*", NULL, "Welcome to*", 1 << 2, 1, -1},
+    {"jetbrains-idea", NULL, NULL, 1 << 2, 0, -1},
+    {"jetbrains-clion", NULL, NULL, 1 << 2, 0, -1},
+    {"jetbrains-pycharm", NULL, NULL, 1 << 2, 0, -1},
 
-    {"VirtualBox Machine", NULL, NULL, 1 << 4, 0, -1},
-    {"VirtualBox Manager", NULL, NULL, 1 << 4, 0, -1},
+    {NULL, "music", NULL, 1 << 6, 0, -1},
+    {NULL, "SoundConverter", NULL, 1 << 6, 0, -1},
+    {"qqmusic", NULL, NULL, 1 << 6, 0, -1},
+    {"Spotify", "spotify", NULL, 1 << 6, 0, -1},
+    {"yesplaymusic", NULL, NULL, 1 << 6, 0, -1},
+    {"Netease-cloud-music-gtk", NULL, NULL, 1 << 6, 0, -1},
+    {"netease-cloud-music", NULL, NULL, 1 << 6, 0, -1},
 
-    {"Qq", "qq", NULL, 1 << 5, 1, -1},
-    {"Freechat", "freechat", NULL, 1 << 5, 0, -1},
-    {"icalingua", "icalingua", NULL, 1 << 5, 0, -1},
-    {"electron-qq", "electron-qq", NULL, 1 << 5, 0, -1},
-    {"Postman", "postman", NULL, 1 << 5, 0, -1},
+    // {"Code", NULL, NULL, 1 << 2, 0, -1}, //vscode
 
-    {"TelegramDesktop", NULL, NULL, 1 << 6, 0, -1},
-    {"Feishu", NULL, NULL, 1 << 6, 0, -1},
+    // {"VirtualBox Machine", NULL, NULL, 1 << 4, 0, -1},
+    // {"VirtualBox Manager", NULL, NULL, 1 << 4, 0, -1},
 
-    {"qv2ray", NULL, NULL, 1 << 7, 0, -1},
-    {"Clash For Windows", NULL, NULL, 1 << 7, 0, -1},
+    // {"Qq", "qq", NULL, 1 << 5, 1, -1},
+    // {"Freechat", "freechat", NULL, 1 << 5, 0, -1},
+    // {"icalingua", "icalingua", NULL, 1 << 5, 0, -1},
+    // {"electron-qq", "electron-qq", NULL, 1 << 5, 0, -1},
+    // {"Postman", "postman", NULL, 1 << 5, 0, -1},
 
-    {"qBittorrent", NULL, NULL, 1 << 7, 0, -1},
-    {"glrnvim", NULL, NULL, 1 << 7, 0, -1},
+    // {"TelegramDesktop", NULL, NULL, 1 << 6, 0, -1},
+    // {"Feishu", NULL, NULL, 1 << 6, 0, -1},
+
+    // {"qv2ray", NULL, NULL, 1 << 7, 0, -1},
+    // {"Clash For Windows", NULL, NULL, 1 << 7, 0, -1},
+
+    // {"qBittorrent", NULL, NULL, 1 << 7, 0, -1},
+    // {"glrnvim", NULL, NULL, 1 << 7, 0, -1},
+
     {"obsidian", NULL, NULL, 1 << 7, 0, -1},
 
     {"xdman-Main", NULL, NULL, 0, 1, -1},
@@ -138,7 +141,7 @@ static const Layout layouts[] = {
     /* symbol     arrange function */
     {"[]=", tile}, /* first entry is default */
     {"><>", NULL}, /* no layout function means floating behavior */
-    {"[M]", monocle}, {"HHH", grid},        {"|||", tcl},
+    {"[M]", monocle}, {"ﱖ", grid},          {"", tcl},
     {"TTT", bstack},  {"===", bstackhoriz},
 
 };
@@ -191,7 +194,6 @@ static const char *downbrt[] = {"light", "-U", "5", NULL};
 static Key keys[] = {
     /* modifier                     key             function        argument */
     {MODKEY | ShiftMask, XK_Return, spawn, CMD("alacritty")},
-    {Mod1Mask, XK_Return, spawn, {.v = termcmd}},
     {MODKEY, XK_grave, togglescratch, {.v = scratchpadcmd}},
     {MODKEY, XK_d, spawn, {.v = dmenucmd}},
     {MODKEY, XK_space, spawn, {.v = rofidruncmd}},
