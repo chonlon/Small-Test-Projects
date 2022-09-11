@@ -17,10 +17,10 @@ static const char *altbarcmd =
 /*  monocle mode in the presence of several windows.                        */
 /*  Modes after showtab_nmodes are disabled.                                */
 enum showtab_modes {
-    showtab_never,
-    showtab_auto,
-    showtab_nmodes,
-    showtab_always
+  showtab_never,
+  showtab_auto,
+  showtab_nmodes,
+  showtab_always
 };
 static const int showtab = showtab_auto; /* Default tab bar show mode */
 static const int toptab = False;         /* False means bottom tab bar */
@@ -149,20 +149,20 @@ static const Layout layouts[] = {
 /* key definitions */
 #define MODKEY Mod4Mask
 #define TAGKEYS(KEY, TAG)                                                      \
-    {MODKEY, KEY, view, {.ui = 1 << TAG}},                                     \
-        {MODKEY | ControlMask, KEY, toggleview, {.ui = 1 << TAG}},             \
-        {MODKEY | ShiftMask, KEY, tag, {.ui = 1 << TAG}},                      \
-        {MODKEY | ControlMask | ShiftMask, KEY, toggletag, {.ui = 1 << TAG}},
+  {MODKEY, KEY, view, {.ui = 1 << TAG}},                                       \
+      {MODKEY | ControlMask, KEY, toggleview, {.ui = 1 << TAG}},               \
+      {MODKEY | ShiftMask, KEY, tag, {.ui = 1 << TAG}},                        \
+      {MODKEY | ControlMask | ShiftMask, KEY, toggletag, {.ui = 1 << TAG}},
 
 /* helper for spawning shell commands in the pre dwm-5.0 fashion */
 #define SHCMD(cmd)                                                             \
-    {                                                                          \
-        .v = (const char *[]) { "/bin/sh", "-c", cmd, NULL }                   \
-    }
+  {                                                                            \
+    .v = (const char *[]) { "/bin/sh", "-c", cmd, NULL }                       \
+  }
 #define CMD(cmd)                                                               \
-    {                                                                          \
-        .v = (const char *[]) { "/bin/sh", "-c", cmd, NULL }                   \
-    }
+  {                                                                            \
+    .v = (const char *[]) { "/bin/sh", "-c", cmd, NULL }                       \
+  }
 
 /* commands */
 static char dmenumon[2] =
@@ -247,6 +247,7 @@ static Key keys[] = {
     {MODKEY | ShiftMask, XK_h, spawn, CMD("alacritty --class htop -e htop")},
 
     {Mod1Mask | ControlMask, XK_BackSpace, spawn, CMD("betterlockscreen -l")},
+    {MODKEY, XK_BackSpace, spawn, CMD("sh $HOME/.local/bin/powermenu")},
 
     {Mod1Mask | ShiftMask, XK_p, spawn, CMD("sh ~/.dwmpobar")},
 

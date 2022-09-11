@@ -17,6 +17,7 @@
 !*.cxx
 !*.h.in
 !*.c
+!*.lua
 
 #enable docker files
 ![Dd]ocker[Ff]ile
