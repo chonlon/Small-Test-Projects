@@ -12,7 +12,7 @@ static const int usealtbar = 1;             /* 1 means use non-dwm status bar */
 static const char *altbarclass = "Polybar"; /* Alternate bar class name */
 static const char *alttrayname = "tray";    /* Polybar tray instance name */
 static const char *altbarcmd =
-    "$HOME/.dwmpobar"; /* Alternate bar launch command */
+    "$HOME/.local/bin/.dwmpobar"; /* Alternate bar launch command */
 /*  Display modes of the tab bar: never shown, always shown, shown only in  */
 /*  monocle mode in the presence of several windows.                        */
 /*  Modes after showtab_nmodes are disabled.                                */
@@ -66,7 +66,7 @@ static char *colors[][3] = {
 
 /* tagging */
 // static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
-static const char *tags[] = {"", "", "", "", "", "", "", "", "", "ﳴ"};
+static const char *tags[] = {"", "", "", "ﳴ"};
 
 static const Rule rules[] = {
     /* xprop(1):
@@ -76,13 +76,13 @@ static const Rule rules[] = {
     /* -1 means auto */
     /* class  instance  title  tags  mask  isfloating  monitor */
 
-    {"Google-chrome", "google-chrome", NULL, 1 << 1, 0, -1},
-    {"Firefox", NULL, NULL, 1 << 1, 0, -1},
-    {"Typora", NULL, NULL, 1 << 1, 0, -1},
-    {"Firefox", "Toolkit", NULL, 1 << 1, 1, -1},
-    {"Microsoft-edge-dev", NULL, NULL, 1 << 1, 0, -1},
-    {"Microsoft-edge-beta", NULL, NULL, 1 << 1, 0, -1},
-    {"crx__ikhdkkncnoglghljlkmcimlnlhkeamad", NULL, NULL, 1 << 1, 1, -1},
+    // {"Google-chrome", "google-chrome", NULL, 1 << 1, 0, -1},
+    // {"Firefox", NULL, NULL, 1 << 1, 0, -1},
+    // {"Typora", NULL, NULL, 1 << 1, 0, -1},
+    // {"Firefox", "Toolkit", NULL, 1 << 1, 1, -1},
+    // {"Microsoft-edge-dev", NULL, NULL, 1 << 1, 0, -1},
+    // {"Microsoft-edge-beta", NULL, NULL, 1 << 1, 0, -1},
+    // {"crx__ikhdkkncnoglghljlkmcimlnlhkeamad", NULL, NULL, 1 << 1, 1, -1},
 
     {"jetbrains-*", "JetBrains Toolbox", NULL, 1 << 2, 1, -1},
     {"jetbrains-*", "sun-awt-X11-XFramePeer", NULL, 1 << 2, 0, -1},
@@ -121,11 +121,11 @@ static const Rule rules[] = {
     // {"qBittorrent", NULL, NULL, 1 << 7, 0, -1},
     // {"glrnvim", NULL, NULL, 1 << 7, 0, -1},
 
-    {"obsidian", NULL, NULL, 1 << 7, 0, -1},
+    //{"obsidian", NULL, NULL, 1 << 7, 0, -1},
 
-    {"xdman-Main", NULL, NULL, 0, 1, -1},
-    {"Nitrogen", NULL, NULL, 0, 1, -1},
-    {"lxappearance", NULL, NULL, 0, 1, -1},
+    //{"xdman-Main", NULL, NULL, 0, 1, -1},
+    //{"Nitrogen", NULL, NULL, 0, 1, -1},
+    //{"lxappearance", NULL, NULL, 0, 1, -1},
     {"copyq", NULL, NULL, 0, 1, -1},
 };
 
@@ -218,17 +218,17 @@ static Key keys[] = {
     {MODKEY, XK_q, killclient, {0}}, // 退出窗口
     {MODKEY, XK_y, tabmode, {-1}},
 
-    {MODKEY, XK_u, setlayout, {.v = &layouts[0]}}, // 默认模式
-    {MODKEY, XK_p, setlayout, {.v = &layouts[1]}}, // 全屏（不包括状态栏）
-    {MODKEY, XK_i, setlayout, {.v = &layouts[2]}}, // 上下分屏
-    {MODKEY, XK_o, setlayout, {.v = &layouts[3]}}, // 浮动窗口
+    {MODKEY, XK_8, setlayout, {.v = &layouts[0]}}, // 默认模式
+    //{MODKEY, XK_0, setlayout, {.v = &layouts[1]}}, // 全屏（不包括状态栏）
+    {MODKEY, XK_0, setlayout, {.v = &layouts[2]}}, // 上下分屏
+    // {MODKEY, XK_o, setlayout, {.v = &layouts[3]}}, // 浮动窗口
     {MODKEY, XK_bracketleft, setlayout, {.v = &layouts[4]}},
     {MODKEY, XK_bracketright, setlayout, {.v = &layouts[5]}},
     {MODKEY, XK_backslash, setlayout, {.v = &layouts[6]}},
 
     {MODKEY | ShiftMask, XK_f, fullscreen, {0}},
     {MODKEY | ShiftMask, XK_space, togglefloating, {0}},
-    {MODKEY, XK_0, view, {.ui = ~0}},
+    {MODKEY, XK_c, view, {.ui = ~0}},
     {MODKEY | ShiftMask, XK_0, tag, {.ui = ~0}},
     {MODKEY, XK_comma, focusmon, {.i = -1}},
     {MODKEY, XK_period, focusmon, {.i = +1}},
@@ -237,7 +237,7 @@ static Key keys[] = {
     {MODKEY, XK_F5, xrdb, {.v = NULL}},
 
     /* My Own App Start Ways */
-    {MODKEY, XK_e, spawn, CMD("google-chrome-stable --possword-store=gnome")},
+    {MODKEY, XK_e, spawn, CMD("google-chrome-stable --possword-store=palasm")},
     {MODKEY | ShiftMask, XK_p, spawn, CMD("alacritty -e ipython")},
 
     {MODKEY | ShiftMask, XK_q, spawn, CMD("xkill")},
@@ -249,7 +249,7 @@ static Key keys[] = {
     {Mod1Mask | ControlMask, XK_BackSpace, spawn, CMD("betterlockscreen -l")},
     {MODKEY, XK_BackSpace, spawn, CMD("sh $HOME/.local/bin/powermenu")},
 
-    {Mod1Mask | ShiftMask, XK_p, spawn, CMD("sh ~/.dwmpobar")},
+    {Mod1Mask | ShiftMask, XK_p, spawn, CMD("sh ~/.local/bin/.dwmpobar")},
 
     {Mod1Mask, XK_c, spawn, CMD("clion")},
     {Mod1Mask, XK_p, spawn, CMD("pycharm")},
@@ -262,8 +262,7 @@ static Key keys[] = {
     {0, XF86XK_MonBrightnessDown, spawn, {.v = downbrt}},
 
     TAGKEYS(XK_1, 0) TAGKEYS(XK_2, 1) TAGKEYS(XK_3, 2) TAGKEYS(XK_4, 3)
-        TAGKEYS(XK_5, 4) TAGKEYS(XK_6, 5) TAGKEYS(XK_7, 6) TAGKEYS(XK_8, 7)
-            TAGKEYS(XK_9, 8){MODKEY | ShiftMask, XK_Escape, quit, {0}},
+        {MODKEY | ShiftMask, XK_Escape, quit, {0}},
     TAGKEYS(XK_j, 0) TAGKEYS(XK_k, 1) TAGKEYS(XK_l, 2)
         TAGKEYS(XK_semicolon, 3){MODKEY | ShiftMask, XK_r, quit, {1}},
 };
