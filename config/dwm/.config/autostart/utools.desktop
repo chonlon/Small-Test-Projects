@@ -1,9 +1,0 @@
-[Desktop Entry]
-Categories=System;
-Comment=新一代效率工具平台
-Exec=/opt/uTools/utools %U
-Icon=utools
-Name=uTools
-StartupWMClass=uTools
-Terminal=false
-Type=Application
