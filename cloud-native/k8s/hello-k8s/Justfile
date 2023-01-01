@@ -1,0 +1,49 @@
+# [pre]: install env tools; notice: just for archlinux
+prepare:
+    yay -S kubectl kind
+
+# [basic]: cluster info
+cluster-info:
+    kubectl cluster-info
+
+# [basic]: get kube config
+config-view:
+    kubectl config view
+
+# [kind]: create a kind cluster nameed in cluster-name
+kind-create-cluster cluster-name='kind-test':
+    kind create cluster --name {{cluster-name}}
+
+# [kind]: remove a cluster from kind
+kind-remove-cluster cluster-name:
+    kind delete cluster --name {{cluster-name}}
+
+# [depoly]： 1
+deploy1:
+    kubectl apply -f depoly1/nginx.yaml
+
+get-deployments:
+    kubectl get deployments
+
+get-pods:
+    kubectl get pods
+
+get-nodes:
+    kubectl get nodes
+
+get-services-wide:
+    kubectl get services -o wide
+
+deploy1-and-show: deploy1 get-deployments get-pods
+    @- printf "\nhttps://kuboard.cn/learning/k8s-basics/deploy-app.html for detail\n"
+
+service1:
+    kubectl apply -f service1/nginx.yml
+
+service1-and-show: service1 get-services-wide
+    @- echo
+    @- echo "https://kuboard.cn/learning/k8s-basics/expose.html#%E5%AE%9E%E6%88%98-%E4%B8%BA%E6%82%A8%E7%9A%84-nginx-deployment-%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AA-service for detail"
+
+# echo some helpfully info about k8s in learning
+display-info:
+    @- echo "🐨 using [k9s] to manage your cluster is a good idea; yay -S k9s"

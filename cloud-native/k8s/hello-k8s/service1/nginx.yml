@@ -1,0 +1,21 @@
+# metadata:
+#   name: nginx-deplyment
+#   labels:
+#     app: nginx
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-service
+  labels:
+    app: nginx
+spec:
+  selector:
+    app: nginx
+  ports:
+  - name: nginx-port
+    protocol: TCP
+    port: 80
+    nodePort: 32600
+    targetPort: 80
+  type: NodePort
