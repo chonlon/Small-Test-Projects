@@ -40,6 +40,13 @@ deploy1-and-show: deploy1 get-deployments get-pods
 service1:
     kubectl apply -f service1/nginx.yml
 
+visit_service1:
+    #!/usr/bin/env sh
+    ip="$(kubectl get node -o wide | rg 'kind-control-plane' | awk '{print $6}')"
+    echo "using default control panel's ip: ${ip} as node's ip which may be wrong"
+    http get http://$ip:32600
+
+
 service1-and-show: service1 get-services-wide
     @- echo
     @- echo "https://kuboard.cn/learning/k8s-basics/expose.html#%E5%AE%9E%E6%88%98-%E4%B8%BA%E6%82%A8%E7%9A%84-nginx-deployment-%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AA-service for detail"
