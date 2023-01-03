@@ -31,6 +31,9 @@ get-pods:
 get-nodes:
     kubectl get nodes
 
+get-namespaces:
+    kubectl get namespaces
+
 get-services-wide:
     kubectl get services -o wide
 
@@ -43,7 +46,8 @@ service1:
 visit_service1:
     #!/usr/bin/env sh
     ip="$(kubectl get node -o wide | rg 'kind-control-plane' | awk '{print $6}')"
-    echo "using default control panel's ip: ${ip} as node's ip which may be wrong"
+    echo "**only** for kind"
+    echo "using default control plane's ip: ${ip} as node's ip which may be wrong"
     http get http://$ip:32600
 
 
