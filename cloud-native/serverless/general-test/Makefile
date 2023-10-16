@@ -1,0 +1,2 @@
+init:
+	poetry install
