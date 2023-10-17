@@ -28,10 +28,13 @@ async def test(client: dagger.Client):
     ctr = await (
         client.container()
         .from_("alpine")
+        .with_workdir("/root")
         # Add script with execution permission to simulate a testing tool.
         .with_new_file("run-tests", contents=SCRIPT, permissions=0o750)
         # If the exit code isn't needed: "run-tests; true"
-        .with_exec(["sh", "-c", "/run-tests; echo -n $? > /exit_code"])
+        .with_exec(["ls"])
+        .with_exec(["pwd"])
+        .with_exec(["sh", "-c", "/root/run-tests; echo -n $? > /root/exit_code"])
         .sync()
     )
 
